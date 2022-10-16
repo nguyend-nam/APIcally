@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ComponentListContext } from "../../pages/_app";
+import { ComponentListContext } from "../../context";
 
 interface Props {
   col?: number;

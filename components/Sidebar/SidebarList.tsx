@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ComponentListContext, componentObj } from "../../pages/_app";
+import { ComponentListContext, componentObj } from "../../context";
 import { useContext } from "react";
 import SidebarItem from "./SidebarItem";
 import { SortableContainer } from "react-sortable-hoc";
@@ -14,7 +14,6 @@ const SidebarList = () => {
       </div>
       {componentList.length !== 0 &&
         componentList.map((c: componentObj, i: number) => {
-          console.log(i);
           return (
             <SidebarItem
               index={i}
