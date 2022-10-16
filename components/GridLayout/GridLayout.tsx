@@ -1,5 +1,5 @@
 import { GridComponent } from "../GridComponent";
-import { ComponentListContext, componentObj } from "../../pages/_app";
+import { ComponentListContext, componentObj } from "../../context";
 import { useContext } from "react";
 
 export const GridLayout = () => {

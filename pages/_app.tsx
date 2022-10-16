@@ -1,26 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { useState, createContext } from "react";
-
-export interface componentObj {
-  containerCol: number;
-  containerRow: number;
-}
-
-export const ComponentListContext = createContext({
-  componentList: [] as componentObj[],
-  addComponent: (newComp: componentObj) => {
-    console.log(newComp);
-  },
-  removeComponent: (i: number) => {
-    console.log(i);
-  },
-  removeAllComponent: () => {},
-  setComponentList: undefined as any,
-});
+import { useState } from "react";
+import {
+  componentObj,
+  ComponentListContext,
+  fileObj,
+  FileListContext,
+} from "../context";
+import { pythonInitCode } from "../constants/python-init";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  // utils for GRID ITEMS context
   const [componentList, setComponentList] = useState<componentObj[]>([
     { containerCol: 2, containerRow: 3 },
     { containerCol: 8, containerRow: 2 },
@@ -29,12 +20,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     { containerCol: 1, containerRow: 1 },
   ]);
 
-  // add util for context
   const addComponent = (newComp: componentObj) => {
     setComponentList(() => [...componentList, newComp]);
   };
 
-  // remove util for context
   const removeComponent = (index: number) => {
     const newArr: componentObj[] = [];
 
@@ -49,18 +38,65 @@ function MyApp({ Component, pageProps }: AppProps) {
     setComponentList(newArr);
   };
 
+  // utils for FILE EXPLORER context
+  const [fileList, setFileList] = useState<fileObj[]>([
+    { fileName: "main.py", codeContent: pythonInitCode, language: "python" },
+    { fileName: "test.py", codeContent: "# test.py file", language: "python" },
+  ]);
+
+  const addFile = (newComp: fileObj) => {
+    setFileList(() => [...fileList, newComp]);
+  };
+
+  const removeFile = (index: number) => {
+    const newArr: fileObj[] = [];
+
+    fileList.forEach((File: fileObj, styleId: number) => {
+      if (styleId !== index) newArr.push(File);
+    });
+
+    setFileList(newArr);
+  };
+
+  const editFileContent = (index: number, newContent: string) => {
+    const updatedFile: fileObj = {
+      fileName: fileList[index].fileName,
+      language: fileList[index].language,
+      codeContent: newContent,
+    };
+
+    const newArr: fileObj[] = [];
+
+    fileList.forEach((File: fileObj, styleId: number) => {
+      if (styleId === index) newArr.push(updatedFile);
+      else newArr.push(File);
+    });
+
+    setFileList(newArr);
+  };
+
   return (
-    <ComponentListContext.Provider
+    <FileListContext.Provider
       value={{
-        componentList,
-        addComponent,
-        removeComponent,
-        removeAllComponent,
-        setComponentList,
+        fileList,
+        addFile,
+        removeFile,
+        setFileList,
+        editFileContent,
       }}
     >
-      <Component {...pageProps} />
-    </ComponentListContext.Provider>
+      <ComponentListContext.Provider
+        value={{
+          componentList,
+          addComponent,
+          removeComponent,
+          removeAllComponent,
+          setComponentList,
+        }}
+      >
+        <Component {...pageProps} />
+      </ComponentListContext.Provider>
+    </FileListContext.Provider>
   );
 }
 
