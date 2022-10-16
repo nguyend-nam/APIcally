@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { FileListContext, fileObj } from "../../context";
 import { checkFileNameFormat, formatFileName } from "../../utils/string";
 import { Alert } from "../Alert";
+import { Dropdown } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
 export const FileManagement = ({
   currentFile,
@@ -13,7 +15,7 @@ export const FileManagement = ({
   className?: string;
 }) => {
   const contextValue = useContext(FileListContext);
-  const { fileList, addFile } = contextValue;
+  const { fileList, addFile, removeFile } = contextValue;
   const [isAddingFile, setIsAddingFile] = useState<boolean>(false);
   const [newFileName, setNewFileName] = useState<string>("");
 
@@ -28,7 +30,7 @@ export const FileManagement = ({
     <div className={`shadow-lg z-30 h-screen overflow-auto ${className}`}>
       <div className="p-4 flex justify-end bg-primary sticky top-0 z-30">
         <button
-          className="p-1 px-2 rounded-md bg-slate-100 font-light"
+          className="p-1 px-2 rounded-md bg-white font-light"
           onClick={() => setIsAddingFile(true)}
         >
           Add file
@@ -37,21 +39,49 @@ export const FileManagement = ({
       <div className="flex flex-col p-4 space-y-1">
         {fileList.map((file: fileObj, index: number) => (
           <div
-            role="button"
-            onClick={() => {
-              setCurrentFile(index);
-            }}
-            className={`p-2 rounded-md ${
-              currentFile === index ? "bg-blue-100" : "bg-slate-100"
-            }`}
             key={file.fileName}
+            className="flex justify-between items-center"
           >
-            <code className="text-slate-600 text-sm">{file.fileName}</code>
+            <div
+              role="button"
+              onClick={() => {
+                setCurrentFile(index);
+              }}
+              className={`p-2 rounded-md w-full ${
+                currentFile === index ? "bg-blue-100" : "bg-slate-100"
+              }`}
+            >
+              <code className="text-slate-600 text-sm">{file.fileName}</code>
+            </div>
+            {file.fileName !== "main.py" ? (
+              <Dropdown
+                overlay={
+                  <button
+                    className="rounded-md p-2 bg-white shadow-lg font-light"
+                    onClick={() => {
+                      setCurrentFile(0);
+                      setTimeout(() => removeFile(index), 200);
+                    }}
+                  >
+                    Delete
+                  </button>
+                }
+                placement="bottomRight"
+                trigger={["click"]}
+                className="p-0.5 rounded-md ml-2 bg-white shadow-md"
+              >
+                <MoreOutlined
+                  className="h-max text-xl"
+                  style={{ color: "#2D31FA" }}
+                />
+              </Dropdown>
+            ) : null}
           </div>
         ))}
+
         {isAddingFile && (
           <>
-            <form className="bg-slate-100 flex justify-end items-center p-2 space-x-1 rounded-md shadow-lg">
+            <form className="bg-slate-100 flex justify-end items-center p-2 space-x-1 rounded-md">
               <input
                 className="w-full bg-slate-100 border border-slate-100 border-b-slate-400 placeholder:text-gray-400 placeholder:font-light p-0.5"
                 placeholder="enter file name..."
@@ -93,7 +123,7 @@ export const FileManagement = ({
             <Alert
               type="info"
               message="File name must be unique and must not contains any special characters"
-              className="mt-1 shadow-lg"
+              className="mt-1"
             />
           </>
         )}

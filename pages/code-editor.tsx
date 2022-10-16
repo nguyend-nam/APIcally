@@ -8,12 +8,8 @@ const CodeEditorPage = () => {
   const { fileList } = contextValue;
 
   const [currentFile, setCurrentFile] = useState<number>(0);
-  const [value, setValue] = useState<string | undefined>(
-    fileList[currentFile].codeContent
-  );
-  const [language, setLanguage] = useState<string | undefined>(
-    fileList[currentFile].language
-  );
+  const [value, setValue] = useState<string | undefined>("");
+  const [language, setLanguage] = useState<string | undefined>("");
 
   useEffect(() => {
     setValue(fileList[currentFile].codeContent);
@@ -39,7 +35,10 @@ const CodeEditorPage = () => {
         className="sticky top-0 w-[400px]"
       />
       <div className="w-full">
-        <FileHeader className="sticky top-0 z-30" currentFile={currentFile} />
+        <FileHeader
+          className="sticky top-0 z-30"
+          currentFileName={fileList[currentFile].fileName}
+        />
         <div className="p-4 grid grid-cols-12 gap-4">
           <div className="col-span-6 h-[550px]">{renderCodeEditor}</div>
         </div>

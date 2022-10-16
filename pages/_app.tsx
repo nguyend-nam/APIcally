@@ -9,6 +9,7 @@ import {
   FileListContext,
 } from "../context";
 import { pythonInitCode } from "../constants/python-init";
+import "antd/dist/antd.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   // utils for GRID ITEMS context
@@ -51,8 +52,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const removeFile = (index: number) => {
     const newArr: fileObj[] = [];
 
-    fileList.forEach((File: fileObj, styleId: number) => {
-      if (styleId !== index) newArr.push(File);
+    fileList.forEach((File: fileObj, fileId: number) => {
+      if (fileId !== index) newArr.push(File);
     });
 
     setFileList(newArr);
