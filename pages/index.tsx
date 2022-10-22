@@ -1,7 +1,7 @@
-import CodeEditorPage from "./code-editor";
+import LoginPage from "./login";
 
 const Home = () => {
-  return <CodeEditorPage />;
+  return <LoginPage />;
 };
 
 export default Home;

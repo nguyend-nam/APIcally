@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { componentObj, useComponentListContext } from "../../context";
-import SidebarItem from "./SidebarItem";
+import SidebarItem from "./GridSidebarItem";
 import { SortableContainer } from "react-sortable-hoc";
 
 const SidebarList = () => {

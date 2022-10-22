@@ -7,7 +7,7 @@ interface SidebarItemProps {
   remove: (i: number) => void;
 }
 
-const SidebarItem = ({
+const GridSidebarItem = ({
   col: containerCol,
   row: containerRow,
   itemIndex,
@@ -32,4 +32,4 @@ const SidebarItem = ({
   );
 };
 
-export default SortableElement(SidebarItem);
+export default SortableElement(GridSidebarItem);

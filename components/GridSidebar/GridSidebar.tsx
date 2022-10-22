@@ -15,7 +15,13 @@ interface Props {
   addComponent: any;
 }
 
-export const Sidebar = ({ col, row, setCol, setRow, addComponent }: Props) => {
+export const GridSidebar = ({
+  col,
+  row,
+  setCol,
+  setRow,
+  addComponent,
+}: Props) => {
   const [colBuffer, setColBuffer] = useState<number>();
   const [rowBuffer, setRowBuffer] = useState<number>();
   const colBufferRef = createRef<HTMLInputElement>();
