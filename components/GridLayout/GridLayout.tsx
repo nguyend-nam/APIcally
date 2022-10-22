@@ -1,9 +1,8 @@
 import { GridComponent } from "../GridComponent";
-import { ComponentListContext, componentObj } from "../../context";
-import { useContext } from "react";
+import { componentObj, useComponentListContext } from "../../context";
 
 export const GridLayout = () => {
-  const { componentList, removeComponent } = useContext(ComponentListContext);
+  const { componentList, removeComponent } = useComponentListContext();
   return (
     <div className="grid grid-cols-12 grid-rows-5 h-screen gap-1">
       {componentList.map((o: componentObj, i: number) => (

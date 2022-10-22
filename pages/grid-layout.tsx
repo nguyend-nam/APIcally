@@ -1,17 +1,15 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { GridLayout } from "../components/GridLayout";
 import { Sidebar } from "../components/Sidebar";
 import SidebarList from "../components/Sidebar/SidebarList";
-import { ComponentListContext, componentObj } from "../context";
+import { componentObj, useComponentListContext } from "../context";
 import { arrayMoveImmutable } from "array-move";
 
 const GridLayoutPage = () => {
   const [col, setCol] = useState<number>();
   const [row, setRow] = useState<number>();
 
-  const contextValue = useContext(ComponentListContext);
-
-  const { addComponent, setComponentList } = contextValue;
+  const { addComponent, setComponentList } = useComponentListContext();
 
   const onSortEnd = ({
     oldIndex,
