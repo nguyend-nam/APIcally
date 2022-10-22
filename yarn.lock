@@ -63,6 +63,15 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz#75b4c27948c81e88ccd3a8902047bcd797f38d32"
   integrity sha512-ej5oVy6lykXsvieQtqZxCOaLT+xD4+QNarq78cIYISHmZXshCvROLudpQN3lfL8G0NL7plMSSK+zlyvCaIJ4Iw==
 
+"@dwarvesf/react-hooks@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@dwarvesf/react-hooks/-/react-hooks-0.7.0.tgz#18efd0196f843915608267e488187da582e80543"
+  integrity sha512-h0Sm/DcfZg9u9oGEq+CM3Cvg9SWgN1/zRcUEdC5XJ5V+lNnQeU8gzXIs2ADmTtb6zepRFJ9ExUgkqLw5Y5JagQ==
+  dependencies:
+    "@dwarvesf/react-utils" "^0.4.1"
+    copy-to-clipboard "^3.3.1"
+    tslib "^2.3.0"
+
 "@dwarvesf/react-utils@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@dwarvesf/react-utils/-/react-utils-0.4.1.tgz#5cea173c2b1d1bcaee7347042ab2f5d620eba1e6"
@@ -665,7 +674,7 @@ concat-map@0.0.1:
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-copy-to-clipboard@^3.2.0:
+copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.2.tgz#5b263ec2366224b100181dded7ce0579b340c107"
   integrity sha512-Vme1Z6RUDzrb6xAI7EZlVZ5uvOk2F//GaxKUxajDqm9LhOVM1inxNAD2vy+UZDYsd0uyA9s7b3/FVZPSxqrCfg==

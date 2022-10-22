@@ -18,18 +18,32 @@ export const Logo = ({
   hasText = false,
   textTheme = "dark",
   size = "md",
+  className,
 }: {
   hasBg?: boolean;
   hasText?: boolean;
   textTheme?: "light" | "dark";
   size?: "sm" | "md" | "lg" | "xl";
+  className?: string;
 }) => {
   if (hasBg && !hasText) {
-    return <Image width={getSize(size)} preview={false} src="img/logo.png" />;
+    return (
+      <Image
+        width={getSize(size)}
+        preview={false}
+        src="img/logo.png"
+        className={className}
+      />
+    );
   }
   if (hasBg && hasText) {
     return (
-      <Image width={getSize(size)} preview={false} src="img/logo-text.png" />
+      <Image
+        width={getSize(size)}
+        preview={false}
+        src="img/logo-text.png"
+        className={className}
+      />
     );
   }
   if (!hasBg && hasText) {
@@ -39,6 +53,7 @@ export const Logo = ({
           width={getSize(size)}
           preview={false}
           src="img/logo-text-transparent-light.png"
+          className={className}
         />
       );
     }
@@ -48,6 +63,7 @@ export const Logo = ({
           width={getSize(size)}
           preview={false}
           src="img/logo-text-transparent.png"
+          className={className}
         />
       );
     }
@@ -57,6 +73,7 @@ export const Logo = ({
       width={getSize(size)}
       preview={false}
       src="img/logo-transparent.png"
+      className={className}
     />
   );
 };

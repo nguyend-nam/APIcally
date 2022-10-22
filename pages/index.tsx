@@ -1,7 +1,11 @@
 import LoginPage from "./login";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  return <LoginPage />;
+  const [isSSR, setIsSSR] = useState<boolean>(true);
+  useEffect(() => setIsSSR(false), []);
+
+  return !isSSR && <LoginPage />;
 };
 
 export default Home;
