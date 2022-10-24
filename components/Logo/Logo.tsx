@@ -2,6 +2,8 @@ import { Image } from "antd";
 
 const getSize = (prop: string) => {
   switch (prop) {
+    case "xs":
+      return 45;
     case "sm":
       return 60;
     case "md":
@@ -23,7 +25,7 @@ export const Logo = ({
   hasBg?: boolean;
   hasText?: boolean;
   textTheme?: "light" | "dark";
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   className?: string;
 }) => {
   if (hasBg && !hasText) {
