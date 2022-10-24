@@ -120,7 +120,7 @@ const Home = () => {
                 algorithm, let us do the rest.
               </Text>
             </Card>
-            <div className="sticky bottom-0 flex space-x-4 md:space-x-6 mt-6 justify-end md:justify-start">
+            <div className="sticky bottom-4 flex space-x-4 md:space-x-6 mt-6 justify-end md:justify-start">
               <Link href="https://github.com/suren-atoyan/monaco-react">
                 <a target="_blank">
                   <Image
