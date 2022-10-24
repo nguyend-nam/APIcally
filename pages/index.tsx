@@ -30,22 +30,22 @@ const Home = () => {
           <div className="z-50 fixed top-0 backdrop-blur-md bg-white/40 md:bg-white/30 py-2 px-4 md:px-12 w-full flex items-center justify-between">
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
-              {!isMobile ? (
-                <>
-                  <Button
-                    appearance="link"
-                    className="text-lg mr-4"
-                    label="Login"
-                    onClick={() => push("/login")}
-                  />
-                  <Button
-                    appearance="outline"
-                    className="text-lg px-2.5 py-1 bg-white/0"
-                    label="Register"
-                    onClick={() => push("/login")}
-                  />
-                </>
-              ) : (
+              {/* {!isMobile ? ( */}
+              <>
+                <Button
+                  appearance="link"
+                  className="text-lg mr-4"
+                  label="Login"
+                  onClick={() => push("/login")}
+                />
+                <Button
+                  appearance="outline"
+                  className="text-lg px-2.5 py-1 bg-white/0"
+                  label="Register"
+                  onClick={() => push("/login")}
+                />
+              </>
+              {/* ) : (
                 <Dropdown
                   overlay={
                     <Menu
@@ -100,7 +100,7 @@ const Home = () => {
                     }
                   />
                 </Dropdown>
-              )}
+              )} */}
             </div>
           </div>
 
