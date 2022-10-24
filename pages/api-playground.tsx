@@ -1,11 +1,11 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "../components/Button";
 import { CodeEditor } from "../components/CodeEditor";
 import { FileHeader, FileManagement } from "../components/FileExplorer";
-import { FileListContext } from "../context";
+import { useFileListContext } from "../context";
 
 const CodeEditorPage = () => {
-  const contextValue = useContext(FileListContext);
-  const { fileList } = contextValue;
+  const { fileList } = useFileListContext();
 
   const [currentFile, setCurrentFile] = useState<number>(0);
   const [value, setValue] = useState<string | undefined>("");
@@ -28,11 +28,11 @@ const CodeEditorPage = () => {
   }, [currentFile, language, value]);
 
   return (
-    <div className="flex">
+    <div className="flex bg-slate-100">
       <FileManagement
         currentFile={currentFile}
         setCurrentFile={setCurrentFile}
-        className="sticky top-0 w-[400px]"
+        className="sticky top-0 w-[400px] bg-white"
       />
       <div className="w-full">
         <FileHeader

@@ -1,11 +1,10 @@
 // @ts-nocheck
-import { ComponentListContext, componentObj } from "../../context";
-import { useContext } from "react";
-import SidebarItem from "./SidebarItem";
+import { componentObj, useComponentListContext } from "../../context";
+import SidebarItem from "./GridSidebarItem";
 import { SortableContainer } from "react-sortable-hoc";
 
 const SidebarList = () => {
-  const { componentList, removeComponent } = useContext(ComponentListContext);
+  const { componentList, removeComponent } = useComponentListContext();
 
   return (
     <div className="p-3">

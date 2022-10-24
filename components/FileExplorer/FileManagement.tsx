@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { FileListContext, fileObj } from "../../context";
+import { Dispatch, SetStateAction, useState } from "react";
+import { fileObj, useFileListContext } from "../../context";
 import { checkFileNameFormat, formatFileName } from "../../utils/string";
 import { Alert } from "../Alert";
 import { Dropdown } from "antd";
@@ -14,8 +14,7 @@ export const FileManagement = ({
   setCurrentFile: Dispatch<SetStateAction<number>>;
   className?: string;
 }) => {
-  const contextValue = useContext(FileListContext);
-  const { fileList, addFile, removeFile } = contextValue;
+  const { fileList, addFile, removeFile } = useFileListContext();
   const [isAddingFile, setIsAddingFile] = useState<boolean>(false);
   const [newFileName, setNewFileName] = useState<string>("");
 

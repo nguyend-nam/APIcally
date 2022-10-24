@@ -1,6 +1,6 @@
 import Editor from "@monaco-editor/react";
-import { useContext, useMemo, Dispatch, SetStateAction } from "react";
-import { FileListContext } from "../../context";
+import { useMemo, Dispatch, SetStateAction } from "react";
+import { useFileListContext } from "../../context";
 
 export const CodeEditor = ({
   currentFile,
@@ -13,8 +13,7 @@ export const CodeEditor = ({
   setValue: Dispatch<SetStateAction<string | undefined>>;
   language?: string;
 }) => {
-  const contextValue = useContext(FileListContext);
-  const { editFileContent } = contextValue;
+  const { editFileContent } = useFileListContext();
 
   const renderEditor = useMemo(() => {
     return (

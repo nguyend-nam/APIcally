@@ -2,11 +2,10 @@ import {
   createRef,
   Dispatch,
   SetStateAction,
-  useContext,
   useEffect,
   useState,
 } from "react";
-import { ComponentListContext } from "../../context";
+import { useComponentListContext } from "../../context";
 
 interface Props {
   col?: number;
@@ -16,14 +15,19 @@ interface Props {
   addComponent: any;
 }
 
-export const Sidebar = ({ col, row, setCol, setRow, addComponent }: Props) => {
+export const GridSidebar = ({
+  col,
+  row,
+  setCol,
+  setRow,
+  addComponent,
+}: Props) => {
   const [colBuffer, setColBuffer] = useState<number>();
   const [rowBuffer, setRowBuffer] = useState<number>();
   const colBufferRef = createRef<HTMLInputElement>();
   const rowBufferRef = createRef<HTMLInputElement>();
 
-  const { componentList, removeAllComponent } =
-    useContext(ComponentListContext);
+  const { componentList, removeAllComponent } = useComponentListContext();
 
   useEffect(() => {
     if (row && col && row >= 1 && row <= 5 && col >= 1 && col <= 12) {
