@@ -5,9 +5,13 @@ import { Text } from "../components/Text";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useIsMobile } from "../hooks/mobile";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const LoginPage = () => {
   const isMobile = useIsMobile();
+  const { push } = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <div
@@ -19,7 +23,7 @@ const LoginPage = () => {
         backgroundSize: "cover",
       }}
     >
-      <Card className="flex flex-col sm:flex-row h-[470px] sm:h-[450px] w-[670px] bg-white">
+      <Card className="flex flex-col sm:flex-row h-[500px] sm:h-[450px] w-[670px] bg-white">
         <Card
           borderRadius={isMobile ? "topRight" : "bottomLeft"}
           className="bg-primary text-white overflow-hidden w-full sm:w-1/2 relative"
@@ -70,7 +74,23 @@ const LoginPage = () => {
             className="mt-1"
           />
           <div className="w-full text-center mt-5">
-            <Button label="Login" className="p-1 text-lg w-[125px]" />
+            <Button
+              label="Login"
+              className="p-1 text-lg w-[125px]"
+              type="submit"
+            />
+          </div>
+          <div className="w-full text-center mt-5">
+            <Button
+              label="Or use testing account"
+              appearance="link"
+              className="p-1 text-lg text-slate-500"
+              onClick={() => {
+                setIsLoading(true);
+                setTimeout(() => push("api-playground"), 800);
+              }}
+              isLoading={isLoading}
+            />
           </div>
         </form>
       </Card>

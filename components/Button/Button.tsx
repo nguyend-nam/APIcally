@@ -1,3 +1,5 @@
+import { LoadingOutlined } from "@ant-design/icons";
+
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
     case "top":
@@ -34,7 +36,7 @@ const getButtonStyle = (prop: string) => {
   }
 };
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   borderRadius?:
     | "top"
     | "right"
@@ -49,6 +51,7 @@ interface ButtonProps {
   label: string;
   className?: string;
   appearance?: "primary" | "link" | "outline";
+  isLoading?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -57,14 +60,17 @@ export const Button = (props: ButtonProps) => {
     label,
     className,
     appearance = "primary",
+    isLoading = false,
+    ...rest
   } = props;
   return (
     <button
       className={`${getButtonStyle(appearance)} ${getBorderRadius(
         borderRadius
       )} ${className}`}
+      {...rest}
     >
-      {label}
+      {isLoading ? <LoadingOutlined /> : label}
     </button>
   );
 };
