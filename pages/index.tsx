@@ -30,7 +30,7 @@ const Home = () => {
           <div className="z-50 fixed top-0 backdrop-blur-md bg-white/40 md:bg-white/30 py-2 px-4 md:px-12 w-full flex items-center justify-between">
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
-              {!isMobile && (
+              {!isMobile ? (
                 <>
                   <Button
                     appearance="link"
@@ -45,14 +45,12 @@ const Home = () => {
                     onClick={() => push("/login")}
                   />
                 </>
-              )}
-              {isMobile && (
+              ) : (
                 <Dropdown
                   overlay={
                     <Menu
                       style={{
                         borderRadius: "8px",
-                        textAlign: "right",
                         marginTop: 4,
                       }}
                       items={[
@@ -61,9 +59,12 @@ const Home = () => {
                           label: (
                             <Button
                               appearance="link"
-                              className="text-lg"
+                              className="text-lg w-full text-right"
                               label="Login"
-                              onClick={() => push("/login")}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                push("/login");
+                              }}
                             />
                           ),
                         },
@@ -72,9 +73,12 @@ const Home = () => {
                           label: (
                             <Button
                               appearance="link"
-                              className="text-lg"
+                              className="text-lg w-full text-right"
                               label="Register"
-                              onClick={() => push("/login")}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                push("/login");
+                              }}
                             />
                           ),
                         },
