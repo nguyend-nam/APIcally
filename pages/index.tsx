@@ -31,20 +31,20 @@ const Home = () => {
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
               {/* {!isMobile ? ( */}
-              <>
-                <Button
-                  appearance="link"
-                  className="text-lg mr-4"
-                  label="Login"
-                  onClick={() => push("/login")}
-                />
-                <Button
-                  appearance="outline"
-                  className="text-lg px-2.5 py-1 bg-white/0"
-                  label="Register"
-                  onClick={() => push("/login")}
-                />
-              </>
+              {/* <> */}
+              <Button
+                appearance="link"
+                className="text-lg mr-4"
+                label="Login"
+                onClick={() => push("/login")}
+              />
+              <Button
+                appearance="outline"
+                className="text-lg px-2.5 py-1 bg-white/0"
+                label="Register"
+                onClick={() => push("/login")}
+              />
+              {/* </> */}
               {/* ) : (
                 <Dropdown
                   overlay={
@@ -120,7 +120,7 @@ const Home = () => {
                 algorithm, let us do the rest.
               </Text>
             </Card>
-            <div className="flex space-x-6 mt-6 justify-end md:justify-start">
+            <div className="sticky bottom-0 flex space-x-4 md:space-x-6 mt-6 justify-end md:justify-start">
               <Link href="https://github.com/suren-atoyan/monaco-react">
                 <a target="_blank">
                   <Image
