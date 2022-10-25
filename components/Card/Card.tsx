@@ -22,6 +22,8 @@ export const getBorderRadius = (prop: string) => {
       return "rounded-bl-2xl";
     case "full":
       return "rounded-2xl";
+    case "none":
+      return "rounded-none";
   }
 };
 
@@ -42,7 +44,8 @@ export const Card = ({
     | "topRight"
     | "bottomLeft"
     | "bottomRight"
-    | "full";
+    | "full"
+    | "none";
   className?: string;
 }) => {
   return (

@@ -1,4 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
+import { ReactNode } from "react";
 
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
@@ -30,7 +31,7 @@ const getButtonStyle = (prop: string) => {
     case "primary":
       return "bg-primary text-white hover:bg-primary/90";
     case "outline":
-      return "bg-white border border-primary text-primary";
+      return "bg-none border border-primary text-primary";
     case "link":
       return "border-none bg-none text-primary";
   }
@@ -48,7 +49,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | "bottomLeft"
     | "bottomRight"
     | "full";
-  label: string;
+  label: ReactNode;
   className?: string;
   appearance?: "primary" | "link" | "outline";
   isLoading?: boolean;
