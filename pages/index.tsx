@@ -27,20 +27,23 @@ const Home = () => {
         }}
       >
         <div className="w-full absolute top-0">
-          <div className="z-50 fixed top-0 backdrop-blur-md bg-white/40 md:bg-white/30 py-2 px-4 md:px-12 w-full flex items-center justify-between">
+          <Card
+            borderRadius={isMobile ? "bottomLeft" : "none"}
+            className="z-50 fixed top-0 backdrop-blur-md bg-white md:bg-white/30 py-2 px-4 md:px-12 w-full flex items-center justify-between shadow-none md:shadow-md shadow-gray-700/5"
+          >
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
               {/* {!isMobile ? ( */}
               {/* <> */}
               <Button
                 appearance="link"
-                className="text-lg mr-4"
+                className="text-md md:text-lg mr-3 md:mr-4"
                 label="Login"
                 onClick={() => push("/login")}
               />
               <Button
                 appearance="outline"
-                className="text-lg px-2.5 py-1 bg-white/0"
+                className="text-md md:text-lg px-2.5 py-1 bg-white/0"
                 label="Register"
                 onClick={() => push("/login")}
               />
@@ -102,10 +105,10 @@ const Home = () => {
                 </Dropdown>
               )} */}
             </div>
-          </div>
+          </Card>
 
-          <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/10 to-white pt-[74px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
-            <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/[0.85] md:bg-white/80 max-w-full md:max-w-lg">
+          <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[74px] pb-4 px-2 pr-6 md:pt-36 md:px-36 flex flex-col justify-between md:block">
+            <Card className="w-max p-4 py-3 md:p-8 backdrop-blur-md bg-white/80 max-w-full md:max-w-lg">
               <Text className="text-xl md:text-3xl font-medium text-slate-400 m-0">
                 Welcome to
               </Text>
@@ -120,7 +123,7 @@ const Home = () => {
                 algorithm, let us do the rest.
               </Text>
             </Card>
-            <div className="sticky bottom-4 flex space-x-4 md:space-x-6 mt-6 justify-end md:justify-start">
+            <div className="sticky bottom-4 flex space-x-4 md:space-x-6 mt-6 justify-end md:justify-start -mr-2 md:mr-0">
               <Link href="https://github.com/suren-atoyan/monaco-react">
                 <a target="_blank">
                   <Image
