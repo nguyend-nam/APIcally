@@ -1,10 +1,42 @@
 import { useEffect, useMemo, useState } from "react";
 import { CodeEditor } from "../components/CodeEditor";
 import { FileHeader, FileManagement } from "../components/FileExplorer";
-import { useFileListContext } from "../context";
+import { fileObj, useFileListContext } from "../context";
+import axios from "axios";
+import FormData from "form-data";
+import { Button } from "../components/Button";
+
+const sendData = async (data: FormData, fileList: fileObj[]) => {
+  fileList.forEach((file) => {
+    if (file.fileName === "main.py") {
+      const newFile = new File([file.codeContent], file.fileName);
+      data.append("file", newFile);
+    }
+  });
+
+  console.log(data);
+
+  const config = {
+    method: "post",
+    url: "http://localhost:5000/api/v1",
+    // headers: { ...data.getHeaders() },
+    headers: { "Content-Type": "multipart/form-data" },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 const CodeEditorPage = () => {
-  const { fileList } = useFileListContext();
+  const { fileList } = useFileListContext() as { fileList: fileObj[] };
+
+  const data = useMemo(() => new FormData(), []);
 
   const [currentFile, setCurrentFile] = useState<number>(0);
   const [value, setValue] = useState<string | undefined>("");
@@ -39,11 +71,31 @@ const CodeEditorPage = () => {
           currentFileName={fileList[currentFile].fileName}
         />
         <div className="p-4 grid grid-cols-12 gap-4">
-          <div className="col-span-6 h-[550px]">{renderCodeEditor}</div>
+          <div className="col-span-12 lg:col-span-6 h-[550px]">
+            {renderCodeEditor}
+          </div>
+        </div>
+        <div className="p-4 pt-0">
+          <Button
+            label="Submit"
+            onClick={() => sendData(data, fileList)}
+            className="text-lg py-1 px-2"
+          />
         </div>
       </div>
     </div>
   );
 };
+
+// export async function getStaticProps(data: FormData, file: fileObj) {
+//   const allPostsData = sendData(data, file);
+//   const ahihi = JSON.stringify(allPostsData);
+
+//   return {
+//     props: {
+//       ahihi,
+//     },
+//   };
+// }
 
 export default CodeEditorPage;
