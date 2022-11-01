@@ -14,21 +14,18 @@ const sendData = async (data: FormData, fileList: fileObj[]) => {
     }
   });
 
-  console.log(data);
-
   const config = {
     method: "post",
     url: "http://localhost:5000/api/v1",
-    // headers: { ...data.getHeaders() },
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { ...data.getHeaders, "Content-Type": "multipart/form-data" },
     data: data,
   };
 
   axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
+    .then((response) => {
+      console.log(response.data);
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
     });
 };
