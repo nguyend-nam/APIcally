@@ -24,7 +24,7 @@ const GridLayoutPage = () => {
   };
   return (
     <div className="flex h-screen overflow-hidden">
-      <div className="max-h-screen overflow-scroll bg-gray-50 w-[400px]">
+      <div className="max-h-screen overflow-auto bg-gray-50 w-[400px]">
         <div className="sticky top-0">
           <GridSidebar
             col={col}

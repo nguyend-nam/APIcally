@@ -30,7 +30,7 @@ export const Sidebar = ({ className }: { className?: string }) => {
       >
         <Logo size={isExpanded ? "sm" : "xs"} />
       </div>
-      <div className="h-full overflow-scroll w-full">
+      <div className="h-full overflow-auto w-full">
         <Button
           label={
             <>
