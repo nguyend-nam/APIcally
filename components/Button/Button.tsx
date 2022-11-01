@@ -23,6 +23,8 @@ export const getBorderRadius = (prop: string) => {
       return "rounded-bl-xl";
     case "full":
       return "rounded-xl";
+    case "none":
+      return "rounded-none";
   }
 };
 
@@ -48,7 +50,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | "topRight"
     | "bottomLeft"
     | "bottomRight"
-    | "full";
+    | "full"
+    | "none";
   label: ReactNode;
   className?: string;
   appearance?: "primary" | "link" | "outline";
