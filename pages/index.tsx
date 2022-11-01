@@ -168,8 +168,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="p-2 pb-12 pt-24 md:pt-24">
-            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center">
+          <div className="p-4 pb-16 pt-32 md:pt-32">
+            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               How APIcally works
             </Text>
             <div className="flex flex-wrap justify-center items-start max-w-full">
@@ -238,8 +238,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="p-12">
-            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center">
+          <div className="p-16 px-4">
+            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               What APIcally can &lsquo;digest&rsquo;
             </Text>
             <div className="flex flex-wrap justify-center items-start max-w-full">
@@ -297,8 +297,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="p-12">
-            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center">
+          <div className="p-16 px-4">
+            <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               Made with
             </Text>
             <div className="flex flex-wrap justify-center items-center">
@@ -346,7 +346,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="p-8 py-12 md:p-12">
+          <div className="p-4 py-16 md:p-16">
             <div className="text-center md:text-lg flex flex-col md:flex-row items-center md:items-end justify-center space-x-0 md:space-x-2 space-y-2 md:space-y-0">
               <Logo size="xs" />
               <Text as="span">

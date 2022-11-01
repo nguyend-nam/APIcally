@@ -90,7 +90,7 @@ const LoginPage = () => {
                 className="p-1 text-lg text-slate-500"
                 onClick={() => {
                   setIsLoading(true);
-                  setTimeout(() => push("api-playground"), 800);
+                  setTimeout(() => push("home"), 800);
                 }}
                 isLoading={isLoading}
               />
