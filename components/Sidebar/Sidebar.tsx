@@ -5,6 +5,7 @@ import {
   SettingFilled,
   ToTopOutlined,
 } from "@ant-design/icons";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
@@ -19,23 +20,32 @@ export const Sidebar = ({ className }: { className?: string }) => {
     <div
       className={`flex flex-col bg-primary w-max h-screen items-center ${className}`}
     >
-      <div
-        className="h-32 w-full flex justify-center items-center"
-        style={{
-          backgroundImage: "url(img/login-modal-bg.png)",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "top right",
-          backgroundSize: "cover",
-        }}
-      >
-        <Logo size={isExpanded ? "sm" : "xs"} />
+      <div className="h-32 w-full flex justify-center items-center">
+        <Link href="/">
+          <a>
+            <Logo
+              size={isExpanded ? "sm" : "xs"}
+              hasText={isExpanded}
+              textTheme="light"
+              className="inline-block"
+            />
+          </a>
+        </Link>
       </div>
-      <div className="h-full overflow-auto w-full">
+      <div className="h-full overflow-y-auto overflow-x-hidden w-full">
         <Button
           label={
             <>
-              <HomeFilled className="h-fit" />{" "}
-              {isExpanded && <span className="!text-base ml-4">Home</span>}
+              <HomeFilled className="h-fit" />
+              <span
+                className={`!text-base ml-4 w-[110px] text-left ${
+                  !isExpanded &&
+                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                }`}
+                style={{ transition: "0.4s" }}
+              >
+                Home
+              </span>
             </>
           }
           className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
@@ -49,10 +59,16 @@ export const Sidebar = ({ className }: { className?: string }) => {
         <Button
           label={
             <>
-              <CodeFilled className="h-fit" />{" "}
-              {isExpanded && (
-                <span className="!text-base ml-4">API playground</span>
-              )}
+              <CodeFilled className="h-fit" />
+              <span
+                className={`!text-base ml-4 w-[110px] text-left whitespace-nowrap ${
+                  !isExpanded &&
+                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                }`}
+                style={{ transition: "0.4s" }}
+              >
+                API playground
+              </span>
             </>
           }
           className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
@@ -66,8 +82,16 @@ export const Sidebar = ({ className }: { className?: string }) => {
         <Button
           label={
             <>
-              <UserOutlined className="h-fit" />{" "}
-              {isExpanded && <span className="!text-base ml-4">User</span>}
+              <UserOutlined className="h-fit" />
+              <span
+                className={`!text-base ml-4 w-[110px] text-left ${
+                  !isExpanded &&
+                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                }`}
+                style={{ transition: "0.4s" }}
+              >
+                User
+              </span>
             </>
           }
           className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
@@ -81,8 +105,16 @@ export const Sidebar = ({ className }: { className?: string }) => {
         <Button
           label={
             <>
-              <SettingFilled className="h-fit" />{" "}
-              {isExpanded && <span className="!text-base ml-4">Setting</span>}
+              <SettingFilled className="h-fit" />
+              <span
+                className={`!text-base ml-4 w-[110px] text-left ${
+                  !isExpanded &&
+                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                }`}
+                style={{ transition: "0.4s" }}
+              >
+                Setting
+              </span>
             </>
           }
           className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
@@ -98,9 +130,10 @@ export const Sidebar = ({ className }: { className?: string }) => {
         label={
           <ToTopOutlined
             className={`text-2xl ${isExpanded ? "-rotate-90" : "rotate-90"}`}
+            style={{ transition: "transform 0.3s" }}
           />
         }
-        className={`p-4 ${isExpanded ? "self-end" : "self-center"}`}
+        className={`p-4 w-full`}
         onClick={() => setSidebarStatus(!isExpanded)}
       />
     </div>
