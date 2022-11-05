@@ -47,63 +47,6 @@ const Home = () => {
                 label="Register"
                 onClick={() => push("/login")}
               />
-              {/* </> */}
-              {/* ) : (
-<Dropdown
-overlay={
-<Menu
-style={{
-borderRadius: "8px",
-marginTop: 4,
-}}
-items={[
-{
-key: 1,
-label: (
-<Button
-appearance="link"
-className="text-lg w-full text-right"
-label="Login"
-onClick={(e) => {
-e.preventDefault();
-push("/login");
-}}
-/>
-),
-},
-{
-key: 2,
-label: (
-<Button
-appearance="link"
-className="text-lg w-full text-right"
-label="Register"
-onClick={(e) => {
-e.preventDefault();
-push("/login");
-}}
-/>
-),
-},
-]}
-/>
-}
-placement="bottomRight"
-trigger={["click"]}
-className="shadow-md"
->
-<Button
-appearance="link"
-className="!p-2 !px-3"
-label={
-<MenuOutlined
-className="h-max text-lg"
-style={{ color: "#FFF" }}
-/>
-}
-/>
-</Dropdown>
-)} */}
             </div>
           </Card>
 
