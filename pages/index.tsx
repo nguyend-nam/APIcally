@@ -51,7 +51,7 @@ const Home = () => {
           </Card>
 
           <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
-            <Card className="w-max p-4 py-3 md:p-8 backdrop-blur-md bg-white/80 max-w-full md:max-w-lg">
+            <Card className="w-max p-4 py-3 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg">
               <Text className="text-xl md:text-3xl font-medium text-slate-400 m-0">
                 Welcome to
               </Text>
@@ -183,7 +183,7 @@ const Home = () => {
 
           <div className="p-16 px-4">
             <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
-              What APIcally can &lsquo;digest&rsquo;
+              What APIcally can &quot;digests&quot;
             </Text>
             <div className="flex flex-wrap justify-center items-start max-w-full">
               <Card

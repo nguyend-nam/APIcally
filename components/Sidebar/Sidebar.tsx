@@ -7,11 +7,18 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { CSSProperties } from "react";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
 import { Logo } from "../Logo";
 
-export const Sidebar = ({ className }: { className?: string }) => {
+export const Sidebar = ({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: CSSProperties;
+}) => {
   const { pathname, push } = useRouter();
   const { sidebarStatus: isExpanded, setSidebarStatus } =
     useSidebarStatusContext();
@@ -19,6 +26,7 @@ export const Sidebar = ({ className }: { className?: string }) => {
   return (
     <div
       className={`flex flex-col bg-primary w-max h-screen items-center ${className}`}
+      style={style}
     >
       <div className="h-32 w-full flex justify-center items-center">
         <Link href="/">

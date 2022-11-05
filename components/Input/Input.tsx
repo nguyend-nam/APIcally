@@ -64,7 +64,7 @@ export const Input = (props: InputProps) => {
     <div className={`${fullWidth && "w-full"}`}>
       <input
         type={type}
-        className={`border border-primary text-lg px-1.5 py-0.5 outline-none w-full ${getBorderRadius(
+        className={`bg-slate-100 border-none text-lg px-2 py-1 outline-none w-full ${getBorderRadius(
           borderRadius
         )} ${className}`}
         value={value}
