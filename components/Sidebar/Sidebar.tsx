@@ -133,7 +133,7 @@ export const Sidebar = ({ className }: { className?: string }) => {
             style={{ transition: "transform 0.3s" }}
           />
         }
-        className={`p-4 w-full`}
+        className="p-4 w-full hidden md:block"
         onClick={() => setSidebarStatus(!isExpanded)}
       />
     </div>
