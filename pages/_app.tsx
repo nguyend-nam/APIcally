@@ -7,12 +7,14 @@ import {
   ComponentListProvider,
   SidebarStatusProvider,
 } from "../context";
+import NProgressHandler from "../components/NProgressHandler/NprogressHandler";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <FileListProvider>
       <ComponentListProvider>
         <SidebarStatusProvider>
+          <NProgressHandler />
           <Component {...pageProps} />
         </SidebarStatusProvider>
       </ComponentListProvider>
