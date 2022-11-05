@@ -29,7 +29,7 @@ const Home = () => {
         <div className="w-full absolute top-0">
           <Card
             borderRadius={isMobile ? "bottomLeft" : "none"}
-            className="z-50 fixed top-0 backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-12 w-full flex items-center justify-between shadow-none md:shadow-md shadow-gray-700/5"
+            className="z-50 fixed top-0 backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-12 w-full flex items-center justify-between shadow-sm md:shadow-md"
           >
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
@@ -47,63 +47,6 @@ const Home = () => {
                 label="Register"
                 onClick={() => push("/login")}
               />
-              {/* </> */}
-              {/* ) : (
-                <Dropdown
-                  overlay={
-                    <Menu
-                      style={{
-                        borderRadius: "8px",
-                        marginTop: 4,
-                      }}
-                      items={[
-                        {
-                          key: 1,
-                          label: (
-                            <Button
-                              appearance="link"
-                              className="text-lg w-full text-right"
-                              label="Login"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                push("/login");
-                              }}
-                            />
-                          ),
-                        },
-                        {
-                          key: 2,
-                          label: (
-                            <Button
-                              appearance="link"
-                              className="text-lg w-full text-right"
-                              label="Register"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                push("/login");
-                              }}
-                            />
-                          ),
-                        },
-                      ]}
-                    />
-                  }
-                  placement="bottomRight"
-                  trigger={["click"]}
-                  className="shadow-md"
-                >
-                  <Button
-                    appearance="link"
-                    className="!p-2 !px-3"
-                    label={
-                      <MenuOutlined
-                        className="h-max text-lg"
-                        style={{ color: "#FFF" }}
-                      />
-                    }
-                  />
-                </Dropdown>
-              )} */}
             </div>
           </Card>
 
@@ -251,7 +194,7 @@ const Home = () => {
                   <Image
                     height={100}
                     width={300}
-                    className="object-cover"
+                    className="object-cover rounded-xl rounded-tl-none"
                     preview={false}
                     src="img/json.png"
                   />
@@ -268,7 +211,7 @@ const Home = () => {
                   <Image
                     height={100}
                     width={300}
-                    className="object-cover"
+                    className="object-cover rounded-xl rounded-tl-none"
                     preview={false}
                     src="img/image.png"
                   />
@@ -285,13 +228,13 @@ const Home = () => {
                   <Image
                     height={100}
                     width={300}
-                    className="object-cover"
+                    className="object-cover rounded-xl rounded-tl-none"
                     preview={false}
                     src="img/not-known-yet.png"
                   />
                 </div>
                 <Text className="text-center text-lg font-normal text-slate-600 max-w-fit">
-                  Other types might be added in future enhancement.
+                  Other types might be added in future enhancement
                 </Text>
               </Card>
             </div>
@@ -349,7 +292,7 @@ const Home = () => {
           <div className="p-4 py-16 md:p-16">
             <div className="text-center md:text-lg flex flex-col md:flex-row items-center md:items-end justify-center space-x-0 md:space-x-2 space-y-2 md:space-y-0">
               <Logo size="xs" />
-              <Text as="span">
+              <Text as="span" className="text-slate-500">
                 &copy; 2022 APIcally team. All rights reserved.
               </Text>
             </div>
