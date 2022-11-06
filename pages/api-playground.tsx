@@ -59,7 +59,7 @@ const CodeEditorPage = () => {
   }, [currentFile, language, value]);
 
   return (
-    <Layout contentClassName="!p-0">
+    <Layout contentClassName="!p-0" hasFooter={false}>
       <div className="flex bg-slate-100">
         <FileManagement
           currentFile={currentFile}

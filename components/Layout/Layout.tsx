@@ -3,12 +3,18 @@ import { useSidebarStatusContext } from "../../context";
 import { WithChildren } from "../../types/common";
 import { Sidebar } from "../Sidebar";
 import { Topbar } from "../Topbar";
+import { Text } from "../Text";
 
 export const Layout = ({
   children,
   className,
   contentClassName,
-}: WithChildren & { className?: string; contentClassName?: string }) => {
+  hasFooter = true,
+}: WithChildren & {
+  className?: string;
+  contentClassName?: string;
+  hasFooter?: boolean;
+}) => {
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -30,8 +36,15 @@ export const Layout = ({
           className="sticky top-0 z-40 !px-4 md:!px-8"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         />
-        <div className={`p-4 md:p-8 w-full ${contentClassName}`}>
-          {children}
+        <div className={`p-4 md:p-8 pb-8 w-full ${contentClassName}`}>
+          <div>{children}</div>
+          {hasFooter && (
+            <div className="text-center md:text-base mt-8">
+              <Text as="span" className="text-slate-500">
+                &copy; 2022 APIcally team. All rights reserved.
+              </Text>
+            </div>
+          )}
         </div>
       </div>
     </div>
