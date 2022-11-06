@@ -1,12 +1,7 @@
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { Button } from "../Button";
-
-const formatPathname = (pathname: string) => {
-  const newPathname = pathname.slice(1);
-  newPathname.replace("-", " ");
-  return newPathname[0].toUpperCase() + newPathname.slice(1);
-};
+import { formatPathname } from "../../utils";
 
 export const Topbar = ({
   className,
