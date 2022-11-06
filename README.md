@@ -1,11 +1,11 @@
 # APIcally
 
-This repository contains the frontend implementation for Droppii Business.
+This repository contains the frontend implementation for APIcally.
 
 ## Quick Start
 
 ```bash
-git clone --depth=1 git@github.com:nguyend-nam/APIcally.git apically
+git clone git@github.com:nguyend-nam/APIcally.git apically
 cd apically
 yarn install
 ```
@@ -31,3 +31,12 @@ to see your project.
 | ------- | -------------------------------------------------------------- |
 | UI Docs | -                                                              |
 | Design  | https://www.figma.com/file/XOAGaFZfJnobiR5BoazAOC/BKU-Capstone |
+
+## Read on:
+
+- [Code style](docs/CODE_STYLE.md)
+- [Getting started](docs/GETTING_STARTED.md)
+- [Tech ecosystem](docs/TECH_ECOSYSTEM.md)
+- [Editor](docs/EDITOR.md)
+- [Version control](docs/VERSION_CONTROL.md)
+- [Writting test](docs/WRITING_TEST.md)

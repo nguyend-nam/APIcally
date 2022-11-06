@@ -64,7 +64,7 @@ const HomePage = () => {
 
       <Text
         as="h2"
-        className="mt-8 mb-4 text-2xl md:text-3xl font-semibold text-primary"
+        className="mt-8 md:mt-12 mb-4 text-2xl md:text-3xl font-semibold text-primary"
       >
         Work with APIcally
       </Text>
@@ -88,6 +88,28 @@ const HomePage = () => {
                 src="img/api-art.svg"
               />
               <Text className="pt-4 text-lg mb-0">Create APIs</Text>
+            </div>
+          </Card>
+        </Col>
+        <Col span={24} md={{ span: 12 }}>
+          <Card
+            hasShadow={false}
+            className="hover:shadow-md"
+            style={{ transition: "0.2s" }}
+          >
+            <div
+              role="button"
+              className="flex flex-col items-center p-4 hover:text-primary"
+              onClick={() => push("/api-playground")}
+            >
+              <Image
+                height={200}
+                width="100%"
+                className="object-contain"
+                preview={false}
+                src="img/utilize-art.svg"
+              />
+              <Text className="pt-4 text-lg mb-0">Utilize and share</Text>
             </div>
           </Card>
         </Col>
