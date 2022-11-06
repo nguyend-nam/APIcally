@@ -1,9 +1,10 @@
 import {
-  HomeFilled,
-  CodeFilled,
-  UserOutlined,
-  SettingFilled,
   ToTopOutlined,
+  UnorderedListOutlined,
+  HomeOutlined,
+  CodeOutlined,
+  DashboardOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -11,6 +12,30 @@ import { CSSProperties } from "react";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
 import { Logo } from "../Logo";
+
+const sidebarRoutes = [
+  { icon: <HomeOutlined className="h-fit" />, label: "Home", route: "home" },
+  {
+    icon: <CodeOutlined className="h-fit" />,
+    label: "API playground",
+    route: "api-playground",
+  },
+  {
+    icon: <DashboardOutlined className="h-fit" />,
+    label: "Dashboard",
+    route: "dashboard",
+  },
+  {
+    icon: <UnorderedListOutlined className="h-fit" />,
+    label: "Feed",
+    route: "feed",
+  },
+  {
+    icon: <SettingOutlined className="h-fit" />,
+    label: "Setting",
+    route: "setting",
+  },
+];
 
 export const Sidebar = ({
   className,
@@ -41,98 +66,33 @@ export const Sidebar = ({
         </Link>
       </div>
       <div className="h-full overflow-y-auto overflow-x-hidden w-full">
-        <Button
-          label={
-            <>
-              <HomeFilled className="h-fit" />
-              <span
-                className={`!text-base ml-4 w-[110px] text-left ${
-                  !isExpanded &&
-                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                }`}
-                style={{ transition: "0.4s" }}
-              >
-                Home
-              </span>
-            </>
-          }
-          className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
-            pathname === "/home" && "!bg-white !text-primary"
-          }`}
-          borderRadius="none"
-          onClick={() => {
-            pathname === "/home" ? null : push("home");
-          }}
-        />
-        <Button
-          label={
-            <>
-              <CodeFilled className="h-fit" />
-              <span
-                className={`!text-base ml-4 w-[110px] text-left whitespace-nowrap ${
-                  !isExpanded &&
-                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                }`}
-                style={{ transition: "0.4s" }}
-              >
-                API playground
-              </span>
-            </>
-          }
-          className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
-            pathname === "/api-playground" && "!bg-white !text-primary"
-          }`}
-          borderRadius="none"
-          onClick={() => {
-            pathname === "/api-playground" ? null : push("api-playground");
-          }}
-        />
-        <Button
-          label={
-            <>
-              <UserOutlined className="h-fit" />
-              <span
-                className={`!text-base ml-4 w-[110px] text-left ${
-                  !isExpanded &&
-                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                }`}
-                style={{ transition: "0.4s" }}
-              >
-                User
-              </span>
-            </>
-          }
-          className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
-            pathname === "/user" && "!bg-white !text-primary"
-          }`}
-          borderRadius="none"
-          onClick={() => {
-            pathname === "/user" ? null : push("user");
-          }}
-        />
-        <Button
-          label={
-            <>
-              <SettingFilled className="h-fit" />
-              <span
-                className={`!text-base ml-4 w-[110px] text-left ${
-                  !isExpanded &&
-                  "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                }`}
-                style={{ transition: "0.4s" }}
-              >
-                Setting
-              </span>
-            </>
-          }
-          className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
-            pathname === "/setting" && "!bg-white !text-primary"
-          }`}
-          borderRadius="none"
-          onClick={() => {
-            pathname === "/setting" ? null : push("setting");
-          }}
-        />
+        {sidebarRoutes.map((route) => (
+          <Button
+            key={route.route}
+            label={
+              <>
+                {route.icon}
+                <span
+                  className={`!text-base ml-4 w-[110px] text-left ${
+                    !isExpanded &&
+                    "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                  }`}
+                  style={{ transition: "0.4s" }}
+                >
+                  {route.label}
+                </span>
+              </>
+            }
+            className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
+              pathname === `/${route.route}` && "!bg-white !text-primary"
+            }`}
+            style={{ transition: "0.2s" }}
+            borderRadius="none"
+            onClick={() => {
+              pathname === `/${route.route}` ? null : push(route.route);
+            }}
+          />
+        ))}
       </div>
       <Button
         label={
