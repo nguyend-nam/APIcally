@@ -1,7 +1,20 @@
 import { createElement, HTMLAttributes } from "react";
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {
-  as?: "p" | "span" | "small" | "b" | "strong" | "i" | "em" | "h6" | "div";
+  as?:
+    | "p"
+    | "span"
+    | "small"
+    | "b"
+    | "strong"
+    | "i"
+    | "em"
+    | "div"
+    | "h1"
+    | "h2"
+    | "h4"
+    | "h5"
+    | "h6";
   textColor?: "none" | "1100" | "700" | "800" | "primary";
 }
 

@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { WithChildren } from "../../types/common";
 
 export const getBorderRadius = (prop: string) => {
@@ -30,10 +31,13 @@ export const getBorderRadius = (prop: string) => {
 export const Card = ({
   children,
   hasShadow = true,
+  shadowSize = "lg",
   borderRadius = "primary",
   className,
+  style,
 }: WithChildren & {
   hasShadow?: boolean;
+  shadowSize?: "lg" | "md";
   borderRadius?:
     | "top"
     | "right"
@@ -47,11 +51,13 @@ export const Card = ({
     | "full"
     | "none";
   className?: string;
+  style?: CSSProperties;
 }) => {
   return (
     <div
-      className={`${getBorderRadius(borderRadius)} ${
-        hasShadow && "shadow-lg"
+      style={style}
+      className={`bg-white ${getBorderRadius(borderRadius)} ${
+        hasShadow && (shadowSize === "lg" ? "shadow-lg" : "shadow-md")
       } ${className}`}
     >
       {children}
