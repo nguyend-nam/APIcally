@@ -4,7 +4,7 @@ import {
   HomeOutlined,
   CodeOutlined,
   DashboardOutlined,
-  SettingOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -31,9 +31,9 @@ const sidebarRoutes = [
     route: "feed",
   },
   {
-    icon: <SettingOutlined className="h-fit" />,
-    label: "Setting",
-    route: "setting",
+    icon: <UserOutlined className="h-fit" />,
+    label: "User",
+    route: "user",
   },
 ];
 
@@ -83,7 +83,7 @@ export const Sidebar = ({
                 </span>
               </>
             }
-            className={`bg-blue-800 w-full p-6 text-3xl flex items-center justify-start hover:bg-blue-900 ${
+            className={`bg-blue-800 w-full p-6 text-2xl flex items-center justify-start hover:bg-blue-900 ${
               pathname === `/${route.route}` && "!bg-white !text-primary"
             }`}
             style={{ transition: "0.2s" }}
