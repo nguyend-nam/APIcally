@@ -20,50 +20,26 @@ to see your project.
 ```
 .
 ├── README.md                    # README file
-├── next.config.js               # Next JS configuration
-├── public                       # Public folder
-│   └── img                      # Images used by the app
-├── types                        # Shared TypeScript interfaces
 ├── components                   # Shared components
 │   └── X
 │       └── X.tsx
 │       └── index.ts
-│       └── X.stories.tsx
-│       └── X.test.tsx
-│── pages                        # Next JS pages
-├── context                      # Shared context state
 ├── constants                    # Shared constants
+├── context                      # Shared context state
 ├── hooks                        # Shared hooks
 │   └── tests
-│── styles                       # PostCSS style folder with Tailwind
+├── pages                        # Next JS pages
+├── public                       # Public folder
+│   └── img                      # Images used by the app
+├── styles                       # PostCSS style folder with Tailwind
 │   └── vendor                   # Third-party CSS
-│── utils                        # Utility folder
+├── types                        # Shared TypeScript interfaces
+├── utils                        # Utility folder
 │   └── tests
+├── next.config.js               # Next JS configuration
 ├── tailwind.config.js           # Tailwind CSS configuration
 └── tsconfig.json                # TypeScript configuration
 ```
-
-### TypeScript API generator
-
-If your team use Swagger to document APIs, we support a node script to generate
-TypeScript interfaces via your Swagger scheme. In
-[package.json](../package.json), change the default path to the location of your
-Swagger JSON doc.
-
-```
-- "fetch-definitions": "swagger-typescript-api --no-client -p ./libs/swagger.json -o ./types -n schema.ts",
-+ "fetch-definitions": "swagger-typescript-api --no-client -p your-api-swagger-json -o ./types -n schema.ts",
-```
-
-Then, you can run the script locally to generate TypeScript definitions for the
-APIs:
-
-```bash
-yarn fetch-definitions
-```
-
-The generated interfaces will be located at
-[types/schema.ts](../types/schema.ts).
 
 ## Read on:
 
