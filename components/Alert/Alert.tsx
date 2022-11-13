@@ -38,7 +38,7 @@ export const Alert = ({
 }) => {
   return (
     <div
-      className={`text-gray-600 font-light text-md border p-1.5 ${getBorderColor(
+      className={`text-gray-600 font-light text-base border p-1.5 ${getBorderColor(
         type
       )} ${getBgColor(type)} ${className}`}
     >

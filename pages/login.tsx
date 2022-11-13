@@ -98,7 +98,7 @@ const LoginPage = () => {
               </div>
             </form>
             <div className="flex justify-center mt-2">
-              <Text className="text-md m-0 text-slate-500">
+              <Text className="text-base m-0 text-slate-500">
                 &copy; 2022 APIcally team.
               </Text>
             </div>

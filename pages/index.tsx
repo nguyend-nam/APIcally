@@ -89,13 +89,13 @@ const Home = () => {
             <div>
               <Button
                 appearance="link"
-                className="text-md md:text-lg mr-3 md:mr-4"
+                className="text-base md:text-lg mr-3 md:mr-4"
                 label="Login"
                 onClick={() => push("/login")}
               />
               <Button
                 appearance="outline"
-                className="text-md md:text-lg px-2.5 py-1 bg-white/0"
+                className="text-base md:text-lg px-2.5 py-1 bg-white/0"
                 label="Register"
                 onClick={() => push("/login")}
               />
@@ -104,7 +104,7 @@ const Home = () => {
 
           <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
             <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg">
-              <Text className="text-md md:text-xl font-medium text-slate-400 m-0">
+              <Text className=" text-base md:text-xl font-medium text-slate-400 m-0">
                 Welcome to
               </Text>
               <Text className="text-4xl md:text-6xl tracking-[1px] font-bold text-primary m-0 mb-2 md:mb-6">
@@ -113,7 +113,7 @@ const Home = () => {
               <Text className="text-xl md:text-3xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
                 Where APIs get into work.
               </Text>
-              <Text className="text-lg md:text-xl font-normal text-slate-700 m-0">
+              <Text className="text-base md:text-xl font-normal text-slate-700 m-0">
                 A platform to run, host and visualize you API. Provide your
                 algorithm, let us do the rest.
               </Text>
