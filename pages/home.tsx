@@ -36,7 +36,7 @@ const HomePage = () => {
                     <Button
                       label="Create now"
                       className="p-2 m-3 text-base"
-                      onClick={() => push("/api-playground")}
+                      onClick={() => push("/api-workspace")}
                     />
                   </>
                 }
@@ -87,7 +87,7 @@ const HomePage = () => {
               <div
                 role="button"
                 className="flex flex-col items-center p-4 hover:text-primary"
-                onClick={() => push("/api-playground")}
+                onClick={() => push("/api-workspace")}
               >
                 <Image
                   height={isMobile ? 150 : 200}
@@ -109,7 +109,7 @@ const HomePage = () => {
               <div
                 role="button"
                 className="flex flex-col items-center p-4 hover:text-primary"
-                onClick={() => push("/api-playground")}
+                onClick={() => push("/api-workspace")}
               >
                 <Image
                   height={isMobile ? 150 : 200}
@@ -118,7 +118,7 @@ const HomePage = () => {
                   preview={false}
                   src="img/utilize-art.svg"
                 />
-                <Text className="pt-4 text-lg mb-0">Utilize and share</Text>
+                <Text className="pt-4 text-lg mb-0">Utilize and serve</Text>
               </div>
             </Card>
           </Col>
