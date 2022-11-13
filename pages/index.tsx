@@ -169,15 +169,14 @@ const Home = () => {
             <Text className="text-3xl md:text-5xl font-semibold text-primary text-center mb-16">
               How the delivery goes
             </Text>
-            <div className="flex flex-wrap justify-center items-center max-w-full">
+            <div className="flex flex-wrap justify-center lg:justify-between m-auto items-center max-w-5xl">
               <Image
                 height={isMobile ? 250 : 320}
-                width={450}
                 className="object-contain"
                 preview={false}
-                src="img/api-art.svg"
+                src="img/developer-art.svg"
               />
-              <div className="max-h-max max-w-md ml-0 lg:ml-16 mt-4 lg:mt-0">
+              <div className="max-h-max max-w-md mt-4 lg:mt-0">
                 <Text
                   as="h4"
                   className="text-xl md:text-3xl font-semibold text-slate-600"
@@ -193,15 +192,14 @@ const Home = () => {
                 </Text>
               </div>
             </div>
-            <div className="flex flex-wrap flex-row-reverse justify-center items-center max-w-full mt-8">
+            <div className="flex flex-wrap flex-row-reverse justify-center lg:justify-between m-auto items-center max-w-5xl mt-8">
               <Image
                 height={isMobile ? 250 : 320}
-                width={450}
                 className="object-contain"
                 preview={false}
                 src="img/non-tech-art.svg"
               />
-              <div className="max-h-max max-w-md  mr-0 lg:mr-16 mt-4 lg:mt-0">
+              <div className="max-h-max max-w-md mt-4 lg:mt-0">
                 <Text
                   as="h4"
                   className="text-xl md:text-3xl font-semibold text-slate-600"
