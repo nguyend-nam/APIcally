@@ -17,8 +17,8 @@ const sidebarRoutes = [
   { icon: <HomeOutlined className="h-fit" />, label: "Home", route: "home" },
   {
     icon: <CodeOutlined className="h-fit" />,
-    label: "API playground",
-    route: "api-playground",
+    label: "API workspace",
+    route: "api-workspace",
   },
   {
     icon: <DashboardOutlined className="h-fit" />,

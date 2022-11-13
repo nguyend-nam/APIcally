@@ -9,6 +9,60 @@ import Link from "next/link";
 import { useIsMobile } from "../hooks/mobile";
 import { GithubOutlined } from "@ant-design/icons";
 
+const supplier = [
+  {
+    href: "https://github.com/suren-atoyan/monaco-react",
+    img: "img/monaco-editor-logo.svg",
+    height: 25,
+  },
+  { href: "https://www.python.org/", img: "img/python-logo.png", height: 25 },
+  { href: "https://nodejs.org/en/", img: "img/nodejs-logo.png", height: 25 },
+  { href: "https://www.mongodb.com/", img: "img/mongodb-logo.png", height: 25 },
+  {
+    href: "https://axios-http.com/docs/intro",
+    img: "img/axios-logo.png",
+    height: 15,
+  },
+];
+
+const steps = [
+  {
+    title: "Provide your algorithm",
+    description: "Implement your algorithm in Python.",
+    img: "img/how-to-first.png",
+  },
+  {
+    title: "Submit and let us generate the API",
+    description:
+      "Test whether your algorithm runs correctly, then submit to generate the API.",
+    img: "img/how-to-second.png",
+  },
+  {
+    title: "Utilize, serve and so on",
+    description:
+      "Developers can grant access to anyone who subscribes to the API. As a non-tech user, you can subscribe to utilize the resource.",
+    img: "img/how-to-third.png",
+  },
+];
+
+const types = [
+  {
+    name: "JSON",
+    img: "img/json.png",
+    nameClassName: "text-center text-2xl font-medium text-primary",
+  },
+  {
+    name: "Images",
+    img: "img/image.png",
+    nameClassName: "text-center text-2xl font-medium text-primary",
+  },
+  {
+    name: "Other types might be added in future enhancement",
+    img: "img/not-known-yet.png",
+    nameClassName: "text-center text-lg font-normal text-slate-600 max-w-fit",
+  },
+];
+
 const Home = () => {
   const [isSSR, setIsSSR] = useState<boolean>(true);
   useEffect(() => setIsSSR(false), []);
@@ -33,8 +87,6 @@ const Home = () => {
           >
             <Logo size={isMobile ? "xs" : "sm"} />
             <div>
-              {/* {!isMobile ? ( */}
-              {/* <> */}
               <Button
                 appearance="link"
                 className="text-md md:text-lg mr-3 md:mr-4"
@@ -51,63 +103,34 @@ const Home = () => {
           </Card>
 
           <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
-            <Card className="w-max p-4 py-3 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg">
-              <Text className="text-xl md:text-3xl font-medium text-slate-400 m-0">
+            <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg">
+              <Text className="text-md md:text-xl font-medium text-slate-400 m-0">
                 Welcome to
               </Text>
               <Text className="text-4xl md:text-6xl tracking-[1px] font-bold text-primary m-0 mb-2 md:mb-6">
                 APIcally
               </Text>
-              <Text className="text-lg md:text-2xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
+              <Text className="text-xl md:text-3xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
                 Where APIs get into work.
               </Text>
-              <Text className="text-md md:text-xl font-normal text-slate-700 m-0">
+              <Text className="text-lg md:text-xl font-normal text-slate-700 m-0">
                 A platform to run, host and visualize you API. Provide your
                 algorithm, let us do the rest.
               </Text>
+              <Button
+                className="text-lg md:text-xl px-2.5 py-1 mt-2 md:mt-4"
+                label="Get started"
+                onClick={() => push("/login")}
+              />
             </Card>
             <div className="sticky bottom-3 flex-wrap flex items-center space-x-4 md:space-x-6 mt-6 justify-end md:justify-start md:mr-0">
-              <Link href="https://github.com/suren-atoyan/monaco-react">
-                <a className="mb-1" target="_blank">
-                  <Image
-                    height={25}
-                    preview={false}
-                    src="img/monaco-editor-logo.svg"
-                  />
-                </a>
-              </Link>
-              <Link href="https://www.python.org/">
-                <a className="mb-1" target="_blank">
-                  <Image
-                    height={25}
-                    preview={false}
-                    src="img/python-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://nodejs.org/en/">
-                <a className="mb-1" target="_blank">
-                  <Image
-                    height={25}
-                    preview={false}
-                    src="img/nodejs-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://www.mongodb.com/">
-                <a className="mb-1" target="_blank">
-                  <Image
-                    height={25}
-                    preview={false}
-                    src="img/mongodb-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://axios-http.com/docs/intro">
-                <a className="mb-1" target="_blank">
-                  <Image height={15} preview={false} src="img/axios-logo.png" />
-                </a>
-              </Link>
+              {supplier.map((s) => (
+                <Link key={s.href} href={s.href}>
+                  <a className="mb-1" target="_blank">
+                    <Image height={s.height} preview={false} src={s.img} />
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -116,68 +139,83 @@ const Home = () => {
               How APIcally works
             </Text>
             <div className="flex flex-wrap justify-center items-start max-w-full">
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden bg-slate-50"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={250}
-                    width={375}
-                    className="object-cover"
-                    preview={false}
-                    src="img/how-to-first.png"
-                  />
-                </div>
-                <Text className="text-center text-xl font-medium text-slate-600">
-                  Provide your algorithm
+              {steps.map((s) => (
+                <Card
+                  key={s.title}
+                  className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full overflow-hidden bg-slate-50"
+                  hasShadow={false}
+                >
+                  <div className="max-w-full overflow-hidden flex justify-center">
+                    <Image
+                      height={250}
+                      width={375}
+                      className="object-cover"
+                      preview={false}
+                      src={s.img}
+                    />
+                  </div>
+                  <Text className="text-center text-xl font-medium text-slate-600">
+                    {s.title}
+                  </Text>
+                  <div className="text-center text-lg text-slate-600 whitespace-pre-line max-w-fit">
+                    {s.description}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-4 pb-16 pt-16">
+            <Text className="text-3xl md:text-5xl font-semibold text-primary text-center mb-16">
+              How the delivery goes
+            </Text>
+            <div className="flex flex-wrap justify-center items-center max-w-full">
+              <Image
+                height={isMobile ? 250 : 320}
+                width={450}
+                className="object-contain"
+                preview={false}
+                src="img/api-art.svg"
+              />
+              <div className="max-h-max max-w-md ml-0 lg:ml-16 mt-4 lg:mt-0">
+                <Text
+                  as="h4"
+                  className="text-xl md:text-3xl font-semibold text-slate-600"
+                >
+                  As a <u>Developer</u>
                 </Text>
-                <div className="text-center text-lg text-slate-600 whitespace-pre-line max-w-fit">
-                  Implement your algorithm in Python.
-                </div>
-              </Card>
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden bg-slate-50"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={250}
-                    width={375}
-                    className="object-cover"
-                    preview={false}
-                    src="img/how-to-second.png"
-                  />
-                </div>
-                <Text className="text-center text-xl font-medium text-slate-600">
-                  Submit and let us generate the API
+                <Text
+                  as="span"
+                  className="text-slate-600 text-lg md:text-2xl font-normal !m-0"
+                >
+                  Researchs and gives solutions via algorithms, provides
+                  documentations and pricing plans.
                 </Text>
-                <div className="text-center text-lg text-slate-600 whitespace-pre-line max-w-fit">
-                  Test whether your algorithm runs correctly, then submit to
-                  generate the API.
-                </div>
-              </Card>
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden bg-slate-50"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={250}
-                    width={375}
-                    className="object-cover"
-                    preview={false}
-                    src="img/how-to-third.png"
-                  />
-                </div>
-                <Text className="text-center text-xl font-medium text-slate-600">
-                  Utilize, share and so on
+              </div>
+            </div>
+            <div className="flex flex-wrap flex-row-reverse justify-center items-center max-w-full mt-8">
+              <Image
+                height={isMobile ? 250 : 320}
+                width={450}
+                className="object-contain"
+                preview={false}
+                src="img/non-tech-art.svg"
+              />
+              <div className="max-h-max max-w-md  mr-0 lg:mr-16 mt-4 lg:mt-0">
+                <Text
+                  as="h4"
+                  className="text-xl md:text-3xl font-semibold text-slate-600"
+                >
+                  As a <u>Domain-specialized user</u>
                 </Text>
-                <div className="text-center text-lg text-slate-600 whitespace-pre-line max-w-fit">
-                  Utilize the API. You can also so choose to share it to anyone
-                  to give them access to use the API.
-                </div>
-              </Card>
+                <Text
+                  as="span"
+                  className="text-slate-600 text-lg md:text-2xl font-normal !m-0"
+                >
+                  Subscribes to get access to the APIs that fit your usage based
+                  on the data you have.
+                </Text>
+              </div>
             </div>
           </div>
 
@@ -186,57 +224,24 @@ const Home = () => {
               What APIcally can &quot;digests&quot;
             </Text>
             <div className="flex flex-wrap justify-center items-start max-w-full">
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={100}
-                    width={300}
-                    className="object-cover rounded-xl rounded-tl-none"
-                    preview={false}
-                    src="img/json.png"
-                  />
-                </div>
-                <Text className="text-center text-2xl font-medium text-primary">
-                  JSON
-                </Text>
-              </Card>
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={100}
-                    width={300}
-                    className="object-cover rounded-xl rounded-tl-none"
-                    preview={false}
-                    src="img/image.png"
-                  />
-                </div>
-                <Text className="text-center text-2xl font-medium text-primary">
-                  Images
-                </Text>
-              </Card>
-              <Card
-                className="p-4 m-2 flex flex-col items-center space-y-4 max-w-full overflow-hidden"
-                hasShadow={false}
-              >
-                <div className="max-w-full overflow-hidden flex justify-center">
-                  <Image
-                    height={100}
-                    width={300}
-                    className="object-cover rounded-xl rounded-tl-none"
-                    preview={false}
-                    src="img/not-known-yet.png"
-                  />
-                </div>
-                <Text className="text-center text-lg font-normal text-slate-600 max-w-fit">
-                  Other types might be added in future enhancement
-                </Text>
-              </Card>
+              {types.map((t) => (
+                <Card
+                  key={t.name}
+                  className="mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full overflow-hidden"
+                  hasShadow={false}
+                >
+                  <div className="max-w-full overflow-hidden flex justify-center">
+                    <Image
+                      height={100}
+                      width={300}
+                      className="object-cover rounded-xl rounded-tl-none"
+                      preview={false}
+                      src={t.img}
+                    />
+                  </div>
+                  <Text className={t.nameClassName}>{t.name}</Text>
+                </Card>
+              ))}
             </div>
           </div>
 
@@ -245,47 +250,13 @@ const Home = () => {
               Made with
             </Text>
             <div className="flex flex-wrap justify-center items-center">
-              <Link href="https://github.com/suren-atoyan/monaco-react">
-                <a className="mx-4 my-2 mb-1" target="_blank">
-                  <Image
-                    height={32}
-                    preview={false}
-                    src="img/monaco-editor-logo.svg"
-                  />
-                </a>
-              </Link>
-              <Link href="https://www.python.org/">
-                <a className="mx-4 my-2 mb-1" target="_blank">
-                  <Image
-                    height={32}
-                    preview={false}
-                    src="img/python-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://nodejs.org/en/">
-                <a className="mx-4 my-2 mb-1" target="_blank">
-                  <Image
-                    height={32}
-                    preview={false}
-                    src="img/nodejs-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://www.mongodb.com/">
-                <a className="mx-4 my-2 mb-1" target="_blank">
-                  <Image
-                    height={32}
-                    preview={false}
-                    src="img/mongodb-logo.png"
-                  />
-                </a>
-              </Link>
-              <Link href="https://axios-http.com/docs/intro">
-                <a className="mx-4 my-2 mb-1" target="_blank">
-                  <Image height={22} preview={false} src="img/axios-logo.png" />
-                </a>
-              </Link>
+              {supplier.map((s) => (
+                <Link key={s.href} href={s.href}>
+                  <a className="mx-4 my-2 mb-1" target="_blank">
+                    <Image height={s.height + 7} preview={false} src={s.img} />
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
 
