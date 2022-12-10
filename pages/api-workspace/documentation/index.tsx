@@ -157,14 +157,16 @@ const DocumentationPage = () => {
             />
           </div>
 
-          <DefineInput
-            form={form}
-            dataSource={dataSource}
-            setDataSource={setDataSource}
-            isOpen={isAddInputDialogOpen}
-            onCancel={closeAddInputDialog}
-            onOk={form.submit}
-          />
+          {isAddInputDialogOpen && (
+            <DefineInput
+              form={form}
+              dataSource={dataSource}
+              setDataSource={setDataSource}
+              isOpen={isAddInputDialogOpen}
+              onCancel={closeAddInputDialog}
+              onOk={form.submit}
+            />
+          )}
 
           {renderTable}
         </div>
