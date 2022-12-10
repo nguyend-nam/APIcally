@@ -134,21 +134,23 @@ const DocumentationPage = () => {
             "block-code-block",
             "mode-toggle",
           ]}
-          style={{ height: 530 }}
+          style={{ height: 510 }}
           renderHTML={(text) => <ReactMarkdown source={text} />}
           onChange={handleEditorChange}
           defaultValue={defaultMD}
         />
       </div>
 
-      <div className="mt-8">
-        <Typography.Title level={3}>Define inputs</Typography.Title>
+      <div className="mt-16">
+        <div className="flex items-center justify-between w-full">
+          <Typography.Title level={3}>Define inputs</Typography.Title>
 
-        <Button
-          label="Add input"
-          className="text-lg p-2"
-          onClick={openAddInputDialog}
-        />
+          <Button
+            label="Add input"
+            className="text-lg py-1 px-2"
+            onClick={openAddInputDialog}
+          />
+        </div>
 
         <DefineInput
           form={form}

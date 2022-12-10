@@ -80,7 +80,7 @@ const CodeEditorPage = () => {
           </div>
           <div className="p-4 pt-0">
             <Button
-              label="Submit"
+              label="Submit algorithm"
               onClick={() => {
                 setIsLoading(true);
                 sendData(data, fileList);

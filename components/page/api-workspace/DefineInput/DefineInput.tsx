@@ -35,9 +35,14 @@ export const DefineInput = (props: Props) => {
           appearance="outline"
           label="Cancel"
           onClick={onCancel}
-          className="p-2 py-1 mr-2"
+          className="text-lg p-2 py-1 mr-2"
         />,
-        <Button key="add" label="Add" onClick={onOk} className="p-2 py-1" />,
+        <Button
+          key="add"
+          label="Add"
+          onClick={onOk}
+          className="text-lg p-2 py-1"
+        />,
       ]}
     >
       <Form
