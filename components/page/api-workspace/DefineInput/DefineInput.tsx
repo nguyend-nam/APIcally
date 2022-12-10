@@ -43,7 +43,7 @@ export const DefineInput = (props: Props) => {
       <Form
         initialValues={{
           type: variableTypes["int"],
-          multipleStates: multipleStates["none"],
+          multipleState: multipleStates["none"],
         }}
         form={form}
         className="pr-4 w-[90%]"
