@@ -138,11 +138,11 @@ const Home = () => {
             <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               How APIcally works
             </Text>
-            <div className="flex flex-wrap justify-center items-start max-w-full">
+            <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
               {steps.map((s) => (
                 <Card
                   key={s.title}
-                  className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full overflow-hidden bg-slate-50"
+                  className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full md:max-w-[30%] overflow-hidden bg-slate-50"
                   hasShadow={false}
                 >
                   <div className="max-w-full overflow-hidden flex justify-center">
@@ -221,14 +221,14 @@ const Home = () => {
             <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               What APIcally can &quot;digests&quot;
             </Text>
-            <div className="flex flex-wrap justify-center items-start max-w-full">
+            <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto">
               {types.map((t) => (
                 <Card
                   key={t.name}
-                  className="mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full overflow-hidden"
+                  className="mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
                   hasShadow={false}
                 >
-                  <div className="max-w-full overflow-hidden flex justify-center">
+                  <div className="max-w-fit overflow-hidden flex justify-center">
                     <Image
                       height={100}
                       width={300}
