@@ -8,6 +8,7 @@ import { Text } from "../components/Text";
 import { Image } from "antd";
 import { useIsMobile } from "../hooks/mobile";
 import { useEffect, useState } from "react";
+import { Input } from "../components/Input";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -20,7 +21,16 @@ const HomePage = () => {
 
   return (
     !isSSR && (
-      <Layout>
+      <Layout
+        extraLeft={
+          <Input
+            type="text"
+            id="home-search-input"
+            placeholder="Search or jump to..."
+            className="ml-0 md:ml-4 mt-4 md:mt-0"
+          />
+        }
+      >
         <Row gutter={[20, 20]}>
           <Col span={24} md={{ span: 12 }}>
             <Card shadowSize="md" className="p-4">

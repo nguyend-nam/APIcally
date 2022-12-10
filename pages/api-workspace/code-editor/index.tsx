@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { CodeEditor } from "../components/CodeEditor";
-import { FileHeader, FileManagement } from "../components/FileExplorer";
-import { fileObj, useFileListContext } from "../context";
+import { CodeEditor } from "../../../components/CodeEditor";
+import { FileHeader, FileManagement } from "../../../components/FileExplorer";
+import { fileObj, useFileListContext } from "../../../context";
 import axios from "axios";
 import FormData from "form-data";
-import { Button } from "../components/Button";
-import { Layout } from "../components/Layout";
+import { Button } from "../../../components/Button";
+import { Layout } from "../../../components/Layout";
 
 const sendData = async (data: FormData, fileList: fileObj[]) => {
   fileList.forEach((file) => {
@@ -72,9 +72,7 @@ const CodeEditorPage = () => {
             currentFileName={fileList[currentFile].fileName}
           />
           <div className="p-4 grid grid-cols-12 gap-4">
-            <div className="col-span-12 lg:col-span-6 h-[550px]">
-              {renderCodeEditor}
-            </div>
+            <div className="col-span-12 min-h-[550px]">{renderCodeEditor}</div>
           </div>
           <div className="p-4 pt-0">
             <Button
@@ -88,16 +86,5 @@ const CodeEditorPage = () => {
     </Layout>
   );
 };
-
-// export async function getStaticProps(data: FormData, file: fileObj) {
-//   const allPostsData = sendData(data, file);
-//   const ahihi = JSON.stringify(allPostsData);
-
-//   return {
-//     props: {
-//       ahihi,
-//     },
-//   };
-// }
 
 export default CodeEditorPage;

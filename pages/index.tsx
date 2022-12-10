@@ -114,7 +114,7 @@ const Home = () => {
                 Where APIs get into work.
               </Text>
               <Text className="text-base md:text-xl font-normal text-slate-700 m-0">
-                A platform to run, host and visualize you API. Provide your
+                A platform to run, host and utilize APIs. Provide your
                 algorithm, let us do the rest.
               </Text>
               <Button
