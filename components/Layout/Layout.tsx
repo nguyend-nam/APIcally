@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useSidebarStatusContext } from "../../context";
 import { WithChildren } from "../../types/common";
 import { Sidebar } from "../Sidebar";
@@ -10,10 +10,12 @@ export const Layout = ({
   className,
   contentClassName,
   hasFooter = true,
+  extraLeft,
 }: WithChildren & {
   className?: string;
   contentClassName?: string;
   hasFooter?: boolean;
+  extraLeft?: ReactNode;
 }) => {
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -35,6 +37,7 @@ export const Layout = ({
         <Topbar
           className="sticky top-0 z-40 !px-4 md:!px-8"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          extraLeft={extraLeft}
         />
         <div className={`p-4 md:p-8 pb-8 w-full ${contentClassName}`}>
           <div>{children}</div>

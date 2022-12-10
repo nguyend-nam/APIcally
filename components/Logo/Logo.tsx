@@ -43,7 +43,7 @@ export const Logo = ({
       <Image
         width={getSize(size)}
         preview={false}
-        src="img/logo-text.png"
+        src="/img/logo-text.png"
         className={className}
       />
     );
@@ -54,7 +54,7 @@ export const Logo = ({
         <Image
           width={getSize(size)}
           preview={false}
-          src="img/logo-text-transparent-light.png"
+          src="/img/logo-text-transparent-light.png"
           className={className}
         />
       );
@@ -64,7 +64,7 @@ export const Logo = ({
         <Image
           width={getSize(size)}
           preview={false}
-          src="img/logo-text-transparent.png"
+          src="/img/logo-text-transparent.png"
           className={className}
         />
       );
@@ -74,7 +74,7 @@ export const Logo = ({
     <Image
       width={getSize(size)}
       preview={false}
-      src="img/logo-transparent.png"
+      src="/img/logo-transparent.png"
       className={className}
     />
   );

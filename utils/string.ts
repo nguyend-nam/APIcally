@@ -14,5 +14,5 @@ export const checkFileNameFormat = (fileName: string) => {
 export const formatPathname = (pathname: string) => {
   const newPathname = pathname.slice(1);
   const result = newPathname[0].toUpperCase() + newPathname.slice(1);
-  return result.replace("-", " ");
+  return result.replace("-", " ").split("/")[0];
 };

@@ -14,26 +14,26 @@ import { Button } from "../Button";
 import { Logo } from "../Logo";
 
 const sidebarRoutes = [
-  { icon: <HomeOutlined className="h-fit" />, label: "Home", route: "home" },
+  { icon: <HomeOutlined className="h-fit" />, label: "Home", route: "/home" },
   {
     icon: <CodeOutlined className="h-fit" />,
     label: "API workspace",
-    route: "api-workspace",
+    route: "/api-workspace",
   },
   {
     icon: <DashboardOutlined className="h-fit" />,
     label: "Dashboard",
-    route: "dashboard",
+    route: "/dashboard",
   },
   {
     icon: <UnorderedListOutlined className="h-fit" />,
     label: "Feed",
-    route: "feed",
+    route: "/feed",
   },
   {
     icon: <UserOutlined className="h-fit" />,
     label: "User",
-    route: "user",
+    route: "/user",
   },
 ];
 
@@ -84,12 +84,12 @@ export const Sidebar = ({
               </>
             }
             className={`bg-blue-800 w-full p-6 text-2xl flex items-center justify-start hover:bg-blue-900 ${
-              pathname === `/${route.route}` && "!bg-white !text-primary"
+              pathname.includes(route.route) && "!bg-white !text-primary"
             }`}
             style={{ transition: "0.2s" }}
             borderRadius="none"
             onClick={() => {
-              pathname === `/${route.route}` ? null : push(route.route);
+              pathname === `${route.route}` ? null : push(route.route);
             }}
           />
         ))}
