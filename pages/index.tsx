@@ -138,7 +138,7 @@ const Home = () => {
             <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               How APIcally works
             </Text>
-            <div className="flex flex-wrap justify-center items-start max-w-full">
+            <div className="flex flex-wrap md:flex-nowrap justify-center items-start max-w-full">
               {steps.map((s) => (
                 <Card
                   key={s.title}
@@ -221,7 +221,7 @@ const Home = () => {
             <Text className="text-3xl md:text-5xl font-semibold text-slate-700 text-center mb-16">
               What APIcally can &quot;digests&quot;
             </Text>
-            <div className="flex flex-wrap justify-center items-start max-w-full">
+            <div className="flex flex-wrap md:flex-nowrap justify-center items-start max-w-full">
               {types.map((t) => (
                 <Card
                   key={t.name}

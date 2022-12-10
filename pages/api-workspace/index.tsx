@@ -11,10 +11,10 @@ const CodeEditorPage = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center">
-        <Typography.Title level={4}>
+        <Typography.Title level={4} className="text-center">
           Select an API to utilize or create your own
         </Typography.Title>
-        <div className="flex gap-4 lg:gap-8 mt-4 justify-center flex-wrap lg:flex-nowrap">
+        <div className="flex gap-4 lg:gap-8 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
           <Card
             shadowSize="md"
             className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
