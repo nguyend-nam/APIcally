@@ -6,6 +6,7 @@ import axios from "axios";
 import FormData from "form-data";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
+import { useRouter } from "next/router";
 
 const sendData = async (data: FormData, fileList: fileObj[]) => {
   fileList.forEach((file) => {
@@ -38,9 +39,12 @@ const CodeEditorPage = () => {
 
   const data = useMemo(() => new FormData(), []);
 
+  const { push } = useRouter();
+
   const [currentFile, setCurrentFile] = useState<number>(0);
   const [value, setValue] = useState<string | undefined>("");
   const [language, setLanguage] = useState<string | undefined>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setValue(fileList[currentFile].codeContent);
@@ -77,8 +81,13 @@ const CodeEditorPage = () => {
           <div className="p-4 pt-0">
             <Button
               label="Submit"
-              onClick={() => sendData(data, fileList)}
+              onClick={() => {
+                setIsLoading(true);
+                sendData(data, fileList);
+                setTimeout(() => push("/api-workspace/documentation"), 1000);
+              }}
               className="text-lg py-1 px-2"
+              isLoading={isLoading}
             />
           </div>
         </div>

@@ -1,4 +1,5 @@
 @import "./vendor/nprogress.css";
+@import "./ant-custom.css";
 
 @tailwind base;
 @tailwind components;

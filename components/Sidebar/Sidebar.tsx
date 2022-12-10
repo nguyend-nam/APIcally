@@ -1,10 +1,9 @@
 import {
   ToTopOutlined,
-  UnorderedListOutlined,
   HomeOutlined,
   CodeOutlined,
-  DashboardOutlined,
   UserOutlined,
+  AppstoreAddOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,14 +20,9 @@ const sidebarRoutes = [
     route: "/api-workspace",
   },
   {
-    icon: <DashboardOutlined className="h-fit" />,
-    label: "Dashboard",
-    route: "/dashboard",
-  },
-  {
-    icon: <UnorderedListOutlined className="h-fit" />,
-    label: "Feed",
-    route: "/feed",
+    icon: <AppstoreAddOutlined className="h-fit" />,
+    label: "Explore",
+    route: "/explore",
   },
   {
     icon: <UserOutlined className="h-fit" />,

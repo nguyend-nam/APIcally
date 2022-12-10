@@ -150,29 +150,7 @@ const HomePage = () => {
                   preview={false}
                   src="img/feed-art.svg"
                 />
-                <Text className="pt-4 text-lg mb-0">Observe data</Text>
-              </div>
-            </Card>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Card
-              hasShadow={false}
-              className="hover:shadow-md"
-              style={{ transition: "0.2s" }}
-            >
-              <div
-                role="button"
-                className="flex flex-col items-center p-4 hover:text-primary"
-                onClick={() => push("/dashboard")}
-              >
-                <Image
-                  height={isMobile ? 150 : 200}
-                  width="100%"
-                  className="object-contain"
-                  preview={false}
-                  src="img/dashboard-art.svg"
-                />
-                <Text className="pt-4 text-lg mb-0">Visualize data</Text>
+                <Text className="pt-4 text-lg mb-0">Explore APIs</Text>
               </div>
             </Card>
           </Col>

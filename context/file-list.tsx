@@ -1,7 +1,6 @@
-// import { createContext } from "react";
 import { createContext } from "@dwarvesf/react-utils";
 import { useState } from "react";
-import { pythonInitCode } from "../constants/python-init";
+import { pythonInitCode } from "../constants/python";
 import { WithChildren } from "../types/common";
 
 export interface fileObj {
