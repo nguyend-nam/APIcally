@@ -47,10 +47,10 @@ const CodeEditorPage = () => {
                 onClick={() => push("/api-workspace/code-editor")}
               />
             </Card>
-            <Form>
+            <Form className="w-full lg:w-[330px]">
               <Card
                 shadowSize="md"
-                className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
+                className="bg-white p-8 h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
                 style={{
                   backgroundImage: "url(img/api-workspace-utilize.png)",
                   backgroundRepeat: "no-repeat",
@@ -67,6 +67,7 @@ const CodeEditorPage = () => {
                     id="home-search-input"
                     placeholder="Search subscribed APIs..."
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    className="text-base"
                   />
                 </div>
                 <Button

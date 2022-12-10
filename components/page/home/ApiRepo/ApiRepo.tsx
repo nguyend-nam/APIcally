@@ -35,16 +35,18 @@ export const ApiRepo = ({
 
         <div className="flex gap-4">
           <Tooltip
+            placement="left"
             title="Subscribers"
-            className="flex flex-col items-center w-6"
+            className="flex flex-col items-center w-6 h-max"
           >
             <UserAddOutlined className="text-xl !text-gray-400" />
             <div>{data.statistics.subscribes}</div>
           </Tooltip>
 
           <Tooltip
+            placement="left"
             title="Weekly utilizations"
-            className="flex flex-col items-center w-6"
+            className="flex flex-col items-center w-6 h-max"
           >
             <PlaySquareOutlined className="text-xl !text-gray-400" />
             <div>{data.statistics.weeklyUtils}</div>
