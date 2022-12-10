@@ -2,7 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Form, Pagination, Input as AntInput } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Layout } from "../../../components/Layout";
@@ -23,6 +23,28 @@ const SearchResultPage = () => {
       setSearchQuery(query.query);
     }
   }, [query]);
+
+  const renderAntCheckbox = useMemo(() => {
+    return (
+      <AntInput
+        type="checkbox"
+        id="subscribed-checkbox"
+        name="subscribed-checkbox"
+        className="h-fit !ml-2 text-primary"
+        onClick={(e) => {
+          setFilterSubscribed((e.target as HTMLInputElement)?.checked);
+          if ((e.target as HTMLInputElement)?.checked) {
+            push(`/home/search?query=${query.query}&status=subscribed`);
+          } else {
+            push(`/home/search?query=${query.query}`);
+          }
+        }}
+        defaultChecked={
+          query.status !== undefined && query.status === "subscribed"
+        }
+      />
+    );
+  }, [push, query]);
 
   return (
     <>
@@ -61,21 +83,7 @@ const SearchResultPage = () => {
         <div className="flex flex-col items-center gap-4 mt-4 md:mt-8 w-full md:w-2/3 m-auto">
           <div className="self-end flex items-center">
             <label htmlFor="subscribed-checkbox">Subscribed</label>
-            <AntInput
-              type="checkbox"
-              id="subscribed-checkbox"
-              name="subscribed-checkbox"
-              className="h-fit !ml-2 text-primary"
-              onClick={(e) => {
-                setFilterSubscribed((e.target as HTMLInputElement)?.checked);
-                if ((e.target as HTMLInputElement)?.checked) {
-                  push(`/home/search?query=${query.query}&status=subscribed`);
-                } else {
-                  push(`/home/search?query=${query.query}`);
-                }
-              }}
-              defaultChecked={filterSubscribed}
-            />
+            {renderAntCheckbox}
           </div>
           {filterSubscribed
             ? apiReposData
