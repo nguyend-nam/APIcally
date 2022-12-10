@@ -38,6 +38,7 @@ export const Layout = ({
           className="sticky top-0 z-40 !px-4 md:!px-8"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           extraLeft={extraLeft}
+          isMenuOpen={isMenuOpen}
         />
         <div className={`p-4 md:p-8 pb-8 w-full ${contentClassName}`}>
           <div>{children}</div>
