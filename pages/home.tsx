@@ -146,7 +146,7 @@ const HomePage = () => {
                 <div
                   role="button"
                   className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push("/feed")}
+                  onClick={() => push("/explore")}
                 >
                   <Image
                     height={isMobile ? 150 : 200}
