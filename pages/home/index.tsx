@@ -1,20 +1,22 @@
-import { Col, Empty, Row } from "antd";
+import { Col, Empty, Form, Row } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button } from "../components/Button";
-import { Card } from "../components/Card";
-import { Layout } from "../components/Layout";
-import { Text } from "../components/Text";
+import { Button } from "../../components/Button";
+import { Card } from "../../components/Card";
+import { Layout } from "../../components/Layout";
+import { Text } from "../../components/Text";
 import { Image } from "antd";
-import { useIsMobile } from "../hooks/mobile";
+import { useIsMobile } from "../../hooks/mobile";
 import { useEffect, useState } from "react";
-import { Input } from "../components/Input";
+import { Input } from "../../components/Input";
 import Head from "next/head";
+import { SearchOutlined } from "@ant-design/icons";
 
 const HomePage = () => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
   const [isSSR, setIsSSR] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setIsSSR(false);
@@ -28,12 +30,28 @@ const HomePage = () => {
         </Head>
         <Layout
           extraLeft={
-            <Input
-              type="text"
-              id="home-search-input"
-              placeholder="Search or jump to..."
-              className="ml-0 md:ml-4 mt-4 md:mt-0"
-            />
+            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+              <Form className="flex items-center">
+                <Input
+                  borderRadius="bottomLeft"
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search or jump to..."
+                  className="!font-normal !placeholder:font-normal"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button
+                  borderRadius="right"
+                  label={<SearchOutlined />}
+                  className="h-9 flex justify-center items-center text-lg p-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      push(`/home/search?query=${searchQuery}`);
+                    }
+                  }}
+                />
+              </Form>
+            </div>
           }
         >
           <Row gutter={[20, 20]}>
