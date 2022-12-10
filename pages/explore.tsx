@@ -1,7 +1,15 @@
+import Head from "next/head";
 import { Layout } from "../components/Layout";
 
 const ExplorePage = () => {
-  return <Layout>Explore</Layout>;
+  return (
+    <>
+      <Head>
+        <title>Explore | APIcally</title>
+      </Head>
+      <Layout>Explore</Layout>;
+    </>
+  );
 };
 
 export default ExplorePage;

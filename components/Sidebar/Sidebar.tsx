@@ -26,8 +26,8 @@ const sidebarRoutes = [
   },
   {
     icon: <UserOutlined className="h-fit" />,
-    label: "User",
-    route: "/user",
+    label: "Profile",
+    route: "/profile",
   },
 ];
 

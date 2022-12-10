@@ -12,6 +12,7 @@ import { DefineInput } from "../../../components/page/api-workspace/DefineInput"
 import { DeleteFilled } from "@ant-design/icons";
 import { multipleStates, variableTypes } from "../../../constants/python";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -117,68 +118,73 @@ const DocumentationPage = () => {
   }, [dataSource]); // eslint-disable-line
 
   return (
-    <Layout>
-      <Typography.Title level={3}>Documentation</Typography.Title>
-      <div className="border-primary border-t-4">
-        <MdEditor
-          plugins={[
-            "header",
-            "font-bold",
-            "font-italic",
-            "list-unordered",
-            "block-quote",
-            "link",
-            "image",
-            "full-screen",
-            "block-code-inline",
-            "block-code-block",
-            "mode-toggle",
-          ]}
-          style={{ height: 510 }}
-          renderHTML={(text) => <ReactMarkdown source={text} />}
-          onChange={handleEditorChange}
-          defaultValue={defaultMD}
-        />
-      </div>
-
-      <div className="mt-16">
-        <div className="flex items-center justify-between w-full">
-          <Typography.Title level={3}>Define inputs</Typography.Title>
-
-          <Button
-            label="Add input"
-            className="text-lg py-1 px-2"
-            onClick={openAddInputDialog}
+    <>
+      <Head>
+        <title>API workspace | APIcally</title>
+      </Head>
+      <Layout>
+        <Typography.Title level={3}>Documentation</Typography.Title>
+        <div className="border-primary border-t-4">
+          <MdEditor
+            plugins={[
+              "header",
+              "font-bold",
+              "font-italic",
+              "list-unordered",
+              "block-quote",
+              "link",
+              "image",
+              "full-screen",
+              "block-code-inline",
+              "block-code-block",
+              "mode-toggle",
+            ]}
+            style={{ height: 510 }}
+            renderHTML={(text) => <ReactMarkdown source={text} />}
+            onChange={handleEditorChange}
+            defaultValue={defaultMD}
           />
         </div>
 
-        <DefineInput
-          form={form}
-          dataSource={dataSource}
-          setDataSource={setDataSource}
-          isOpen={isAddInputDialogOpen}
-          onCancel={closeAddInputDialog}
-          onOk={form.submit}
+        <div className="mt-16">
+          <div className="flex items-center justify-between w-full">
+            <Typography.Title level={3}>Define inputs</Typography.Title>
+
+            <Button
+              label="Add input"
+              className="text-lg py-1 px-2"
+              onClick={openAddInputDialog}
+            />
+          </div>
+
+          <DefineInput
+            form={form}
+            dataSource={dataSource}
+            setDataSource={setDataSource}
+            isOpen={isAddInputDialogOpen}
+            onCancel={closeAddInputDialog}
+            onOk={form.submit}
+          />
+
+          {renderTable}
+        </div>
+
+        <Button
+          label="Submit"
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => {
+              notification.success({
+                message: "Algorithm successfully submitted!",
+              });
+              push("/profile");
+            }, 1000);
+          }}
+          className="text-lg py-1 px-2 mt-8"
+          isLoading={isLoading}
         />
-
-        {renderTable}
-      </div>
-
-      <Button
-        label="Submit"
-        onClick={() => {
-          setIsLoading(true);
-          setTimeout(() => {
-            notification.success({
-              message: "Algorithm successfully submitted!",
-            });
-            push("/user");
-          }, 1000);
-        }}
-        className="text-lg py-1 px-2 mt-8"
-        isLoading={isLoading}
-      />
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
