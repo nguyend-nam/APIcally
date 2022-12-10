@@ -69,7 +69,11 @@ const SearchResultPage = () => {
                 className="h-9 flex justify-center items-center text-lg p-2"
                 onClick={() => {
                   if (searchQuery) {
-                    push(`/home/search?query=${searchQuery}`);
+                    if (query.status !== undefined && query.status === "subscribed") {
+                      push(`/home/search?query=${searchQuery}&status=subscribed`);
+                    } else {
+                      push(`/home/search?query=${searchQuery}`);
+                    }
                   }
                 }}
               />
