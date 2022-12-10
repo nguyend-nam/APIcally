@@ -132,7 +132,7 @@ export const apiReposData: apiRepoType[] = [
   },
   {
     id: "10",
-    subscribeStatus: false,
+    subscribeStatus: true,
     name: "Reddit meme",
     alias: "reddit-meme",
     author: "The Deltaw",

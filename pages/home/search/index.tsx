@@ -19,6 +19,9 @@ const SearchResultPage = () => {
     if (query.status !== undefined) {
       setFilterSubscribed(query.status === "subscribed");
     }
+    if (query.query !== undefined && typeof query.query === "string") {
+      setSearchQuery(query.query);
+    }
   }, [query]);
 
   return (
