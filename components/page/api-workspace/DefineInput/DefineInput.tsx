@@ -41,6 +41,10 @@ export const DefineInput = (props: Props) => {
       ]}
     >
       <Form
+        initialValues={{
+          type: variableTypes["int"],
+          multipleStates: multipleStates["none"],
+        }}
         form={form}
         className="pr-4 w-[90%]"
         onFinish={(values: dataSourceType) => {
@@ -94,7 +98,6 @@ export const DefineInput = (props: Props) => {
               className="!m-0"
             >
               <Select
-                defaultValue={variableTypes["int"]}
                 style={{ width: "100%" }}
                 placeholder="Select type..."
                 options={Object.keys(variableTypes).map((k) => ({
@@ -123,7 +126,6 @@ export const DefineInput = (props: Props) => {
               className="!m-0"
             >
               <Select
-                defaultValue={multipleStates["none"]}
                 style={{ width: "100%" }}
                 placeholder="Select multiple state..."
                 options={Object.keys(multipleStates).map((k) => ({
