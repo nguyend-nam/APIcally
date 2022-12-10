@@ -1,13 +1,15 @@
 import { Button } from "../../components/Button";
 import { Layout } from "../../components/Layout";
-import { Typography } from "antd";
+import { Form, Typography } from "antd";
 import { Card } from "../../components/Card";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useState } from "react";
 
 const CodeEditorPage = () => {
   const { push } = useRouter();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
     <>
@@ -45,28 +47,42 @@ const CodeEditorPage = () => {
                 onClick={() => push("/api-workspace/code-editor")}
               />
             </Card>
-            <Card
-              shadowSize="md"
-              className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
-              style={{
-                backgroundImage: "url(img/api-workspace-utilize.png)",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center right",
-                backgroundSize: "cover",
-              }}
-            >
-              <div className="flex flex-col items-center">
-                <Typography.Text className="!text-primary font-semibold text-xl mb-4 text-center">
-                  Utilize your subscribed APIs
-                </Typography.Text>
-                <Input
-                  type="text"
-                  id="home-search-input"
-                  placeholder="Search subscribed APIs..."
+            <Form>
+              <Card
+                shadowSize="md"
+                className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
+                style={{
+                  backgroundImage: "url(img/api-workspace-utilize.png)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center right",
+                  backgroundSize: "cover",
+                }}
+              >
+                <div className="flex flex-col items-center">
+                  <Typography.Text className="!text-primary font-semibold text-xl mb-4 text-center">
+                    Utilize your subscribed APIs
+                  </Typography.Text>
+                  <Input
+                    type="text"
+                    id="home-search-input"
+                    placeholder="Search subscribed APIs..."
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  label="Search"
+                  className="text-lg py-1 px-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      push(
+                        `/home/search?query=${searchQuery}&status=subscribed`
+                      );
+                    }
+                  }}
                 />
-              </div>
-              <Button label="Search" className="text-lg py-1 px-2" />
-            </Card>
+              </Card>
+            </Form>
           </div>
         </div>
       </Layout>
