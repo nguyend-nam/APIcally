@@ -11,6 +11,10 @@ export const checkFileNameFormat = (fileName: string) => {
   );
 };
 
+export const checkPythonVarNameFormat = (varName: string) => {
+  return /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(varName);
+};
+
 export const formatPathname = (pathname: string) => {
   const newPathname = pathname.slice(1);
   const result = newPathname[0].toUpperCase() + newPathname.slice(1);

@@ -1,15 +1,15 @@
 import Head from "next/head";
 import { Layout } from "../components/Layout";
 
-const SettingPage = () => {
+const ExplorePage = () => {
   return (
     <>
       <Head>
-        <title>Setting | APIcally</title>
+        <title>Explore | APIcally</title>
       </Head>
-      <Layout>Setting</Layout>
+      <Layout>Explore</Layout>;
     </>
   );
 };
 
-export default SettingPage;
+export default ExplorePage;

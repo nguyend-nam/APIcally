@@ -1,3 +1,20 @@
+export const variableTypes = {
+  int: "Integer",
+  float: "Float",
+  complex: "Complex",
+  string: "String",
+  range: "Range",
+  bool: "Boolean",
+  dict: "Dictionary",
+};
+
+export const multipleStates = {
+  none: "None",
+  list: "List",
+  tuple: "Tuple",
+  set: "Set",
+};
+
 export const pythonInitCode = `"""Required import-----------------------------------------"""
 #Required modules, do not edit!
 import sys

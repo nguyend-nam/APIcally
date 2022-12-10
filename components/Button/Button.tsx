@@ -1,4 +1,4 @@
-import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 import { ReactNode } from "react";
 
 export const getBorderRadius = (prop: string) => {
@@ -72,9 +72,15 @@ export const Button = (props: ButtonProps) => {
       className={`${getButtonStyle(appearance)} ${getBorderRadius(
         borderRadius
       )} ${className}`}
+      disabled={isLoading}
       {...rest}
     >
-      {isLoading ? <LoadingOutlined /> : label}
+      {label}
+      {isLoading ? (
+        <span className="ml-2">
+          <Spin />
+        </span>
+      ) : null}
     </button>
   );
 };

@@ -1,15 +1,15 @@
 import Head from "next/head";
 import { Layout } from "../components/Layout";
 
-const SettingPage = () => {
+const UserPage = () => {
   return (
     <>
       <Head>
-        <title>Setting | APIcally</title>
+        <title>Profile | APIcally</title>
       </Head>
-      <Layout>Setting</Layout>
+      <Layout>Profile</Layout>;
     </>
   );
 };
 
-export default SettingPage;
+export default UserPage;
