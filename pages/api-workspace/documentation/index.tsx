@@ -146,7 +146,7 @@ const DocumentationPage = () => {
           />
         </div>
 
-        <div className="mt-16">
+        <div className="mt-8">
           <div className="flex items-center justify-between w-full">
             <Typography.Title level={3}>Define inputs</Typography.Title>
 
