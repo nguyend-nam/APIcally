@@ -1,4 +1,4 @@
-import { Col, Row, Table, Tag, Typography } from "antd";
+import { Col, Form, Row, Table, Tag, Typography } from "antd";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -19,11 +19,9 @@ const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
 });
 
 const defineInputType = (type: keyof typeof variableTypes) => {
-  if (type === "int" || type === "complex" || type === "float") return "number";
+  if (type === "number") return "number";
   if (type === "bool") return "checkbox";
-  if (type === "string") return "text";
-  if (type === "range") return "range";
-  if (type === "dict") return;
+  if (type === "string" || type === "object") return "text";
 };
 
 const UtilizerPage = () => {
@@ -70,26 +68,58 @@ const UtilizerPage = () => {
       // eslint-disable-next-line
       render: (value, _record, index) =>
         !value?.size ? (
-          <Input
-            type={defineInputType(value.type)}
-            id="name-input"
-            className="!text-base float-right max-w-[150px] md:max-w-[200px]"
-            placeholder={`Input ${value.name}...`}
-            onChange={(e) => console.log(value.name, e.target.value)}
-          />
-        ) : (
-          <div className="flex flex-col gap-2">
-            {new Array(value.size).fill(1).map((a, i) => (
+          <Form>
+            <Form.Item
+              rules={
+                value.type === "object"
+                  ? [
+                      {
+                        pattern: /\\{\s*title.*\\/,
+                        message: "Please input accurate object format",
+                      },
+                    ]
+                  : []
+              }
+              className="!m-0"
+            >
               <Input
-                key={`${a}${i}`}
                 type={defineInputType(value.type)}
                 id="name-input"
                 className="!text-base float-right max-w-[150px] md:max-w-[200px]"
                 placeholder={`Input ${value.name}...`}
                 onChange={(e) => console.log(value.name, e.target.value)}
               />
-            ))}
-          </div>
+            </Form.Item>
+          </Form>
+        ) : (
+          <Form>
+            <div className="flex flex-col gap-2">
+              {new Array(value.size).fill(1).map((a, i) => (
+                <Form.Item
+                  key={`${a}${i}`}
+                  rules={
+                    value.type === "object"
+                      ? [
+                          {
+                            pattern: /\\{\s*title.*\\}/,
+                            message: "Please input accurate object format",
+                          },
+                        ]
+                      : []
+                  }
+                  className="!m-0"
+                >
+                  <Input
+                    type={defineInputType(value.type)}
+                    id="name-input"
+                    className="!text-base float-right max-w-[150px] md:max-w-[200px]"
+                    placeholder={`Input ${value.name}...`}
+                    onChange={(e) => console.log(value.name, e.target.value)}
+                  />
+                </Form.Item>
+              ))}
+            </div>
+          </Form>
         ),
     },
   ];
@@ -97,13 +127,13 @@ const UtilizerPage = () => {
   const dataSource = [
     {
       name: "co2",
-      type: "float",
+      type: "number",
       multipleState: "none",
     },
     {
       name: "o3",
-      type: "float",
-      multipleState: "list",
+      type: "number",
+      multipleState: "array",
       size: 2,
     },
     {
@@ -112,13 +142,8 @@ const UtilizerPage = () => {
       multipleState: "none",
     },
     {
-      name: "areaWidth",
-      type: "range",
-      multipleState: "none",
-    },
-    {
-      name: "areaLength",
-      type: "range",
+      name: "area",
+      type: "object",
       multipleState: "none",
     },
   ];

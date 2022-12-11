@@ -1,18 +1,13 @@
 export const variableTypes = {
-  int: "Integer",
-  float: "Float",
-  complex: "Complex",
+  number: "Number",
+  object: "Object",
   string: "String",
-  range: "Range",
   bool: "Boolean",
-  dict: "Dictionary",
 };
 
 export const multipleStates = {
   none: "None",
-  list: "List",
-  tuple: "Tuple",
-  set: "Set",
+  array: "Array",
 };
 
 export const pythonInitCode = `"""Required import-----------------------------------------"""

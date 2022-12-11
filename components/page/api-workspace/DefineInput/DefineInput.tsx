@@ -47,7 +47,7 @@ export const DefineInput = (props: Props) => {
     >
       <Form
         initialValues={{
-          type: "int",
+          type: "number",
           multipleState: "none",
           size: 1,
         }}
