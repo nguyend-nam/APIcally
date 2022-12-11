@@ -92,7 +92,7 @@ const SearchResultPage = () => {
             &quot;
           </div>
         )}
-        <div className="flex flex-col items-center gap-4 mt-4 md:mt-8 w-full md:w-2/3 m-auto">
+        <div className="flex flex-col items-center gap-4 mt-2 md:mt-4 w-full md:w-2/3 m-auto">
           <div className="self-end flex items-center">
             <label htmlFor="subscribed-checkbox">Subscribed</label>
             {renderAntCheckbox}

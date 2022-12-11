@@ -37,6 +37,7 @@ export type dataSourceType = {
   name: string;
   type: string;
   multipleState: string;
+  size?: number;
 };
 
 const DocumentationPage = () => {
@@ -82,6 +83,11 @@ const DocumentationPage = () => {
       ),
     },
     {
+      title: "Size",
+      key: "size",
+      dataIndex: "size",
+    },
+    {
       title: "",
       fixed: "right",
       render: (_value, _record, index) => (
@@ -110,6 +116,7 @@ const DocumentationPage = () => {
     console.log();
     return (
       <Table
+        rowKey="name"
         columns={columns}
         dataSource={dataSource}
         scroll={{ x: "max-content" }}
@@ -147,8 +154,10 @@ const DocumentationPage = () => {
         </div>
 
         <div className="mt-8">
-          <div className="flex items-center justify-between w-full">
-            <Typography.Title level={3}>Define inputs</Typography.Title>
+          <div className="flex items-center justify-between w-full mb-4">
+            <Typography.Title level={3} className="!m-0">
+              Define inputs
+            </Typography.Title>
 
             <Button
               label="Add input"

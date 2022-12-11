@@ -7,7 +7,6 @@ export interface InputProps
   invalid?: boolean;
   hasBorder?: boolean;
   onClear?: () => void;
-  type?: "text" | "date" | "time" | "email" | "number" | "tel" | "password";
   borderRadius?:
     | "top"
     | "right"

@@ -1,4 +1,4 @@
-import { Col, Row, Tooltip, Typography } from "antd";
+import { Col, Row, Spin, Tooltip, Typography } from "antd";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -10,16 +10,21 @@ import { apiReposData } from "../../../../constants/mockData";
 import { defaultMD } from "../../documentation";
 import { Card } from "../../../../components/Card";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
 });
 
-const UtilizerPage = () => {
-  const { query } = useRouter();
+const APIDetailPage = () => {
+  const { query, push } = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const currentAPI = apiReposData.find(
     (a) => a.alias === query.alias && a.username === query.username
   );
+
   return (
     <>
       <Head>
@@ -31,41 +36,54 @@ const UtilizerPage = () => {
         ) : (
           <>
             <Typography.Title level={2}>
-              <span className="font-normal">{currentAPI?.author}/</span>
-              <span className="text-primary">{currentAPI?.name}</span>
+              <span className="font-normal text-2xl md:text-3xl">
+                {currentAPI?.author}/
+              </span>
+              <span className="text-primary text-2xl md:text-3xl">
+                {currentAPI?.name}
+              </span>
             </Typography.Title>
 
             <Row className="my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
-                <ApiRepo data={currentAPI} hasShadow={false} />
+                <ApiRepo data={currentAPI} />
               </Col>
               {currentAPI.subscribeStatus ? (
                 <Col span={24} md={{ span: 8 }}>
-                  <Card
-                    className="p-4 h-full flex flex-col justify-between"
-                    hasShadow={false}
-                  >
-                    <Typography.Text className="text-lg !m-0 !text-gray-600">
-                      You already subscribed to this API
-                    </Typography.Text>
-                    <div className="mt-4">
-                      <Button
-                        appearance="outline"
-                        label="Unsubscribe"
-                        className="text-lg p-2 py-1 mr-2"
-                      />
-                      <Button
-                        label="Start using"
-                        className="text-lg p-2 py-1"
-                      />
-                    </div>
+                  <Card className="p-4 h-full" shadowSize="md">
+                    <Spin spinning={isLoading}>
+                      <Typography.Text className="text-lg !m-0 !text-gray-600">
+                        You already subscribed to this API
+                      </Typography.Text>
+                      <div className="mt-4">
+                        <Button
+                          appearance="outline"
+                          label="Unsubscribe"
+                          className="text-base md:text-lg p-2 py-1 mr-2"
+                        />
+                        <Button
+                          label="Start using"
+                          onClick={() => {
+                            setIsLoading(!isLoading);
+                            setTimeout(
+                              () =>
+                                push(
+                                  `/api-workspace/${currentAPI.username}/${currentAPI.alias}/utilizer`
+                                ),
+                              1000
+                            );
+                          }}
+                          className="text-base md:text-lg p-2 py-1"
+                        />
+                      </div>
+                    </Spin>
                   </Card>
                 </Col>
               ) : (
                 <Col span={24} md={{ span: 8 }}>
                   <Card
                     className="p-4 h-full flex flex-col justify-between"
-                    hasShadow={false}
+                    shadowSize="md"
                   >
                     <div className="flex justify-between">
                       <Typography.Text className="text-lg !m-0 !text-gray-600">
@@ -85,7 +103,10 @@ const UtilizerPage = () => {
                       />
                     </div>
                     <div className="mt-4">
-                      <Button label="Subscribe" className="text-lg p-2 py-1" />
+                      <Button
+                        label="Subscribe"
+                        className="text-base md:text-lg p-2 py-1"
+                      />
                     </div>
                   </Card>
                 </Col>
@@ -109,4 +130,4 @@ const UtilizerPage = () => {
   );
 };
 
-export default UtilizerPage;
+export default APIDetailPage;
