@@ -13,6 +13,7 @@ import { DeleteFilled } from "@ant-design/icons";
 import { multipleStates, variableTypes } from "../../../constants/python";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { Card } from "../../../components/Card";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -115,12 +116,14 @@ const DocumentationPage = () => {
   const renderTable = useMemo(() => {
     console.log();
     return (
-      <Table
-        rowKey="name"
-        columns={columns}
-        dataSource={dataSource}
-        scroll={{ x: "max-content" }}
-      />
+      <Card className="p-4" shadowSize="md">
+        <Table
+          rowKey="name"
+          columns={columns}
+          dataSource={dataSource}
+          scroll={{ x: "max-content" }}
+        />
+      </Card>
     );
   }, [dataSource]); // eslint-disable-line
 
