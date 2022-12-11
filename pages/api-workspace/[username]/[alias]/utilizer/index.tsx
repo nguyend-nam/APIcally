@@ -73,7 +73,7 @@ const UtilizerPage = () => {
           <Input
             type={defineInputType(value.type)}
             id="name-input"
-            className="!text-base float-right"
+            className="!text-base float-right max-w-[150px] md:max-w-[200px]"
             placeholder={`Input ${value.name}...`}
             onChange={(e) => console.log(value.name, e.target.value)}
           />
@@ -84,7 +84,7 @@ const UtilizerPage = () => {
                 key={`${a}${i}`}
                 type={defineInputType(value.type)}
                 id="name-input"
-                className="!text-base float-right"
+                className="!text-base float-right max-w-[150px] md:max-w-[200px]"
                 placeholder={`Input ${value.name}...`}
                 onChange={(e) => console.log(value.name, e.target.value)}
               />
