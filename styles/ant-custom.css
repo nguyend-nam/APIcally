@@ -30,3 +30,11 @@
   flex-direction: column !important;
   justify-content: space-between;
 }
+
+.ant-popover-inner-content {
+  padding: 0 !important;
+}
+
+.ant-popover-arrow-content::before {
+  background-color: #2d31fa !important;
+}

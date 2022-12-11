@@ -80,12 +80,15 @@ const HomePage = () => {
             <Col span={24} md={{ span: 12 }}>
               <Card shadowSize="md" className="p-4">
                 <Text as="h2" className="text-lg">
-                  Explore APIs
+                  Subscribed APIs
                 </Text>
                 <div>
-                  {apiReposData.slice(0, 2).map((a) => (
-                    <ApiRepo key={a.id} data={a} hasShadow={false} />
-                  ))}
+                  {apiReposData
+                    .filter((a) => a.subscribeStatus)
+                    .slice(0, 2)
+                    .map((a) => (
+                      <ApiRepo key={a.id} data={a} hasShadow={false} />
+                    ))}
                 </div>
               </Card>
             </Col>
