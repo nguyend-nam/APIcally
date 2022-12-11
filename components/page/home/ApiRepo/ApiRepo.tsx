@@ -5,21 +5,35 @@ import {
   KeyOutlined,
 } from "@ant-design/icons";
 import { Tooltip, Typography } from "antd";
+import { useRouter } from "next/router";
 import { apiRepoType } from "../../../../constants/mockData";
 import { Card } from "../../../Card";
 
 export const ApiRepo = ({
   data,
   className,
+  hasShadow = true,
 }: {
   data: apiRepoType;
   className?: string;
+  hasShadow?: boolean;
 }) => {
+  const { push } = useRouter();
+
   return (
-    <Card shadowSize="md" className={`bg-white p-4 ${className}`}>
+    <Card
+      shadowSize="md"
+      className={`bg-white p-4 ${className}`}
+      hasShadow={hasShadow}
+    >
       <div className="flex justify-between">
         <Typography.Title level={4} className="!m-0 !mb-2">
-          <a className="!text-primary flex items-center">
+          <a
+            className="!text-primary flex items-center"
+            onClick={() =>
+              push(`/api-workspace/${data.username}/${data.alias}`)
+            }
+          >
             <BookOutlined className="text-base !text-gray-400 mr-1" />
             {data.name}
             {data.subscribeStatus && (

@@ -9,6 +9,7 @@ export interface apiRepoType {
   name: string;
   alias: string;
   author: string;
+  username: string;
   description: string;
   statistics: Statistic;
 }
@@ -20,6 +21,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Weather forecast API",
     alias: "weather-forecast-api",
     author: "wettercom",
+    username: "wettercom",
     description:
       "Get 16 days weather forecast data - worldwide - geographical coordinates...",
     statistics: {
@@ -32,7 +34,8 @@ export const apiReposData: apiRepoType[] = [
     subscribeStatus: false,
     name: "API Football Beta",
     alias: "api-football-beta",
-    author: "API-Sports",
+    author: "API Sports",
+    username: "api-sports",
     description:
       "Beta Program for api-football. Here you can test the next version of the API.",
     statistics: {
@@ -46,6 +49,7 @@ export const apiReposData: apiRepoType[] = [
     name: "CO2 Offset",
     alias: "co2-offset",
     author: "STROMDAO",
+    username: "stromdao",
     description:
       "GreenHouseGas/CO2 compensation as a service. Get 1kg/month for free to see how easy it is to implement.",
     statistics: {
@@ -59,6 +63,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Word Bank World Development Indicators",
     alias: "word-bank-world-development-indicators",
     author: "mfdev",
+    username: "mfdev",
     description:
       "An API for retrieving world development indicators, that provides high-quality and internationally comparable statistics about global development for the past 60 years. The data contains 1400 indicators for 217 economies and more than 40 country groups. This API also provides a charts API that allows you to visualize data and compare different economies in different charts.",
     statistics: {
@@ -72,6 +77,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Shopee E-commerce Data",
     alias: "shopee-e-commerce-data",
     author: "tmapi.top",
+    username: "tmapi-top",
     description:
       "Get shopee E-commerce plat(Including Thailand, Philippines, Indonesia, Malaysia, Singapore, Vietnam, Taiwan, Brazil) product and shop data",
     statistics: {
@@ -85,6 +91,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Pharmacity",
     alias: "pharmacity",
     author: "Nguyen Dat",
+    username: "nguyen-dat",
     description:
       "These are APIs for Pharmacity Company - the largest retail pharmacy chain in Vietnam",
     statistics: {
@@ -97,7 +104,8 @@ export const apiReposData: apiRepoType[] = [
     subscribeStatus: false,
     name: "MyAnimeList",
     alias: "myanimelist",
-    author: "Nguyen Felix Schmitt",
+    author: "Felix Schmitt",
+    username: "felix-schmitt",
     description: "Get Animes from MyAnimeList (Unofficial)",
     statistics: {
       subscribes: 90,
@@ -110,6 +118,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Utelly",
     alias: "utelly",
     author: "utelly",
+    username: "utelly",
     description:
       "Utelly universal search and recommendations APIs for Movies, Series and TV shows.",
     statistics: {
@@ -123,6 +132,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Tasty",
     alias: "tasty",
     author: "Api Dojo",
+    username: "api-dojo",
     description:
       "API to query data about recipe, plan, ingredients, etc… as on official site",
     statistics: {
@@ -136,6 +146,7 @@ export const apiReposData: apiRepoType[] = [
     name: "Reddit meme",
     alias: "reddit-meme",
     author: "The Deltaw",
+    username: "the-deltaw",
     description:
       "An API for showing the best memes on the internet using Reddit",
     statistics: {

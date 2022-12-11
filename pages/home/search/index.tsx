@@ -69,8 +69,13 @@ const SearchResultPage = () => {
                 className="h-9 flex justify-center items-center text-lg p-2"
                 onClick={() => {
                   if (searchQuery) {
-                    if (query.status !== undefined && query.status === "subscribed") {
-                      push(`/home/search?query=${searchQuery}&status=subscribed`);
+                    if (
+                      query.status !== undefined &&
+                      query.status === "subscribed"
+                    ) {
+                      push(
+                        `/home/search?query=${searchQuery}&status=subscribed`
+                      );
                     } else {
                       push(`/home/search?query=${searchQuery}`);
                     }
@@ -82,9 +87,12 @@ const SearchResultPage = () => {
         }
       >
         {query.query && (
-          <div>Showing 10 results for &quot;{query.query}&quot;</div>
+          <div>
+            Showing {filterSubscribed ? 3 : 10} results for &quot;{query.query}
+            &quot;
+          </div>
         )}
-        <div className="flex flex-col items-center gap-4 mt-4 md:mt-8 w-full md:w-2/3 m-auto">
+        <div className="flex flex-col items-center gap-4 mt-2 md:mt-4 w-full md:w-2/3 m-auto">
           <div className="self-end flex items-center">
             <label htmlFor="subscribed-checkbox">Subscribed</label>
             {renderAntCheckbox}

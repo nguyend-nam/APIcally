@@ -21,7 +21,7 @@ const CodeEditorPage = () => {
           <Typography.Title level={4} className="text-center">
             Select an API to utilize or create your own
           </Typography.Title>
-          <div className="flex gap-4 lg:gap-8 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
+          <div className="flex gap-4 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
             <Card
               shadowSize="md"
               className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-20"
@@ -62,13 +62,20 @@ const CodeEditorPage = () => {
                   <Typography.Text className="!text-primary font-semibold text-xl mb-4 text-center">
                     Utilize your subscribed APIs
                   </Typography.Text>
-                  <Input
-                    type="text"
-                    id="home-search-input"
-                    placeholder="Search subscribed APIs..."
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="text-base"
-                  />
+                  <Form.Item
+                    name="home-search-input"
+                    rules={[
+                      { required: true, message: "Please input keyword" },
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      id="home-search-input"
+                      placeholder="Search subscribed APIs..."
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="text-base"
+                    />
+                  </Form.Item>
                 </div>
                 <Button
                   type="submit"

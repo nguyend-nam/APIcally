@@ -49,14 +49,20 @@ export const DefineInput = (props: Props) => {
         initialValues={{
           type: "int",
           multipleState: "none",
+          size: 1,
         }}
         form={form}
         className="pr-4 w-[90%]"
         onFinish={(values: dataSourceType) => {
           const exist = dataSource.find((d) => d.name === values.name);
           const valid = checkPythonVarNameFormat(values.name);
+          const validSize = !(
+            values.multipleState === "none" &&
+            values.size &&
+            values.size > 1
+          );
 
-          if (!exist && valid) {
+          if (!exist && valid && validSize) {
             setDataSource([...dataSource, values]);
             onCancel();
             form.resetFields();
@@ -66,6 +72,11 @@ export const DefineInput = (props: Props) => {
             }
             if (!valid) {
               notification.error({ message: "Invalid variable name!" });
+            }
+            if (!validSize) {
+              notification.error({
+                message: "Multiple state of 'None' should have size of 1!",
+              });
             }
           }
         }}
@@ -138,6 +149,24 @@ export const DefineInput = (props: Props) => {
                   value: k,
                   label: multipleStates[k as keyof typeof multipleStates],
                 }))}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row className="flex items-center mt-4">
+          <Col span={8}>
+            <label htmlFor="size-input" className="text-lg text-primary mr-4">
+              Size
+            </label>
+          </Col>
+          <Col span={16}>
+            <Form.Item name="size" className="!m-0">
+              <Input
+                type="number"
+                id="size-input"
+                placeholder="Enter variable size..."
+                className="mt-1"
               />
             </Form.Item>
           </Col>

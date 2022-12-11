@@ -13,12 +13,13 @@ import { DeleteFilled } from "@ant-design/icons";
 import { multipleStates, variableTypes } from "../../../constants/python";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { Card } from "../../../components/Card";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
 });
 
-const defaultMD = `# API's documentation
+export const defaultMD = `# API's documentation
 ---
 > Block quote
 
@@ -37,6 +38,7 @@ export type dataSourceType = {
   name: string;
   type: string;
   multipleState: string;
+  size?: number;
 };
 
 const DocumentationPage = () => {
@@ -82,6 +84,11 @@ const DocumentationPage = () => {
       ),
     },
     {
+      title: "Size",
+      key: "size",
+      dataIndex: "size",
+    },
+    {
       title: "",
       fixed: "right",
       render: (_value, _record, index) => (
@@ -109,11 +116,14 @@ const DocumentationPage = () => {
   const renderTable = useMemo(() => {
     console.log();
     return (
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        scroll={{ x: "max-content" }}
-      />
+      <Card className="p-4" shadowSize="md">
+        <Table
+          rowKey="name"
+          columns={columns}
+          dataSource={dataSource}
+          scroll={{ x: "max-content" }}
+        />
+      </Card>
     );
   }, [dataSource]); // eslint-disable-line
 
@@ -147,8 +157,10 @@ const DocumentationPage = () => {
         </div>
 
         <div className="mt-8">
-          <div className="flex items-center justify-between w-full">
-            <Typography.Title level={3}>Define inputs</Typography.Title>
+          <div className="flex items-center justify-between w-full mb-4">
+            <Typography.Title level={3} className="!m-0">
+              Define inputs
+            </Typography.Title>
 
             <Button
               label="Add input"
