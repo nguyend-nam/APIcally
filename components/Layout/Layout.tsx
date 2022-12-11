@@ -29,7 +29,7 @@ export const Layout = ({
         style={{ transition: "0.4s" }}
       />
       <div
-        className={`flex flex-col justify-start grow h-screen overflow-auto bg-slate-50 shadow-slate-700/50 z-10 ${
+        className={`flex flex-col justify-start grow h-screen overflow-auto bg-slate-100 shadow-slate-700/50 z-10 ${
           !sidebarStatus ? "shadow-xl" : "shadow-xs"
         }`}
         style={{ transition: "box-shadow 0.4s ease-in-out" }}

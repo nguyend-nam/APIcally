@@ -18,7 +18,7 @@ const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
 });
 
-const defaultMD = `# API's documentation
+export const defaultMD = `# API's documentation
 ---
 > Block quote
 

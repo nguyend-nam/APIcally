@@ -7,7 +7,7 @@ const ExplorePage = () => {
       <Head>
         <title>Explore | APIcally</title>
       </Head>
-      <Layout>Explore</Layout>;
+      <Layout>Explore</Layout>
     </>
   );
 };

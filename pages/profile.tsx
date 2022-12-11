@@ -7,7 +7,7 @@ const UserPage = () => {
       <Head>
         <title>Profile | APIcally</title>
       </Head>
-      <Layout>Profile</Layout>;
+      <Layout>Profile</Layout>
     </>
   );
 };

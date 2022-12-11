@@ -62,13 +62,20 @@ const CodeEditorPage = () => {
                   <Typography.Text className="!text-primary font-semibold text-xl mb-4 text-center">
                     Utilize your subscribed APIs
                   </Typography.Text>
-                  <Input
-                    type="text"
-                    id="home-search-input"
-                    placeholder="Search subscribed APIs..."
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="text-base"
-                  />
+                  <Form.Item
+                    name="home-search-input"
+                    rules={[
+                      { required: true, message: "Please input keyword" },
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      id="home-search-input"
+                      placeholder="Search subscribed APIs..."
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="text-base"
+                    />
+                  </Form.Item>
                 </div>
                 <Button
                   type="submit"

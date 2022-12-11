@@ -1,5 +1,4 @@
 import { Col, Empty, Form, Row } from "antd";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button } from "../../components/Button";
 import { Card } from "../../components/Card";
@@ -11,6 +10,8 @@ import { useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import Head from "next/head";
 import { SearchOutlined } from "@ant-design/icons";
+import { apiReposData } from "../../constants/mockData";
+import { ApiRepo } from "../../components/page/home/ApiRepo";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -82,23 +83,9 @@ const HomePage = () => {
                   Explore APIs
                 </Text>
                 <div>
-                  <Link href="">
-                    <a className="text-primary hover:text-primary/70 text-base">
-                      Weather API
-                    </a>
-                  </Link>
-                  <br />
-                  <Link href="">
-                    <a className="text-primary hover:text-primary/70 text-base">
-                      Face recognization API
-                    </a>
-                  </Link>
-                  <br />
-                  <Link href="">
-                    <a className="text-primary hover:text-primary/70 text-base">
-                      Prime number API
-                    </a>
-                  </Link>
+                  {apiReposData.slice(0, 2).map((a) => (
+                    <ApiRepo key={a.id} data={a} hasShadow={false} />
+                  ))}
                 </div>
               </Card>
             </Col>
