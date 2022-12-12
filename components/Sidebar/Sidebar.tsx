@@ -75,7 +75,7 @@ export const Sidebar = ({
           </span>
         }
         className="text-lg p-4 py-3 bg-primary hover:bg-blue-900 text-left"
-        onClick={() => push("/profile")}
+        onClick={() => push("/profile/apis")}
       />
     </div>
   );
@@ -175,19 +175,12 @@ export const Sidebar = ({
                 ) : (
                   <Popover
                     content={workspaceExtraTab}
-                    trigger="click"
                     placement="right"
                     className="right-0 absolute h-full"
                   >
                     <Button
                       key="drop-down"
-                      label={
-                        isWorkspaceOpen ? (
-                          <CaretUpOutlined />
-                        ) : (
-                          <CaretDownOutlined />
-                        )
-                      }
+                      label={<CaretDownOutlined />}
                       className={`bg-blue-800 w-max px-0.5 text-sm flex items-center justify-start hover:bg-blue-900 ${
                         pathname.includes(route.route) &&
                         "!bg-white !text-primary"

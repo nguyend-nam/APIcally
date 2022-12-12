@@ -191,7 +191,7 @@ const DocumentationPage = () => {
               notification.success({
                 message: "Algorithm successfully submitted!",
               });
-              push("/profile");
+              push("/profile/apis");
             }, 1000);
           }}
           className="text-lg py-1 px-2 mt-8"

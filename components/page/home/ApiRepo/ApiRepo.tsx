@@ -26,7 +26,7 @@ export const ApiRepo = ({
       className={`bg-white p-4 ${className}`}
       hasShadow={hasShadow}
     >
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-8">
         <Typography.Title level={4} className="!m-0 !mb-2">
           <a
             className="!text-primary flex items-center"
