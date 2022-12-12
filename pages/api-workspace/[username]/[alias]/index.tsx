@@ -9,7 +9,7 @@ import { ApiRepo } from "../../../../components/page/home/ApiRepo";
 import { apiReposData } from "../../../../constants/mockData";
 import { defaultMD } from "../../documentation";
 import { Card } from "../../../../components/Card";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
@@ -52,9 +52,12 @@ const APIDetailPage = () => {
                 <Col span={24} md={{ span: 8 }}>
                   <Card className="p-4 h-full" shadowSize="md">
                     <Spin spinning={isLoading}>
-                      <Typography.Text className="text-lg !m-0 !text-gray-600">
-                        You already subscribed to this API
-                      </Typography.Text>
+                      <div className="flex items-center">
+                        <CheckCircleOutlined className="!text-success text-lg mr-1" />
+                        <Typography.Text className="text-lg !m-0 !text-gray-600">
+                          You already subscribed to this API
+                        </Typography.Text>
+                      </div>
                       <div className="mt-4">
                         <Button
                           appearance="outline"
