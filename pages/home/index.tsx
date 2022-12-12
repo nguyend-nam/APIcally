@@ -18,6 +18,8 @@ const HomePage = () => {
   const isMobile = useIsMobile();
   const [isSSR, setIsSSR] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuerySubscribed, setSearchQuerySubscribed] =
+    useState<string>("");
 
   useEffect(() => {
     setIsSSR(false);
@@ -82,13 +84,56 @@ const HomePage = () => {
                 <Text as="h2" className="text-lg">
                   Subscribed APIs
                 </Text>
-                <div>
-                  {apiReposData
-                    .filter((a) => a.subscribeStatus)
-                    .slice(0, 2)
-                    .map((a) => (
-                      <ApiRepo key={a.id} data={a} hasShadow={false} />
-                    ))}
+                <Input
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search subscribed APIs..."
+                  className="!font-normal !placeholder:font-normal mb-4"
+                  onChange={(e) => setSearchQuerySubscribed(e.target.value)}
+                />
+                <div className="h-[350px] overflow-auto ">
+                  {searchQuerySubscribed ? (
+                    apiReposData.filter(
+                      (a) =>
+                        a.subscribeStatus &&
+                        (a.alias.includes(searchQuerySubscribed) ||
+                          a.name.includes(searchQuerySubscribed) ||
+                          a.author.includes(searchQuerySubscribed) ||
+                          a.description.includes(searchQuerySubscribed) ||
+                          a.username.includes(searchQuerySubscribed))
+                    ).length ? (
+                      apiReposData
+                        .filter(
+                          (a) =>
+                            a.subscribeStatus &&
+                            (a.alias.includes(searchQuerySubscribed) ||
+                              a.name.includes(searchQuerySubscribed) ||
+                              a.author.includes(searchQuerySubscribed) ||
+                              a.description.includes(searchQuerySubscribed) ||
+                              a.username.includes(searchQuerySubscribed))
+                        )
+                        .map((a) => (
+                          <ApiRepo key={a.id} data={a} hasShadow={false} />
+                        ))
+                    ) : (
+                      <div className="h-full flex flex-col justify-center">
+                        <Empty
+                          description={
+                            <Text as="div" className="text-base">
+                              No subscribed APIs found with keyword &quot;
+                              {searchQuerySubscribed}&quot;
+                            </Text>
+                          }
+                        />
+                      </div>
+                    )
+                  ) : (
+                    apiReposData
+                      .filter((a) => a.subscribeStatus)
+                      .map((a) => (
+                        <ApiRepo key={a.id} data={a} hasShadow={false} />
+                      ))
+                  )}
                 </div>
               </Card>
             </Col>

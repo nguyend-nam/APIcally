@@ -101,7 +101,7 @@ export const apiReposData: apiRepoType[] = [
   },
   {
     id: "7",
-    subscribeStatus: false,
+    subscribeStatus: true,
     name: "MyAnimeList",
     alias: "myanimelist",
     author: "Felix Schmitt",
@@ -128,7 +128,7 @@ export const apiReposData: apiRepoType[] = [
   },
   {
     id: "9",
-    subscribeStatus: false,
+    subscribeStatus: true,
     name: "Tasty",
     alias: "tasty",
     author: "Api Dojo",
