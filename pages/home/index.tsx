@@ -40,13 +40,13 @@ const HomePage = () => {
                   type="text"
                   id="home-search-input"
                   placeholder="Search or jump to..."
-                  className="!font-normal !placeholder:font-normal"
+                  className="!font-normal !placeholder:font-normal h-8"
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Button
                   borderRadius="right"
                   label={<SearchOutlined />}
-                  className="h-9 flex justify-center items-center text-lg p-2"
+                  className="h-8 flex justify-center items-center text-lg p-2"
                   onClick={() => {
                     if (searchQuery) {
                       push(`/home/search?query=${searchQuery}`);
@@ -72,7 +72,7 @@ const HomePage = () => {
                       <Button
                         label="Create now"
                         className="p-2 m-3 text-base"
-                        onClick={() => push("/api-workspace")}
+                        onClick={() => push("/api-workspace/code-editor")}
                       />
                     </>
                   }

@@ -4,6 +4,7 @@ import { checkFileNameFormat, formatFileName } from "../../utils";
 import { Alert } from "../Alert";
 import { Dropdown } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import { Button } from "../Button";
 
 export const FileManagement = ({
   currentFile,
@@ -28,12 +29,11 @@ export const FileManagement = ({
   return (
     <div className={`shadow-lg z-30 h-screen overflow-auto ${className}`}>
       <div className="p-4 flex justify-end bg-primary sticky top-0 z-30">
-        <button
-          className="p-1 px-2 rounded-md bg-white font-light"
+        <Button
+          className="p-1 px-2 !bg-white !text-primary"
           onClick={() => setIsAddingFile(true)}
-        >
-          Add file
-        </button>
+          label="Add file"
+        />
       </div>
       <div className="flex flex-col p-4 space-y-1">
         {fileList.map((file: fileObj, index: number) => (

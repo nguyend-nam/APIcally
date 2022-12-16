@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import Head from "next/head";
 import { Layout } from "../components/Layout";
 
@@ -7,7 +8,9 @@ const ExplorePage = () => {
       <Head>
         <title>Explore | APIcally</title>
       </Head>
-      <Layout>Explore</Layout>
+      <Layout>
+        <Typography.Title level={3}>Explore</Typography.Title>
+      </Layout>
     </>
   );
 };

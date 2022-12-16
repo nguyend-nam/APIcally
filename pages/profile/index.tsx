@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import Head from "next/head";
 import { Layout } from "../../components/Layout";
 
@@ -7,7 +8,9 @@ const UserPage = () => {
       <Head>
         <title>Profile | APIcally</title>
       </Head>
-      <Layout>Profile</Layout>
+      <Layout>
+        <Typography.Title level={3}>Profile</Typography.Title>
+      </Layout>
     </>
   );
 };
