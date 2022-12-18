@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useIsMobile } from "../hooks/mobile";
 import { GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
+import { useAuthContext } from "../context/auth";
 
 const supplier = [
   {
@@ -69,6 +70,7 @@ const Home = () => {
   useEffect(() => setIsSSR(false), []);
   const { push } = useRouter();
   const isMobile = useIsMobile();
+  const { isAuthenticated } = useAuthContext();
 
   return (
     !isSSR && (
@@ -91,20 +93,30 @@ const Home = () => {
               className="z-50 fixed top-0 backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-12 w-full flex items-center justify-between shadow-sm md:shadow-md"
             >
               <Logo size={isMobile ? "xs" : "sm"} />
-              <div>
-                <Button
-                  appearance="link"
-                  className="text-base md:text-lg mr-3 md:mr-4"
-                  label="Login"
-                  onClick={() => push("/login")}
-                />
-                <Button
-                  appearance="outline"
-                  className="text-base md:text-lg px-2.5 py-1 bg-white/0"
-                  label="Register"
-                  onClick={() => push("/login")}
-                />
-              </div>
+              {isAuthenticated ? (
+                <div>
+                  <Button
+                    className="text-base md:text-lg px-2.5 py-1 bg-white/0"
+                    label="Go to console"
+                    onClick={() => push("/home")}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    appearance="link"
+                    className="text-base md:text-lg mr-3 md:mr-4"
+                    label="Login"
+                    onClick={() => push("/login")}
+                  />
+                  <Button
+                    appearance="outline"
+                    className="text-base md:text-lg px-2.5 py-1 bg-white/0"
+                    label="Register"
+                    onClick={() => push("/login")}
+                  />
+                </div>
+              )}
             </Card>
 
             <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
@@ -125,7 +137,7 @@ const Home = () => {
                 <Button
                   className="text-lg md:text-xl px-2.5 py-1 mt-2 md:mt-4"
                   label="Get started"
-                  onClick={() => push("/login")}
+                  onClick={() => push(isAuthenticated ? "/home" : "/login")}
                 />
               </Card>
               <div className="sticky bottom-3 flex-wrap flex items-center space-x-4 md:space-x-6 mt-6 justify-end md:justify-start md:mr-0">

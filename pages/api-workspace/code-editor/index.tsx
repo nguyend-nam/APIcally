@@ -63,44 +63,55 @@ const CodeEditorPage = () => {
     );
   }, [currentFile, language, value]);
 
+  const [isSSR, setIsSSR] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
   return (
-    <>
-      <Head>
-        <title>API workspace | APIcally</title>
-      </Head>
-      <Layout contentClassName="!p-0" hasFooter={false}>
-        <div className="flex bg-slate-100">
-          <FileManagement
-            currentFile={currentFile}
-            setCurrentFile={setCurrentFile}
-            className="sticky top-0 w-[400px] bg-white"
-          />
-          <div className="w-full">
-            <FileHeader
-              className="sticky top-0 z-30"
-              currentFileName={fileList[currentFile].fileName}
+    !isSSR && (
+      <>
+        <Head>
+          <title>API workspace | APIcally</title>
+        </Head>
+        <Layout contentClassName="!p-0" hasFooter={false}>
+          <div className="flex bg-slate-100">
+            <FileManagement
+              currentFile={currentFile}
+              setCurrentFile={setCurrentFile}
+              className="sticky top-0 w-[400px] bg-white"
             />
-            <div className="p-4 grid grid-cols-12 gap-4">
-              <div className="col-span-12 min-h-[550px]">
-                {renderCodeEditor}
+            <div className="w-full">
+              <FileHeader
+                className="sticky top-0 z-30"
+                currentFileName={fileList[currentFile].fileName}
+              />
+              <div className="p-4 grid grid-cols-12 gap-4">
+                <div className="col-span-12 min-h-[550px]">
+                  {renderCodeEditor}
+                </div>
+              </div>
+              <div className="p-4 pt-0">
+                <Button
+                  label="Submit algorithm"
+                  onClick={() => {
+                    setIsLoading(true);
+                    sendData(data, fileList);
+                    setTimeout(
+                      () => push("/api-workspace/documentation"),
+                      1000
+                    );
+                  }}
+                  className="text-lg py-1 px-2"
+                  isLoading={isLoading}
+                />
               </div>
             </div>
-            <div className="p-4 pt-0">
-              <Button
-                label="Submit algorithm"
-                onClick={() => {
-                  setIsLoading(true);
-                  sendData(data, fileList);
-                  setTimeout(() => push("/api-workspace/documentation"), 1000);
-                }}
-                className="text-lg py-1 px-2"
-                isLoading={isLoading}
-              />
-            </div>
           </div>
-        </div>
-      </Layout>
-    </>
+        </Layout>
+      </>
+    )
   );
 };
 

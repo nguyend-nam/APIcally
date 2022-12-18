@@ -10,6 +10,7 @@ import { Button } from "../Button";
 import { formatPathname } from "../../utils";
 import { ReactNode } from "react";
 import { Avatar, Dropdown } from "antd";
+import { useAuthContext } from "../../context/auth";
 
 export const Topbar = ({
   className,
@@ -23,6 +24,8 @@ export const Topbar = ({
   isMenuOpen: boolean;
 }) => {
   const { pathname } = useRouter();
+  const { setIsAuthenticated } = useAuthContext();
+
   return (
     <div
       className={`p-8 py-4 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md ${className}`}
@@ -74,6 +77,7 @@ export const Topbar = ({
               }
               className="p-3 py-2 !bg-white !text-primary w-full text-left"
               borderRadius="none"
+              onClick={() => setIsAuthenticated(false)}
             />
           </div>
         }

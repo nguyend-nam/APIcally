@@ -8,13 +8,29 @@ import { useIsMobile } from "../hooks/mobile";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../context/auth";
+import Link from "next/link";
 
 const LoginPage = () => {
   const isMobile = useIsMobile();
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUseTestAccountLoading, setIsUseTestAccountLoading] =
+    useState<boolean>(false);
   const [isSSR, setIsSSR] = useState<boolean>(true);
   useEffect(() => setIsSSR(false), []);
+
+  const { setIsAuthenticated, isAuthenticated } = useAuthContext();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectUrl = window.localStorage.getItem(LOGIN_REDIRECTION_KEY);
+
+      push(redirectUrl || "/home").then(() => {
+        window.localStorage.removeItem(LOGIN_REDIRECTION_KEY);
+      });
+    }
+  }, [push, isAuthenticated]);
 
   return (
     !isSSR && (
@@ -44,12 +60,16 @@ const LoginPage = () => {
               />
               <div className="absolute top-0 z-40 w-full h-full flex flex-col items-start p-6 sm:p-8 sm:items-center justify-center">
                 {!isMobile && <Text className="text-xl">Welcome to</Text>}
-                <Logo
-                  size={isMobile ? "sm" : "lg"}
-                  hasText={!isMobile}
-                  textTheme="light"
-                  className="mb-0 sm:mb-12"
-                />
+                <Link href="/">
+                  <a>
+                    <Logo
+                      size={isMobile ? "sm" : "lg"}
+                      hasText={!isMobile}
+                      textTheme="light"
+                      className="mb-0 sm:mb-12"
+                    />
+                  </a>
+                </Link>
               </div>
             </Card>
             <div className="w-full sm:w-1/2 p-6 sm:p-8 flex flex-col justify-between">
@@ -93,6 +113,11 @@ const LoginPage = () => {
                     label="Login"
                     className="p-1 text-lg w-[125px]"
                     type="submit"
+                    onClick={() => {
+                      setIsLoading(true);
+                      setTimeout(() => setIsAuthenticated(true), 1000);
+                    }}
+                    isLoading={isLoading}
                   />
                 </div>
                 <div className="w-full text-center mt-5">
@@ -101,10 +126,10 @@ const LoginPage = () => {
                     appearance="link"
                     className="p-1 text-lg"
                     onClick={() => {
-                      setIsLoading(true);
-                      setTimeout(() => push("/home"), 1000);
+                      setIsUseTestAccountLoading(true);
+                      setTimeout(() => setIsAuthenticated(true), 1000);
                     }}
-                    isLoading={isLoading}
+                    isLoading={isUseTestAccountLoading}
                   />
                 </div>
               </form>

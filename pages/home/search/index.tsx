@@ -46,70 +46,79 @@ const SearchResultPage = () => {
     );
   }, [push, query]);
 
+  const [isSSR, setIsSSR] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
   return (
-    <>
-      <Head>
-        <title>Search &quot;{query.query}&quot; | APIcally</title>
-      </Head>
-      <Layout
-        extraLeft={
-          <div className="ml-0 md:ml-4 mt-4 md:mt-0">
-            <Form className="flex items-center">
-              <Input
-                borderRadius="bottomLeft"
-                type="text"
-                id="home-search-input"
-                placeholder="Search or jump to..."
-                className="!font-normal !placeholder:font-normal h-8"
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <Button
-                borderRadius="right"
-                label={<SearchOutlined />}
-                className="h-8 flex justify-center items-center text-lg p-2"
-                onClick={() => {
-                  if (searchQuery) {
-                    if (
-                      query.status !== undefined &&
-                      query.status === "subscribed"
-                    ) {
-                      push(
-                        `/home/search?query=${searchQuery}&status=subscribed`
-                      );
-                    } else {
-                      push(`/home/search?query=${searchQuery}`);
+    !isSSR && (
+      <>
+        <Head>
+          <title>Search &quot;{query.query}&quot; | APIcally</title>
+        </Head>
+        <Layout
+          extraLeft={
+            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+              <Form className="flex items-center">
+                <Input
+                  borderRadius="bottomLeft"
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search or jump to..."
+                  className="!font-normal !placeholder:font-normal h-8"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button
+                  borderRadius="right"
+                  label={<SearchOutlined />}
+                  className="h-8 flex justify-center items-center text-lg p-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      if (
+                        query.status !== undefined &&
+                        query.status === "subscribed"
+                      ) {
+                        push(
+                          `/home/search?query=${searchQuery}&status=subscribed`
+                        );
+                      } else {
+                        push(`/home/search?query=${searchQuery}`);
+                      }
                     }
-                  }
-                }}
-              />
-            </Form>
-          </div>
-        }
-      >
-        {query.query && (
-          <div>
-            Showing {filterSubscribed ? 3 : 10} results for &quot;{query.query}
-            &quot;
-          </div>
-        )}
-        <div className="flex flex-col items-center gap-4 mt-2 md:mt-4 w-full md:w-2/3 m-auto">
-          <div className="self-end flex items-center">
-            <label htmlFor="subscribed-checkbox">Subscribed</label>
-            {renderAntCheckbox}
-          </div>
-          {filterSubscribed
-            ? apiReposData
-                .filter((a) => a.subscribeStatus)
-                .map((a) => (
+                  }}
+                />
+              </Form>
+            </div>
+          }
+        >
+          {query.query && (
+            <div>
+              Showing {filterSubscribed ? 3 : 10} results for &quot;
+              {query.query}
+              &quot;
+            </div>
+          )}
+          <div className="flex flex-col items-center gap-4 mt-2 md:mt-4 w-full md:w-2/3 m-auto">
+            <div className="self-end flex items-center">
+              <label htmlFor="subscribed-checkbox">Subscribed</label>
+              {renderAntCheckbox}
+            </div>
+            {filterSubscribed
+              ? apiReposData
+                  .filter((a) => a.subscribeStatus)
+                  .map((a) => (
+                    <ApiRepo key={a.alias} data={a} className="w-full" />
+                  ))
+              : apiReposData.map((a) => (
                   <ApiRepo key={a.alias} data={a} className="w-full" />
-                ))
-            : apiReposData.map((a) => (
-                <ApiRepo key={a.alias} data={a} className="w-full" />
-              ))}
-          <Pagination className="self-end" />
-        </div>
-      </Layout>
-    </>
+                ))}
+            <Pagination className="self-end" />
+          </div>
+        </Layout>
+      </>
+    )
   );
 };
 
