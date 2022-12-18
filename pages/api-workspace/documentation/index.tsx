@@ -28,7 +28,7 @@ export const defaultMD = `# API's documentation
 - list item 2
 
 \`\`\`
-Code snipet
+Code snippet
 \`\`\`
 
 ![](https://picsum.photos/536/354)
