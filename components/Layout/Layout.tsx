@@ -1,9 +1,11 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useSidebarStatusContext } from "../../context";
 import { WithChildren } from "../../types/common";
 import { Sidebar } from "../Sidebar";
 import { Topbar } from "../Topbar";
 import { Text } from "../Text";
+import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../../context/auth";
+import { useRouter } from "next/router";
 
 export const Layout = ({
   children,
@@ -19,8 +21,22 @@ export const Layout = ({
 }) => {
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const { replace } = useRouter();
+  const { isAuthenticated } = useAuthContext();
 
-  return (
+  useEffect(() => {
+    if (!isAuthenticated) {
+      replace("/login");
+    }
+  }, [isAuthenticated, replace]);
+
+  useEffect(() => {
+    if (!window.location.href.includes("/login")) {
+      window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href);
+    }
+  }, []);
+
+  return isAuthenticated ? (
     <div className={`relative md:flex ${className}`}>
       <Sidebar
         className={`top-0 min-w-max fixed md:sticky z-50 md:z-0 ${
@@ -52,5 +68,5 @@ export const Layout = ({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };

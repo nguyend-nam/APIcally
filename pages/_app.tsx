@@ -8,17 +8,20 @@ import {
   SidebarStatusProvider,
 } from "../context";
 import NProgressHandler from "../components/NProgressHandler/NprogressHandler";
+import { AuthProvider } from "../context/auth";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <FileListProvider>
-      <ComponentListProvider>
-        <SidebarStatusProvider>
-          <NProgressHandler />
-          <Component {...pageProps} />
-        </SidebarStatusProvider>
-      </ComponentListProvider>
-    </FileListProvider>
+    <AuthProvider>
+      <FileListProvider>
+        <ComponentListProvider>
+          <SidebarStatusProvider>
+            <NProgressHandler />
+            <Component {...pageProps} />
+          </SidebarStatusProvider>
+        </ComponentListProvider>
+      </FileListProvider>
+    </AuthProvider>
   );
 }
 
