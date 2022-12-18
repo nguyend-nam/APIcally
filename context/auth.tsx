@@ -13,7 +13,7 @@ const AuthProvider = ({ children }: WithChildren) => {
       typeof window !== "undefined"
         ? window.localStorage.getItem(APICALLY_KEY)
         : "";
-    return value && value !== undefined ? JSON.parse(value) : "false";
+    return value && value !== undefined ? JSON.parse(value) : false;
   });
 
   useEffect(() => {
