@@ -4,25 +4,25 @@ import { ReactNode } from "react";
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
     case "top":
-      return "rounded-t-xl";
+      return "rounded-t-lg";
     case "right":
-      return "rounded-r-xl";
+      return "rounded-r-lg";
     case "bottom":
-      return "rounded-b-xl";
+      return "rounded-b-lg";
     case "left":
-      return "rounded-l-xl";
+      return "rounded-l-lg";
     case "primary":
-      return "rounded-r-xl rounded-bl-xl";
+      return "rounded-r-lg rounded-bl-lg";
     case "topRight":
-      return "rounded-tr-xl";
+      return "rounded-tr-lg";
     case "topLeft":
-      return "rounded-tl-xl";
+      return "rounded-tl-lg";
     case "bottomRight":
-      return "rounded-br-xl";
+      return "rounded-br-lg";
     case "bottomLeft":
-      return "rounded-bl-xl";
+      return "rounded-bl-lg";
     case "full":
-      return "rounded-xl";
+      return "rounded-lg";
     case "none":
       return "rounded-none";
   }
@@ -65,20 +65,22 @@ export const Button = (props: ButtonProps) => {
     className,
     appearance = "primary",
     isLoading = false,
+    style,
     ...rest
   } = props;
   return (
     <button
-      className={`${getButtonStyle(appearance)} ${getBorderRadius(
-        borderRadius
-      )} ${className}`}
+      className={`text-base md:text-lg p-2.5 py-1 ${getButtonStyle(
+        appearance
+      )} ${getBorderRadius(borderRadius)} ${className}`}
       disabled={isLoading}
+      style={style}
       {...rest}
     >
       {label}
       {isLoading ? (
         <span className="ml-2">
-          <Spin />
+          <Spin size="small" />
         </span>
       ) : null}
     </button>

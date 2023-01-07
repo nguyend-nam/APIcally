@@ -30,7 +30,7 @@ export const FileManagement = ({
     <div className={`shadow-lg z-30 h-screen overflow-auto ${className}`}>
       <div className="p-4 flex justify-end bg-primary sticky top-0 z-30">
         <Button
-          className="p-1 px-2 !bg-white !text-primary"
+          className="!bg-white !text-primary"
           onClick={() => setIsAddingFile(true)}
           label="Add file"
         />

@@ -46,7 +46,7 @@ const HomePage = () => {
                 <Button
                   borderRadius="right"
                   label={<SearchOutlined />}
-                  className="h-8 flex justify-center items-center text-lg p-2"
+                  className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
                       push(`/home/search?query=${searchQuery}`);
@@ -71,7 +71,7 @@ const HomePage = () => {
                       </Text>
                       <Button
                         label="Create now"
-                        className="p-2 m-3 text-base"
+                        className="m-3"
                         onClick={() => push("/api-workspace/code-editor")}
                       />
                     </>

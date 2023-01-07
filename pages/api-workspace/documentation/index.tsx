@@ -6,7 +6,7 @@ import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { ColumnsType } from "antd/lib/table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "antd/lib/form/Form";
 import { DefineInput } from "../../../components/page/api-workspace/DefineInput";
 import { DeleteFilled } from "@ant-design/icons";
@@ -127,78 +127,82 @@ const DocumentationPage = () => {
     );
   }, [dataSource]); // eslint-disable-line
 
+  const [isSSR, setIsSSR] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
   return (
-    <>
-      <Head>
-        <title>API workspace | APIcally</title>
-      </Head>
-      <Layout>
-        <Typography.Title level={3}>Documentation</Typography.Title>
-        <div className="border-primary border-t-4">
-          <MdEditor
-            plugins={[
-              "header",
-              "font-bold",
-              "font-italic",
-              "list-unordered",
-              "block-quote",
-              "link",
-              "image",
-              "full-screen",
-              "block-code-inline",
-              "block-code-block",
-              "mode-toggle",
-            ]}
-            style={{ height: 510 }}
-            renderHTML={(text) => <ReactMarkdown source={text} />}
-            onChange={handleEditorChange}
-            defaultValue={defaultMD}
-          />
-        </div>
-
-        <div className="mt-8">
-          <div className="flex items-center justify-between w-full mb-4">
-            <Typography.Title level={3} className="!m-0">
-              Define inputs
-            </Typography.Title>
-
-            <Button
-              label="Add input"
-              className="text-lg py-1 px-2"
-              onClick={openAddInputDialog}
+    !isSSR && (
+      <>
+        <Head>
+          <title>API workspace | APIcally</title>
+        </Head>
+        <Layout>
+          <Typography.Title level={3}>Documentation</Typography.Title>
+          <div className="border-primary border-t-4">
+            <MdEditor
+              plugins={[
+                "header",
+                "font-bold",
+                "font-italic",
+                "list-unordered",
+                "block-quote",
+                "link",
+                "image",
+                "full-screen",
+                "block-code-inline",
+                "block-code-block",
+                "mode-toggle",
+              ]}
+              style={{ height: 510 }}
+              renderHTML={(text) => <ReactMarkdown source={text} />}
+              onChange={handleEditorChange}
+              defaultValue={defaultMD}
             />
           </div>
 
-          {isAddInputDialogOpen && (
-            <DefineInput
-              form={form}
-              dataSource={dataSource}
-              setDataSource={setDataSource}
-              isOpen={isAddInputDialogOpen}
-              onCancel={closeAddInputDialog}
-              onOk={form.submit}
-            />
-          )}
+          <div className="mt-8">
+            <div className="flex items-center justify-between w-full mb-4">
+              <Typography.Title level={3} className="!m-0">
+                Define inputs
+              </Typography.Title>
 
-          {renderTable}
-        </div>
+              <Button label="Add input" onClick={openAddInputDialog} />
+            </div>
 
-        <Button
-          label="Submit"
-          onClick={() => {
-            setIsLoading(true);
-            setTimeout(() => {
-              notification.success({
-                message: "Algorithm successfully submitted!",
-              });
-              push("/profile/apis");
-            }, 1000);
-          }}
-          className="text-lg py-1 px-2 mt-8"
-          isLoading={isLoading}
-        />
-      </Layout>
-    </>
+            {isAddInputDialogOpen && (
+              <DefineInput
+                form={form}
+                dataSource={dataSource}
+                setDataSource={setDataSource}
+                isOpen={isAddInputDialogOpen}
+                onCancel={closeAddInputDialog}
+                onOk={form.submit}
+              />
+            )}
+
+            {renderTable}
+          </div>
+
+          <Button
+            label="Submit"
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                notification.success({
+                  message: "Algorithm successfully submitted!",
+                });
+                push("/profile/apis");
+              }, 1000);
+            }}
+            className="mt-8"
+            isLoading={isLoading}
+          />
+        </Layout>
+      </>
+    )
   );
 };
 

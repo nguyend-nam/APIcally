@@ -4,25 +4,25 @@ import { WithChildren } from "../../types/common";
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
     case "top":
-      return "rounded-t-2xl";
+      return "rounded-t-lg";
     case "right":
-      return "rounded-r-2xl";
+      return "rounded-r-lg";
     case "bottom":
-      return "rounded-b-2xl";
+      return "rounded-b-lg";
     case "left":
-      return "rounded-l-2xl";
+      return "rounded-l-lg";
     case "primary":
-      return "rounded-r-2xl rounded-bl-2xl";
+      return "rounded-r-lg rounded-bl-lg";
     case "topRight":
-      return "rounded-tr-2xl";
+      return "rounded-tr-lg";
     case "topLeft":
-      return "rounded-tl-2xl";
+      return "rounded-tl-lg";
     case "bottomRight":
-      return "rounded-br-2xl";
+      return "rounded-br-lg";
     case "bottomLeft":
-      return "rounded-bl-2xl";
+      return "rounded-bl-lg";
     case "full":
-      return "rounded-2xl";
+      return "rounded-lg";
     case "none":
       return "rounded-none";
   }
