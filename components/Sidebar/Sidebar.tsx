@@ -6,6 +6,7 @@ import {
   AppstoreAddOutlined,
   CaretDownOutlined,
   CaretUpOutlined,
+  CaretRightOutlined,
 } from "@ant-design/icons";
 import { Popover } from "antd";
 import Link from "next/link";
@@ -16,7 +17,11 @@ import { Button } from "../Button";
 import { Logo } from "../Logo";
 
 const sidebarRoutes = [
-  { icon: <HomeOutlined className="h-fit" />, label: "Home", route: "/home" },
+  {
+    icon: <HomeOutlined className="h-fit" />,
+    label: "Home",
+    route: "/home",
+  },
   {
     icon: <CodeOutlined className="h-fit" />,
     label: "API workspace",
@@ -48,33 +53,25 @@ export const Sidebar = ({
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState<boolean>(false);
 
   const workspaceExtraTab = (
-    <div key="workspace-subtab" className="flex flex-col">
+    <div className="flex flex-col">
       <Button
-        key="create-api"
         borderRadius="none"
         label={
-          <span
-            className="!text-base mx-2 text-left"
-            style={{ transition: "0.4s" }}
-          >
+          <span className="mx-2 text-left" style={{ transition: "0.4s" }}>
             Create API
           </span>
         }
-        className="text-lg p-4 py-3 bg-primary hover:bg-blue-900 text-left"
+        className="!text-sm !p-4 !py-3 bg-primary hover:bg-blue-900 text-left"
         onClick={() => push("/api-workspace/code-editor")}
       />
       <Button
-        key="utilize-api"
         borderRadius="none"
         label={
-          <span
-            className="!text-base mx-2 text-left"
-            style={{ transition: "0.4s" }}
-          >
+          <span className="mx-2 text-left" style={{ transition: "0.4s" }}>
             Utilize subscribed APIs
           </span>
         }
-        className="text-lg p-4 py-3 bg-primary hover:bg-blue-900 text-left"
+        className="!text-sm !p-4 !py-3 bg-primary hover:bg-blue-900 text-left"
         onClick={() => push("/profile/apis")}
       />
     </div>
@@ -106,7 +103,7 @@ export const Sidebar = ({
                 <>
                   {route.icon}
                   <span
-                    className={`!text-base ml-4 w-[110px] text-left ${
+                    className={`ml-4 w-[110px] text-left ${
                       !isExpanded &&
                       "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
                     }`}
@@ -116,7 +113,7 @@ export const Sidebar = ({
                   </span>
                 </>
               }
-              className={`bg-blue-800 w-full p-6 text-2xl flex items-center justify-start hover:bg-blue-900 ${
+              className={`!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900 ${
                 pathname.includes(route.route) && "!bg-white !text-primary"
               }`}
               style={{ transition: "0.2s" }}
@@ -126,15 +123,15 @@ export const Sidebar = ({
               }}
             />
           ) : (
-            <>
-              <div key="workspace-group" className="flex relative">
+            <div key={route.route}>
+              <div className="flex relative">
                 <Button
                   key={route.route}
                   label={
                     <>
                       {route.icon}
                       <span
-                        className={`!text-base ml-4 w-[110px] text-left ${
+                        className={`ml-4 w-[110px] text-left ${
                           !isExpanded &&
                           "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
                         }`}
@@ -144,7 +141,7 @@ export const Sidebar = ({
                       </span>
                     </>
                   }
-                  className={`bg-blue-800 w-full p-6 text-2xl flex items-center justify-start hover:bg-blue-900 ${
+                  className={`!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900 ${
                     pathname.includes(route.route) && "!bg-white !text-primary"
                   }`}
                   style={{ transition: "0.2s" }}
@@ -164,7 +161,7 @@ export const Sidebar = ({
                         <CaretDownOutlined />
                       )
                     }
-                    className={`bg-blue-800 w-max px-0.5 text-sm flex items-center justify-start hover:bg-blue-900 ${
+                    className={`!text-sm bg-blue-800 w-max !px-0.5 flex items-center justify-start hover:bg-blue-900 ${
                       pathname.includes(route.route) &&
                       "!bg-white !text-primary"
                     }`}
@@ -180,8 +177,8 @@ export const Sidebar = ({
                   >
                     <Button
                       key="drop-down"
-                      label={<CaretDownOutlined />}
-                      className={`bg-blue-800 w-max px-0.5 text-sm flex items-center justify-start hover:bg-blue-900 ${
+                      label={<CaretRightOutlined />}
+                      className={`!text-sm bg-blue-800 w-max !px-0.5 flex items-center justify-start hover:bg-blue-900 ${
                         pathname.includes(route.route) &&
                         "!bg-white !text-primary"
                       }`}
@@ -193,7 +190,7 @@ export const Sidebar = ({
                 )}
               </div>
               {isWorkspaceOpen && isExpanded && workspaceExtraTab}
-            </>
+            </div>
           )
         )}
       </div>
@@ -204,7 +201,7 @@ export const Sidebar = ({
             style={{ transition: "transform 0.3s" }}
           />
         }
-        className="p-4 w-full hidden md:block"
+        className="!p-4 w-full hidden md:block"
         onClick={() => {
           setSidebarStatus(!isExpanded);
           setIsWorkspaceOpen(false);

@@ -63,7 +63,7 @@ const LoginPage = () => {
                 <Link href="/">
                   <a>
                     <Logo
-                      size={isMobile ? "sm" : "lg"}
+                      size={isMobile ? "sm" : "md"}
                       hasText={!isMobile}
                       textTheme="light"
                       className="mb-0 sm:mb-12"
@@ -111,7 +111,7 @@ const LoginPage = () => {
                 <div className="w-full text-center mt-5">
                   <Button
                     label="Login"
-                    className="p-1 text-lg w-[125px]"
+                    className="w-[125px]"
                     type="submit"
                     onClick={() => {
                       setIsLoading(true);
@@ -124,7 +124,6 @@ const LoginPage = () => {
                   <Button
                     label="Or use testing account"
                     appearance="link"
-                    className="p-1 text-lg"
                     onClick={() => {
                       setIsUseTestAccountLoading(true);
                       setTimeout(() => setIsAuthenticated(true), 1000);

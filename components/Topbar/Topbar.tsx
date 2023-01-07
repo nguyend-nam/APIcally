@@ -34,59 +34,61 @@ export const Topbar = ({
         {formatPathname(pathname)}
         {extraLeft}
       </div>
-      <Button
-        label={
-          !isMenuOpen ? (
-            <MenuUnfoldOutlined className="text-lg absolute top-2 left-2" />
-          ) : (
-            <MenuFoldOutlined className="text-lg absolute top-2 left-2" />
-          )
-        }
-        className="p-2 w-[34px] h-[34px] relative block md:hidden"
-        onClick={onClick}
-      />
-      <Dropdown
-        overlay={
-          <div className="flex flex-col shadow-lg overflow-hidden rounded-lg">
-            <Button
-              label={
-                <div className="flex items-center gap-2">
-                  <UserOutlined />
-                  Profile
-                </div>
-              }
-              className="p-3 py-2 !bg-white !text-primary w-full text-left"
-              borderRadius="none"
-            />
-            <Button
-              label={
-                <div className="flex items-center gap-2">
-                  <ApiOutlined />
-                  APIs
-                </div>
-              }
-              className="p-3 py-2 !bg-white !text-primary w-full text-left"
-              borderRadius="none"
-            />
-            <Button
-              label={
-                <div className="flex items-center gap-2">
-                  <ExportOutlined rotate={180} />
-                  Logout
-                </div>
-              }
-              className="p-3 py-2 !bg-white !text-primary w-full text-left"
-              borderRadius="none"
-              onClick={() => setIsAuthenticated(false)}
-            />
-          </div>
-        }
-        placement="bottomRight"
-        trigger={["click"]}
-        className="cursor-pointer !hidden md:!block"
-      >
-        <Avatar icon={<UserOutlined size={64} />} />
-      </Dropdown>
+      <div className="flex gap-4">
+        <Dropdown
+          overlay={
+            <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
+              <Button
+                label={
+                  <div className="flex items-center gap-2 text-black">
+                    <UserOutlined className="!text-primary" />
+                    Profile
+                  </div>
+                }
+                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
+                borderRadius="none"
+              />
+              <Button
+                label={
+                  <div className="flex items-center gap-2 text-black">
+                    <ApiOutlined className="!text-primary" />
+                    APIs
+                  </div>
+                }
+                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
+                borderRadius="none"
+              />
+              <Button
+                label={
+                  <div className="flex items-center gap-2 text-black">
+                    <ExportOutlined className="!text-primary" rotate={180} />
+                    Logout
+                  </div>
+                }
+                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
+                borderRadius="none"
+                onClick={() => setIsAuthenticated(false)}
+              />
+            </div>
+          }
+          placement="bottomRight"
+          trigger={["click"]}
+          className="cursor-pointer !block"
+        >
+          <Avatar icon={<UserOutlined size={64} />} />
+        </Dropdown>
+        <Button
+          label={
+            !isMenuOpen ? (
+              <MenuUnfoldOutlined className="text-lg absolute top-2 left-2" />
+            ) : (
+              <MenuFoldOutlined className="text-lg absolute top-2 left-2" />
+            )
+          }
+          className="w-[34px] h-[34px] relative block md:hidden"
+          onClick={onClick}
+        />
+      </div>
     </div>
   );
 };

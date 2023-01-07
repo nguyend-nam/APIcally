@@ -8,6 +8,9 @@ import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { SearchOutlined } from "@ant-design/icons";
+import { Form } from "antd";
+import { Input } from "../../../components/Input";
 
 const sendData = async (data: FormData, fileList: fileObj[]) => {
   fileList.forEach((file) => {
@@ -64,6 +67,7 @@ const CodeEditorPage = () => {
   }, [currentFile, language, value]);
 
   const [isSSR, setIsSSR] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setIsSSR(false);
@@ -75,7 +79,34 @@ const CodeEditorPage = () => {
         <Head>
           <title>API workspace | APIcally</title>
         </Head>
-        <Layout contentClassName="!p-0" hasFooter={false}>
+        <Layout
+          extraLeft={
+            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+              <Form className="flex items-center">
+                <Input
+                  borderRadius="bottomLeft"
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search or jump to..."
+                  className="!font-normal !placeholder:font-normal h-8"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button
+                  borderRadius="right"
+                  label={<SearchOutlined />}
+                  className="h-8 flex justify-center items-center !p-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      push(`/home/search?query=${searchQuery}`);
+                    }
+                  }}
+                />
+              </Form>
+            </div>
+          }
+          contentClassName="!p-0"
+          hasFooter={false}
+        >
           <div className="flex bg-slate-100">
             <FileManagement
               currentFile={currentFile}
@@ -103,7 +134,6 @@ const CodeEditorPage = () => {
                       1000
                     );
                   }}
-                  className="text-lg py-1 px-2"
                   isLoading={isLoading}
                 />
               </div>

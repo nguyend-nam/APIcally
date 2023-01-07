@@ -1,6 +1,6 @@
 import { Button } from "../../components/Button";
 import { Layout } from "../../components/Layout";
-import { Empty, Modal, Typography } from "antd";
+import { Empty, Form, Modal, Typography } from "antd";
 import { Card } from "../../components/Card";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ import { Text } from "../../components/Text";
 import { ApiRepo } from "../../components/page/home/ApiRepo";
 import { apiReposData } from "../../constants/mockData";
 import { useDisclosure } from "@dwarvesf/react-hooks";
+import { SearchOutlined } from "@ant-design/icons";
 
 const CodeEditorPage = () => {
   const { push } = useRouter();
@@ -23,6 +24,7 @@ const CodeEditorPage = () => {
   } = useDisclosure();
 
   const [isSSR, setIsSSR] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setIsSSR(false);
@@ -34,7 +36,32 @@ const CodeEditorPage = () => {
         <Head>
           <title>API workspace | APIcally</title>
         </Head>
-        <Layout>
+        <Layout
+          extraLeft={
+            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+              <Form className="flex items-center">
+                <Input
+                  borderRadius="bottomLeft"
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search or jump to..."
+                  className="!font-normal !placeholder:font-normal h-8"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button
+                  borderRadius="right"
+                  label={<SearchOutlined />}
+                  className="h-8 flex justify-center items-center !p-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      push(`/home/search?query=${searchQuery}`);
+                    }
+                  }}
+                />
+              </Form>
+            </div>
+          }
+        >
           <div className="flex flex-col items-center">
             <Typography.Title level={4} className="text-center">
               Select an API to utilize or create your own
@@ -61,7 +88,6 @@ const CodeEditorPage = () => {
                 </div>
                 <Button
                   label="Start creating"
-                  className="text-lg py-1 px-2"
                   onClick={() => push("/api-workspace/code-editor")}
                 />
               </Card>
@@ -81,7 +107,7 @@ const CodeEditorPage = () => {
                       Utilize your subscribed APIs
                     </Typography.Text>
                     <Button
-                      className="p-2 py-1 text-lg !bg-slate-100 !text-slate-400"
+                      className="!bg-slate-100 !text-slate-400"
                       label="Search subscribed APIs..."
                       onClick={openSearchSubscribedAPIsDialog}
                     />
@@ -90,7 +116,6 @@ const CodeEditorPage = () => {
                   <Button
                     type="submit"
                     label="View subscribed APIs"
-                    className="text-lg py-1 px-2"
                     onClick={() => {
                       push("/profile/apis");
                     }}

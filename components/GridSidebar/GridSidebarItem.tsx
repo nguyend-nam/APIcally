@@ -14,7 +14,7 @@ const GridSidebarItem = ({
   remove: removeComponent,
 }: SidebarItemProps) => {
   return (
-    <div className="shadow-md p-2 rounded-xl mb-2 bg-white">
+    <div className="shadow-md p-2 rounded-lg mb-2 bg-white">
       <div className="flex justify-between items-center text-lg">
         <span className="text-blue-600">{itemIndex}</span>
         <button
