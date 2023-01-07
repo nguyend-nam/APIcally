@@ -12,7 +12,7 @@ import { Input } from "../../../../../components/Input";
 import { ColumnsType } from "antd/lib/table";
 import { useIsMobile } from "../../../../../hooks/mobile";
 import { Button } from "../../../../../components/Button";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
@@ -26,7 +26,7 @@ const defineInputType = (type: keyof typeof variableTypes) => {
 };
 
 const UtilizerPage = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const isMobile = useIsMobile();
 
   const currentAPI = apiReposData.find(
@@ -150,6 +150,7 @@ const UtilizerPage = () => {
   ];
 
   const [isSSR, setIsSSR] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setIsSSR(false);
@@ -161,7 +162,41 @@ const UtilizerPage = () => {
         <Head>
           <title>API workspace | APIcally</title>
         </Head>
-        <Layout>
+        <Layout
+          extraLeft={
+            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+              <Form className="flex items-center">
+                <Input
+                  borderRadius="bottomLeft"
+                  type="text"
+                  id="home-search-input"
+                  placeholder="Search or jump to..."
+                  className="!font-normal !placeholder:font-normal h-8"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button
+                  borderRadius="right"
+                  label={<SearchOutlined />}
+                  className="h-8 flex justify-center items-center !p-2"
+                  onClick={() => {
+                    if (searchQuery) {
+                      if (
+                        query.status !== undefined &&
+                        query.status === "subscribed"
+                      ) {
+                        push(
+                          `/home/search?query=${searchQuery}&status=subscribed`
+                        );
+                      } else {
+                        push(`/home/search?query=${searchQuery}`);
+                      }
+                    }
+                  }}
+                />
+              </Form>
+            </div>
+          }
+        >
           {currentAPI === undefined ? (
             <Typography.Title level={3}>API not found</Typography.Title>
           ) : (
