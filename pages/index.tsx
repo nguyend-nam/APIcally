@@ -10,6 +10,7 @@ import { useIsMobile } from "../hooks/mobile";
 import { GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import { useAuthContext } from "../context/auth";
+import { Parallax } from "react-scroll-parallax";
 
 const supplier = [
   {
@@ -17,8 +18,10 @@ const supplier = [
     img: "img/monaco-editor-logo.svg",
     height: 25,
   },
-  { href: "https://www.python.org/", img: "img/python-logo.png", height: 25 },
-  { href: "https://nodejs.org/en/", img: "img/nodejs-logo.png", height: 25 },
+  { href: "https://nextjs.org/", img: "img/nextjs-logo.png", height: 25 },
+  { href: "https://go.dev/", img: "img/golang-logo.png", height: 25 },
+  { href: "https://nodejs.org/en/", img: "img/nodejs-logo.png", height: 30 },
+  { href: "https://www.python.org/", img: "img/python-logo.png", height: 30 },
   { href: "https://www.mongodb.com/", img: "img/mongodb-logo.png", height: 25 },
   {
     href: "https://axios-http.com/docs/intro",
@@ -51,17 +54,20 @@ const types = [
   {
     name: "JSON",
     img: "img/json.png",
-    nameClassName: "text-center text-2xl font-medium text-primary",
+    nameClassName:
+      "!mt-2 md:!mt-4 text-center text-lg md:text-xl font-medium text-primary",
   },
   {
     name: "Images",
     img: "img/image.png",
-    nameClassName: "text-center text-2xl font-medium text-primary",
+    nameClassName:
+      "!mt-2 md:!mt-4 text-center text-lg md:text-xl font-medium text-primary",
   },
   {
     name: "Other types might be added in future enhancement",
     img: "img/not-known-yet.png",
-    nameClassName: "text-center text-lg font-normal text-slate-600 max-w-fit",
+    nameClassName:
+      "!mt-2 md:!mt-4 text-center text-base md:text-lg font-normal text-slate-600 max-w-xs",
   },
 ];
 
@@ -120,39 +126,49 @@ const Home = () => {
             </Card>
 
             <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
-              <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg">
-                <Text className="text-lg text-slate-400 m-0 hidden md:block">
-                  Welcome to
-                </Text>
-                <Text className="text-4xl md:text-5xl tracking-[1px] font-bold text-primary m-0 mb-2 md:mb-6">
-                  APIcally
-                </Text>
-                <Text className="text-xl md:text-2xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
-                  Where APIs get into work
-                </Text>
-                <Text className="text-base md:text-lg font-normal text-slate-700 m-0">
-                  A platform to run, host and utilize APIs. Provide your
-                  algorithm, let us do the rest.
-                </Text>
-                <Button
-                  className="text-lg md:text-xl mt-2 md:mt-4"
-                  label="Get started"
-                  onClick={() => push(isAuthenticated ? "/home" : "/login")}
-                />
-              </Card>
-              <div className="sticky bottom-3 flex-wrap flex items-center space-x-4 md:space-x-6 mt-6 justify-end md:justify-start md:mr-0">
-                {supplier.map((s) => (
-                  <Link key={s.href} href={s.href}>
-                    <a className="mb-1" target="_blank">
-                      <Image height={s.height} preview={false} src={s.img} />
-                    </a>
-                  </Link>
-                ))}
-              </div>
+              <Parallax
+                speed={8}
+                style={{
+                  position: "relative",
+                  zIndex: 20,
+                }}
+              >
+                <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg mt-6 md:mt-2">
+                  <Text className="text-lg text-slate-400 m-0 hidden md:block">
+                    Welcome to
+                  </Text>
+                  <Text className="text-4xl md:text-5xl tracking-[1px] font-bold text-primary m-0 mb-2 md:mb-6">
+                    APIcally
+                  </Text>
+                  <Text className="text-xl md:text-2xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
+                    Where APIs get into work
+                  </Text>
+                  <Text className="text-base md:text-lg font-normal text-slate-700 m-0">
+                    A platform to run, host and utilize APIs. Provide your
+                    algorithm, let us do the rest.
+                  </Text>
+                  <Button
+                    className="text-lg md:text-xl mt-2 md:mt-4"
+                    label="Get started"
+                    onClick={() => push(isAuthenticated ? "/home" : "/login")}
+                  />
+                </Card>
+              </Parallax>
+              <Parallax speed={4}>
+                <div className="sticky max-w-fit md:max-w-sm bottom-3 flex-wrap flex items-center gap-x-4 md:gap-x-6 mt-1 mb-[24px] justify-end md:justify-start md:mr-0">
+                  {supplier.map((s) => (
+                    <Link key={s.href} href={s.href}>
+                      <a className="mb-1" target="_blank">
+                        <Image height={s.height} preview={false} src={s.img} />
+                      </a>
+                    </Link>
+                  ))}
+                </div>
+              </Parallax>
             </div>
 
-            <div className="p-4 pb-16 pt-32 md:pt-32">
-              <Text className="text-3xl md:text-4xl font-semibold text-slate-700 text-center mb-16">
+            <div className="p-4 pb-16 pt-32">
+              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
                 How APIcally works
               </Text>
               <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
@@ -171,10 +187,10 @@ const Home = () => {
                         src={s.img}
                       />
                     </div>
-                    <Text className="text-center text-xl font-medium text-slate-600">
+                    <Text className="text-center text-lg md:text-xl font-medium text-slate-600">
                       {s.title}
                     </Text>
-                    <div className="text-center text-lg text-slate-600 whitespace-pre-line max-w-fit">
+                    <div className="text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
                       {s.description}
                     </div>
                   </Card>
@@ -183,66 +199,68 @@ const Home = () => {
             </div>
 
             <div className="p-4 pb-16 pt-16">
-              <Text className="text-3xl md:text-4xl font-semibold text-primary text-center mb-16">
+              <Text className="text-2xl md:text-4xl font-semibold text-primary text-center mb-12 md:mb-16">
                 How the delivery goes
               </Text>
-              <div className="flex flex-wrap justify-center lg:justify-between m-auto items-center max-w-4xl">
-                <Image
-                  height={isMobile ? 240 : 300}
-                  className="object-contain"
-                  preview={false}
-                  src="img/developer-art.svg"
-                />
-                <div className="max-h-max max-w-md mt-4 lg:mt-0">
-                  <Text
-                    as="h4"
-                    className="text-xl md:text-2xl font-semibold text-slate-600"
-                  >
-                    As a <u>Developer</u>
-                  </Text>
-                  <Text
-                    as="span"
-                    className="text-slate-600 text-lg md:text-xl font-normal !m-0"
-                  >
-                    Researchs and gives solutions via algorithms, provides
-                    documentations and pricing plans.
-                  </Text>
+              <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
+                <div className="w-full md:w-96 flex flex-col items-center gap-4">
+                  <Image
+                    height={isMobile ? 200 : 260}
+                    className="object-contain"
+                    preview={false}
+                    src="img/developer-art.svg"
+                  />
+                  <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
+                    <Text
+                      as="h4"
+                      className="text-lg md:text-xl font-semibold text-slate-600"
+                    >
+                      As a <u>Developer</u>
+                    </Text>
+                    <Text
+                      as="span"
+                      className="text-slate-600 text-base md:text-lg font-normal !m-0"
+                    >
+                      Researchs and gives solutions via algorithms, provides
+                      documentations and pricing plans.
+                    </Text>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-wrap flex-row-reverse justify-center lg:justify-between m-auto items-center max-w-4xl mt-8">
-                <Image
-                  height={isMobile ? 240 : 300}
-                  className="object-contain"
-                  preview={false}
-                  src="img/non-tech-art.svg"
-                />
-                <div className="max-h-max max-w-md mt-4 lg:mt-0">
-                  <Text
-                    as="h4"
-                    className="text-xl md:text-2xl font-semibold text-slate-600"
-                  >
-                    As a <u>Domain-specialized user</u>
-                  </Text>
-                  <Text
-                    as="span"
-                    className="text-slate-600 text-lg md:text-xl font-normal !m-0"
-                  >
-                    Subscribes to get access to the APIs that fit your usage
-                    based on the data you have.
-                  </Text>
+                <div className="w-full md:w-96 flex flex-col items-center gap-4">
+                  <Image
+                    height={isMobile ? 200 : 260}
+                    className="object-contain"
+                    preview={false}
+                    src="img/non-tech-art.svg"
+                  />
+                  <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
+                    <Text
+                      as="h4"
+                      className="text-lg md:text-xl font-semibold text-slate-600"
+                    >
+                      As a <u>Domain-specialized user</u>
+                    </Text>
+                    <Text
+                      as="span"
+                      className="text-slate-600 text-base md:text-lg font-normal !m-0"
+                    >
+                      Subscribes to get access to the APIs that fit your usage
+                      based on the data you have.
+                    </Text>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="p-16 px-4">
-              <Text className="text-3xl md:text-4xl font-semibold text-slate-700 text-center mb-16">
+              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
                 What APIcally can &quot;digests&quot;
               </Text>
-              <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto">
+              <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-4">
                 {types.map((t) => (
                   <Card
                     key={t.name}
-                    className="mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
+                    className="last-of-type:mb-0 flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
                     hasShadow={false}
                   >
                     <div className="max-w-fit overflow-hidden flex justify-center">
@@ -261,10 +279,10 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4">
-              <Text className="text-3xl md:text-4xl font-semibold text-slate-700 text-center mb-16">
+              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
                 Made with
               </Text>
-              <div className="flex flex-wrap justify-center items-center">
+              <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (
                   <Link key={s.href} href={s.href}>
                     <a className="mx-4 my-2 mb-1" target="_blank">

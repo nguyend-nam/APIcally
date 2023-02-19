@@ -9,17 +9,20 @@ import {
 } from "../context";
 import NProgressHandler from "../components/NProgressHandler/NprogressHandler";
 import { AuthProvider } from "../context/auth";
+import { ParallaxProvider } from "react-scroll-parallax";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <FileListProvider>
-        <ComponentListProvider>
-          <SidebarStatusProvider>
-            <NProgressHandler />
-            <Component {...pageProps} />
-          </SidebarStatusProvider>
-        </ComponentListProvider>
+        <ParallaxProvider>
+          <ComponentListProvider>
+            <SidebarStatusProvider>
+              <NProgressHandler />
+              <Component {...pageProps} />
+            </SidebarStatusProvider>
+          </ComponentListProvider>
+        </ParallaxProvider>
       </FileListProvider>
     </AuthProvider>
   );
