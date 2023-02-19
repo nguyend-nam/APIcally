@@ -57,7 +57,7 @@ export const Layout = ({
           isMenuOpen={isMenuOpen}
         />
         <div className={`p-4 md:p-8 pb-8 w-full ${contentClassName}`}>
-          <div>{children}</div>
+          <div className="fade-in">{children}</div>
           {hasFooter && (
             <div className="text-center md:text-base mt-8">
               <Text as="span" className="text-slate-500">
