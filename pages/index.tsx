@@ -11,6 +11,7 @@ import { GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import { useAuthContext } from "../context/auth";
 import { Parallax } from "react-scroll-parallax";
+import { ROUTES } from "../constants/routes";
 
 const supplier = [
   {
@@ -104,7 +105,7 @@ const Home = () => {
                   <Button
                     className="text-base md:text-lg bg-white/0"
                     label="Go to console"
-                    onClick={() => push("/home")}
+                    onClick={() => push(ROUTES.HOME)}
                   />
                 </div>
               ) : (
@@ -113,13 +114,13 @@ const Home = () => {
                     appearance="link"
                     className="text-base md:text-lg mr-3 md:mr-4"
                     label="Login"
-                    onClick={() => push("/login")}
+                    onClick={() => push(ROUTES.LOGIN)}
                   />
                   <Button
                     appearance="outline"
                     className="text-base md:text-lg bg-white/0"
                     label="Register"
-                    onClick={() => push("/login")}
+                    onClick={() => push(ROUTES.LOGIN)}
                   />
                 </div>
               )}
@@ -150,7 +151,9 @@ const Home = () => {
                   <Button
                     className="text-lg md:text-xl mt-2 md:mt-4"
                     label="Get started"
-                    onClick={() => push(isAuthenticated ? "/home" : "/login")}
+                    onClick={() =>
+                      push(isAuthenticated ? ROUTES.HOME : ROUTES.LOGIN)
+                    }
                   />
                 </Card>
               </Parallax>

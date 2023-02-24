@@ -12,6 +12,7 @@ import Head from "next/head";
 import { SearchOutlined } from "@ant-design/icons";
 import { apiReposData } from "../../constants/mockData";
 import { ApiRepo } from "../../components/page/home/ApiRepo";
+import { ROUTES } from "../../constants/routes";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -33,7 +34,7 @@ const HomePage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -49,7 +50,7 @@ const HomePage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(`/home/search?query=${searchQuery}`);
+                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
                     }
                   }}
                 />
@@ -72,7 +73,7 @@ const HomePage = () => {
                       <Button
                         label="Create now"
                         className="m-3"
-                        onClick={() => push("/api-workspace/code-editor")}
+                        onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
                       />
                     </>
                   }
@@ -155,7 +156,7 @@ const HomePage = () => {
                 <div
                   role="button"
                   className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push("/api-workspace")}
+                  onClick={() => push(ROUTES.API_WORKSPACE)}
                 >
                   <Image
                     height={isMobile ? 150 : 200}
@@ -177,7 +178,7 @@ const HomePage = () => {
                 <div
                   role="button"
                   className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push("/api-workspace")}
+                  onClick={() => push(ROUTES.API_WORKSPACE)}
                 >
                   <Image
                     height={isMobile ? 150 : 200}
@@ -199,7 +200,7 @@ const HomePage = () => {
                 <div
                   role="button"
                   className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push("/explore")}
+                  onClick={() => push(ROUTES.EXPLORE)}
                 >
                   <Image
                     height={isMobile ? 150 : 200}

@@ -12,6 +12,7 @@ import { Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { CSSProperties, useState } from "react";
+import { ROUTES } from "../../constants/routes";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
 import { Logo } from "../Logo";
@@ -23,14 +24,14 @@ const sidebarRoutes = [
     route: "/home",
   },
   {
-    icon: <CodeOutlined className="h-fit" />,
-    label: "API workspace",
-    route: "/api-workspace",
-  },
-  {
     icon: <AppstoreAddOutlined className="h-fit" />,
     label: "Explore",
     route: "/explore",
+  },
+  {
+    icon: <CodeOutlined className="h-fit" />,
+    label: "API workspace",
+    route: "/api-workspace",
   },
   {
     icon: <UserOutlined className="h-fit" />,
@@ -62,7 +63,7 @@ export const Sidebar = ({
           </span>
         }
         className="!text-sm !p-4 !py-3 bg-primary hover:bg-blue-900 text-left"
-        onClick={() => push("/api-workspace/code-editor")}
+        onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
       />
       <Button
         borderRadius="none"
@@ -72,7 +73,7 @@ export const Sidebar = ({
           </span>
         }
         className="!text-sm !p-4 !py-3 bg-primary hover:bg-blue-900 text-left"
-        onClick={() => push("/profile/apis")}
+        onClick={() => push(ROUTES.PROFILE_APIS)}
       />
     </div>
   );

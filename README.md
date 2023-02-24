@@ -7,7 +7,7 @@ This repository contains the frontend implementation for APIcally.
 ```bash
 git clone git@github.com:nguyend-nam/APIcally.git apically
 cd apically
-yarn install
+yarn
 ```
 
 Then, you can run locally in development mode with live reload:

@@ -8,6 +8,7 @@ import { Input } from "../../../components/Input";
 import { Layout } from "../../../components/Layout";
 import { ApiRepo } from "../../../components/page/home/ApiRepo";
 import { apiReposData } from "../../../constants/mockData";
+import { ROUTES } from "../../../constants/routes";
 
 const SearchResultPage = () => {
   const { query, push } = useRouter();
@@ -34,14 +35,16 @@ const SearchResultPage = () => {
         onClick={(e) => {
           setFilterSubscribed((e.target as HTMLInputElement)?.checked);
           if ((e.target as HTMLInputElement)?.checked) {
-            push(`/home/search?query=${query.query}&status=subscribed`);
+            push(
+              ROUTES.EXPLORE_SEARCH(query.query as string, {
+                status: "subscribed",
+              })
+            );
           } else {
-            push(`/home/search?query=${query.query}`);
+            push(ROUTES.EXPLORE_SEARCH(query.query as string));
           }
         }}
-        defaultChecked={
-          query.status !== undefined && query.status === "subscribed"
-        }
+        checked={query.status !== undefined && query.status === "subscribed"}
       />
     );
   }, [push, query]);
@@ -60,7 +63,7 @@ const SearchResultPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -81,10 +84,12 @@ const SearchResultPage = () => {
                         query.status === "subscribed"
                       ) {
                         push(
-                          `/home/search?query=${searchQuery}&status=subscribed`
+                          ROUTES.EXPLORE_SEARCH(searchQuery, {
+                            status: "subscribed",
+                          })
                         );
                       } else {
-                        push(`/home/search?query=${searchQuery}`);
+                        push(ROUTES.EXPLORE_SEARCH(searchQuery));
                       }
                     }
                   }}

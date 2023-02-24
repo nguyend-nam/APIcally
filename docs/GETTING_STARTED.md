@@ -3,7 +3,7 @@
 Install dependencies with `yarn` or `npm`:
 
 ```bash
-yarn install
+yarn
 ```
 
 Then, you can run locally in development mode with live reload:

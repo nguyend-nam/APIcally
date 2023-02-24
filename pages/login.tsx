@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../context/auth";
 import Link from "next/link";
+import { ROUTES } from "../constants/routes";
 
 const LoginPage = () => {
   const isMobile = useIsMobile();
@@ -26,7 +27,7 @@ const LoginPage = () => {
     if (isAuthenticated) {
       const redirectUrl = window.localStorage.getItem(LOGIN_REDIRECTION_KEY);
 
-      push(redirectUrl || "/home").then(() => {
+      push(redirectUrl || ROUTES.HOME).then(() => {
         window.localStorage.removeItem(LOGIN_REDIRECTION_KEY);
       });
     }

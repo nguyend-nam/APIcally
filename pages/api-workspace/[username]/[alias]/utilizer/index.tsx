@@ -14,6 +14,7 @@ import { useIsMobile } from "../../../../../hooks/mobile";
 import { Button } from "../../../../../components/Button";
 import { CaretRightOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
+import { ROUTES } from "../../../../../constants/routes";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -164,7 +165,7 @@ const UtilizerPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -185,10 +186,12 @@ const UtilizerPage = () => {
                         query.status === "subscribed"
                       ) {
                         push(
-                          `/home/search?query=${searchQuery}&status=subscribed`
+                          ROUTES.EXPLORE_SEARCH(searchQuery, {
+                            status: "subscribed",
+                          })
                         );
                       } else {
-                        push(`/home/search?query=${searchQuery}`);
+                        push(ROUTES.EXPLORE_SEARCH(searchQuery));
                       }
                     }
                   }}

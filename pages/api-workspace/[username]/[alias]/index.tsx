@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { Input } from "../../../../components/Input";
 import { Text } from "../../../../components/Text";
+import { ROUTES } from "../../../../constants/routes";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -63,7 +64,7 @@ const APIDetailPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -84,10 +85,12 @@ const APIDetailPage = () => {
                         query.status === "subscribed"
                       ) {
                         push(
-                          `/home/search?query=${searchQuery}&status=subscribed`
+                          ROUTES.EXPLORE_SEARCH(searchQuery, {
+                            status: "subscribed",
+                          })
                         );
                       } else {
-                        push(`/home/search?query=${searchQuery}`);
+                        push(ROUTES.EXPLORE_SEARCH(searchQuery));
                       }
                     }
                   }}
@@ -136,7 +139,10 @@ const APIDetailPage = () => {
                               setTimeout(
                                 () =>
                                   push(
-                                    `/api-workspace/${currentAPI.username}/${currentAPI.alias}/utilizer`
+                                    ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
+                                      currentAPI.username,
+                                      currentAPI.alias
+                                    )
                                   ),
                                 1000
                               );
