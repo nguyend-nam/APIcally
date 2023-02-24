@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Layout } from "../../../components/Layout";
+import { ROUTES } from "../../../constants/routes";
 
 const UserAPIsPage = () => {
   const [isSSR, setIsSSR] = useState<boolean>(true);
@@ -25,7 +26,7 @@ const UserAPIsPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -41,7 +42,7 @@ const UserAPIsPage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(`/home/search?query=${searchQuery}`);
+                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
                     }
                   }}
                 />

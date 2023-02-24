@@ -11,6 +11,7 @@ import Head from "next/head";
 import { SearchOutlined } from "@ant-design/icons";
 import { Form } from "antd";
 import { Input } from "../../../components/Input";
+import { ROUTES } from "../../../constants/routes";
 
 const sendData = async (data: FormData, fileList: fileObj[]) => {
   fileList.forEach((file) => {
@@ -81,7 +82,7 @@ const CodeEditorPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -97,7 +98,7 @@ const CodeEditorPage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(`/home/search?query=${searchQuery}`);
+                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
                     }
                   }}
                 />
@@ -130,7 +131,7 @@ const CodeEditorPage = () => {
                     setIsLoading(true);
                     sendData(data, fileList);
                     setTimeout(
-                      () => push("/api-workspace/documentation"),
+                      () => push(ROUTES.API_WORKSPACE_DOCUMENTATION),
                       1000
                     );
                   }}

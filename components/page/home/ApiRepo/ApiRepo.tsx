@@ -7,6 +7,7 @@ import {
 import { Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { apiRepoType } from "../../../../constants/mockData";
+import { ROUTES } from "../../../../constants/routes";
 import { Card } from "../../../Card";
 
 export const ApiRepo = ({
@@ -31,7 +32,7 @@ export const ApiRepo = ({
           <a
             className="!text-primary flex items-center"
             onClick={() =>
-              push(`/api-workspace/${data.username}/${data.alias}`)
+              push(ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias))
             }
           >
             <BookOutlined className="text-base !text-gray-400 mr-1" />

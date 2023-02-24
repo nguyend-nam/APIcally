@@ -30,9 +30,9 @@ export const Topbar = ({
     <div
       className={`p-8 py-4 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md ${className}`}
     >
-      <div className="flex flex-col md:flex-row items-start">
-        {formatPathname(pathname)}
+      <div className="flex flex-col md:flex-row items-start text-xl md:text-2xl">
         {extraLeft}
+        {formatPathname(pathname)}
       </div>
       <div className="flex gap-4">
         <Dropdown
@@ -73,19 +73,19 @@ export const Topbar = ({
           }
           placement="bottomRight"
           trigger={["click"]}
-          className="cursor-pointer !block"
+          className="cursor-pointer !hidden md:!block"
         >
           <Avatar icon={<UserOutlined size={64} />} />
         </Dropdown>
         <Button
           label={
             !isMenuOpen ? (
-              <MenuUnfoldOutlined className="text-lg absolute top-2 left-2" />
+              <MenuUnfoldOutlined className="text-md absolute top-2 left-2" />
             ) : (
-              <MenuFoldOutlined className="text-lg absolute top-2 left-2" />
+              <MenuFoldOutlined className="text-md absolute top-2 left-2" />
             )
           }
-          className="w-[34px] h-[34px] relative block md:hidden"
+          className="w-[32px] h-[32px] relative block md:hidden"
           onClick={onClick}
         />
       </div>

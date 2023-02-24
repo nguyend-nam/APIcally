@@ -11,6 +11,7 @@ import { ApiRepo } from "../../components/page/home/ApiRepo";
 import { apiReposData } from "../../constants/mockData";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { SearchOutlined } from "@ant-design/icons";
+import { ROUTES } from "../../constants/routes";
 
 const CodeEditorPage = () => {
   const { push } = useRouter();
@@ -38,7 +39,7 @@ const CodeEditorPage = () => {
         </Head>
         <Layout
           extraLeft={
-            <div className="ml-0 md:ml-4 mt-4 md:mt-0">
+            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
               <Form className="flex items-center">
                 <Input
                   borderRadius="bottomLeft"
@@ -54,7 +55,7 @@ const CodeEditorPage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(`/home/search?query=${searchQuery}`);
+                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
                     }
                   }}
                 />
@@ -88,7 +89,7 @@ const CodeEditorPage = () => {
                 </div>
                 <Button
                   label="Start creating"
-                  onClick={() => push("/api-workspace/code-editor")}
+                  onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
                 />
               </Card>
               <div className="w-full lg:w-[330px]">
@@ -117,7 +118,7 @@ const CodeEditorPage = () => {
                     type="submit"
                     label="View subscribed APIs"
                     onClick={() => {
-                      push("/profile/apis");
+                      push(ROUTES.PROFILE_APIS);
                     }}
                   />
                 </Card>

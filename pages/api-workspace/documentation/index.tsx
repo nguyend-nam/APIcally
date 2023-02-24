@@ -14,6 +14,7 @@ import { multipleStates, variableTypes } from "../../../constants/python";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Card } from "../../../components/Card";
+import { ROUTES } from "../../../constants/routes";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -194,7 +195,7 @@ const DocumentationPage = () => {
                 notification.success({
                   message: "Algorithm successfully submitted!",
                 });
-                push("/profile/apis");
+                push(ROUTES.PROFILE_APIS);
               }, 1000);
             }}
             className="mt-8"
