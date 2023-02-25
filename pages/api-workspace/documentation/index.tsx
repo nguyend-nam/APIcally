@@ -152,7 +152,6 @@ const DocumentationPage = () => {
                 "block-quote",
                 "link",
                 "image",
-                "full-screen",
                 "block-code-inline",
                 "block-code-block",
                 "mode-toggle",

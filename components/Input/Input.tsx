@@ -23,25 +23,25 @@ export interface InputProps
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
     case "top":
-      return "rounded-t-lg";
+      return "rounded-t-md";
     case "right":
-      return "rounded-r-lg";
+      return "rounded-r-md";
     case "bottom":
-      return "rounded-b-lg";
+      return "rounded-b-md";
     case "left":
-      return "rounded-l-lg";
+      return "rounded-l-md";
     case "primary":
-      return "rounded-r-lg rounded-bl-lg";
+      return "rounded-r-md rounded-bl-md";
     case "topRight":
-      return "rounded-tr-lg";
+      return "rounded-tr-md";
     case "topLeft":
-      return "rounded-tl-lg";
+      return "rounded-tl-md";
     case "bottomRight":
-      return "rounded-br-lg";
+      return "rounded-br-md";
     case "bottomLeft":
-      return "rounded-bl-lg";
+      return "rounded-bl-md";
     case "full":
-      return "rounded-lg";
+      return "rounded-md";
   }
 };
 
