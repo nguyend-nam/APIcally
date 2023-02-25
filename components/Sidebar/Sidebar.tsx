@@ -63,7 +63,7 @@ export const Sidebar = ({
           </span>
         }
         className="!text-sm !p-4 !py-3 bg-primary hover:bg-blue-900 text-left"
-        onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
+        onClick={() => push(ROUTES.API_WORKSPACE_CREATE)}
       />
       <Button
         borderRadius="none"

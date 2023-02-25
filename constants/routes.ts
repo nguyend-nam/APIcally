@@ -18,6 +18,7 @@ export const ROUTES = {
     `/api-workspace/${username}/${alias}`,
   API_WORKSPACE_API_DETAIL_UTILIZER: (username: string, alias: string) =>
     `/api-workspace/${username}/${alias}/utilizer`,
+  API_WORKSPACE_CREATE: "/api-workspace/new",
   API_WORKSPACE_CODE_EDITOR: "/api-workspace/code-editor",
   API_WORKSPACE_DOCUMENTATION: "/api-workspace/documentation",
   PROFILE: "/profile",

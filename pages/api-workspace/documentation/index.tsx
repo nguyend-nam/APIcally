@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
+import { CREATE_API_NAME_KEY } from "../new";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -57,6 +58,16 @@ const DocumentationPage = () => {
   } = useDisclosure();
 
   const { push } = useRouter();
+
+  useEffect(() => {
+    const createAPIName = window.localStorage.getItem(CREATE_API_NAME_KEY);
+
+    console.log(createAPIName);
+
+    if (!createAPIName) {
+      push(ROUTES.API_WORKSPACE_CREATE);
+    }
+  }, [push]);
 
   const [form] = useForm();
 
@@ -196,6 +207,7 @@ const DocumentationPage = () => {
                 });
                 push(ROUTES.PROFILE_APIS);
               }, 1000);
+              window.localStorage.removeItem(CREATE_API_NAME_KEY);
             }}
             className="mt-8"
             isLoading={isLoading}
