@@ -7,7 +7,9 @@ export const formatFileName = (fileName: string) => {
 
 export const checkInvalidFileNameFormat = (fileName: string) => {
   return (
-    fileName === "" || /[ `!@#$%^&*()_+=[\]{};':"\\|,<>/?~]/.test(fileName)
+    fileName === "" ||
+    /[ `!@#$%^&*()+=[\]{};':"\\|,<>/?~]/.test(fileName) ||
+    !/[a-zA-Z]/.test(fileName)
   );
 };
 

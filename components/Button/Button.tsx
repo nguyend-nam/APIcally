@@ -66,14 +66,17 @@ export const Button = (props: ButtonProps) => {
     appearance = "primary",
     isLoading = false,
     style,
+    disabled,
     ...rest
   } = props;
   return (
     <button
       className={`text-base md:text-lg p-2.5 py-1 transition-all duration-150 ${getButtonStyle(
         appearance
-      )} ${getBorderRadius(borderRadius)} ${className}`}
-      disabled={isLoading}
+      )} ${getBorderRadius(borderRadius)} ${className} ${
+        disabled || isLoading ? "opacity-50" : ""
+      }`}
+      disabled={disabled || isLoading}
       style={style}
       {...rest}
     >

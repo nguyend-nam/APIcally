@@ -73,7 +73,7 @@ const HomePage = () => {
                       <Button
                         label="Create now"
                         className="m-3"
-                        onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
+                        onClick={() => push(ROUTES.API_WORKSPACE_CREATE)}
                       />
                     </>
                   }

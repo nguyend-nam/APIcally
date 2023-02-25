@@ -64,7 +64,10 @@ const CodeEditorPage = () => {
           }
         >
           <div className="flex flex-col items-center">
-            <Typography.Title level={4} className="text-center">
+            <Typography.Title
+              level={5}
+              className="text-center !text-lg !text-slate-600"
+            >
               Select an API to utilize or create your own
             </Typography.Title>
             <div className="flex gap-4 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
@@ -89,7 +92,7 @@ const CodeEditorPage = () => {
                 </div>
                 <Button
                   label="Start creating"
-                  onClick={() => push(ROUTES.API_WORKSPACE_CODE_EDITOR)}
+                  onClick={() => push(ROUTES.API_WORKSPACE_CREATE)}
                 />
               </Card>
               <div className="w-full lg:w-[330px]">
