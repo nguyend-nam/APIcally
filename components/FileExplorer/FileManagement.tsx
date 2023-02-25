@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { fileObj, useFileListContext } from "../../context";
 import { checkInvalidFileNameFormat, formatFileName } from "../../utils";
 import { Alert } from "../Alert";
-import { Dropdown } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Dropdown, notification, Upload } from "antd";
+import { PlusCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button } from "../Button";
 
 export const FileManagement = ({
@@ -25,15 +25,66 @@ export const FileManagement = ({
     }
     return false;
   };
+  const onUpload = async (file: File) => {
+    try {
+      const content = await file.text();
+
+      addFile({
+        fileName: file.name,
+        codeContent: content,
+        language: "python",
+      });
+
+      notification.success({ message: `${file.name} uploaded successfully` });
+    } catch (error: any) {
+      notification.error({
+        message: error?.message || "Could not upload file",
+      });
+    }
+  };
 
   return (
     <div className={`shadow-lg z-30 h-screen overflow-auto ${className}`}>
-      <div className="p-4 flex justify-end bg-primary sticky top-0 z-30">
+      <div className="p-4 flex justify-start flex-wrap gap-2 bg-indigo-300 sticky top-0 z-30">
         <Button
-          className="!bg-white !text-primary"
+          className="!text-sm"
           onClick={() => setIsAddingFile(true)}
-          label="Add file"
+          label={
+            <span className="flex items-center gap-1">
+              <PlusCircleOutlined className="text-sm" />
+              Add file
+            </span>
+          }
         />
+
+        <Upload
+          name="upload-file"
+          accept=".py"
+          maxCount={1}
+          itemRender={() => null}
+          customRequest={(options) => {
+            onUpload(options.file as File);
+          }}
+          beforeUpload={(file) => {
+            if (file.name && checkExistingFileName(file.name)) {
+              notification.error({ message: `${file?.name} already exists` });
+              return false;
+            }
+          }}
+        >
+          <Button
+            className="!bg-white !text-primary !text-sm border-dashed !border-indigo-500"
+            appearance="outline"
+            label={
+              <>
+                Upload{" "}
+                <code className="bg-slate-100 py-0.5 px-1 rounded-sm text-xs">
+                  .py
+                </code>
+              </>
+            }
+          />
+        </Upload>
       </div>
       <div className="flex flex-col p-4 space-y-1">
         {fileList.map((file: fileObj, index: number) => (
@@ -67,7 +118,7 @@ export const FileManagement = ({
                 }
                 placement="bottomRight"
                 trigger={["click"]}
-                className="p-0.5 rounded-md ml-2 bg-white shadow-md"
+                className="p-0.5 rounded-md ml-2 bg-white shadow h-full"
               >
                 <MoreOutlined
                   className="h-max text-xl"
