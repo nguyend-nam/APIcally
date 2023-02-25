@@ -5,7 +5,7 @@ export const formatFileName = (fileName: string) => {
   return `${fileName}.py`;
 };
 
-export const checkFileNameFormat = (fileName: string) => {
+export const checkInvalidFileNameFormat = (fileName: string) => {
   return (
     fileName === "" || /[ `!@#$%^&*()_+=[\]{};':"\\|,<>/?~]/.test(fileName)
   );

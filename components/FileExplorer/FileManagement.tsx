@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { fileObj, useFileListContext } from "../../context";
-import { checkFileNameFormat, formatFileName } from "../../utils";
+import { checkInvalidFileNameFormat, formatFileName } from "../../utils";
 import { Alert } from "../Alert";
 import { Dropdown } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
@@ -104,7 +104,7 @@ export const FileManagement = ({
                 }}
                 disabled={
                   checkExistingFileName(formatFileName(newFileName)) ||
-                  checkFileNameFormat(newFileName)
+                  checkInvalidFileNameFormat(newFileName)
                 }
               >
                 OK
