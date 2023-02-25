@@ -1,4 +1,7 @@
-import { checkPythonVarNameFormat } from "../string";
+import {
+  checkPythonVarNameFormat,
+  checkInvalidFileNameFormat,
+} from "../string";
 
 test.each([
   ["my Variable", false],
@@ -9,6 +12,17 @@ test.each([
   ["myVariable4", true],
   ["_myVariable", true],
   ["__myVariable", true],
-])("capitalizeFirstLetter(%s)", (input, expected) => {
+])("checkPythonVarNameFormat(%s)", (input, expected) => {
   expect(checkPythonVarNameFormat(input)).toBe(expected);
+});
+
+test.each([
+  ["@abc", true],
+  ["#$", true],
+
+  ["myFile", false],
+  ["myFile1", false],
+  ["my-file", false],
+])("checkInvalidFileNameFormat(%s)", (input, expected) => {
+  expect(checkInvalidFileNameFormat(input)).toBe(expected);
 });

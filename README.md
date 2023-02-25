@@ -21,16 +21,17 @@ to see your project.
 
 ## Deployment
 
-| Environment | URL                          |
-| ----------- | ---------------------------- |
-| dev         | https://apically.netlify.app |
+| Environment | URL                              |
+| ----------- | -------------------------------- |
+| develop     | https://dev-apically.netlify.app |
+| staging     | https://stg-apically.netlify.app |
+| product     | -                                |
 
 ## Resources
 
-| Name    | Link                                                           |
-| ------- | -------------------------------------------------------------- |
-| UI Docs | -                                                              |
-| Design  | https://www.figma.com/file/XOAGaFZfJnobiR5BoazAOC/BKU-Capstone |
+| Name   | Link                                                           |
+| ------ | -------------------------------------------------------------- |
+| Design | https://www.figma.com/file/XOAGaFZfJnobiR5BoazAOC/BKU-Capstone |
 
 ## Read on:
 
