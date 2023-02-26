@@ -17,6 +17,7 @@ export const FileManagement = ({
 }) => {
   const { fileList, addFile, removeFile } = useFileListContext();
   const [isAddingFile, setIsAddingFile] = useState<boolean>(false);
+  const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
   const [newFileName, setNewFileName] = useState<string>("");
 
   const checkExistingFileName = (name: string): boolean => {
@@ -27,19 +28,40 @@ export const FileManagement = ({
   };
   const onUpload = async (file: File) => {
     try {
+      setIsUploadingFile(true);
       const content = await file.text();
 
-      addFile({
-        fileName: file.name,
-        codeContent: content,
-        language: "python",
-      });
+      if (file.name.length > 3) {
+        const fileExtension = file.name.slice(-3);
+        if (fileExtension !== ".py") {
+          notification.error({
+            message: (
+              <span className="">
+                Please upload{" "}
+                <code className="bg-slate-100 py-0.5 px-1 rounded-sm text-sm">
+                  .py
+                </code>{" "}
+                only
+              </span>
+            ),
+          });
+          return;
+        }
 
-      notification.success({ message: `${file.name} uploaded successfully` });
+        addFile({
+          fileName: file.name,
+          codeContent: content,
+          language: "python",
+        });
+
+        notification.success({ message: `${file.name} uploaded successfully` });
+      }
     } catch (error: any) {
       notification.error({
         message: error?.message || "Could not upload file",
       });
+    } finally {
+      setIsUploadingFile(false);
     }
   };
 
@@ -55,6 +77,7 @@ export const FileManagement = ({
               Add file
             </span>
           }
+          disabled={isUploadingFile}
         />
 
         <Upload
@@ -83,6 +106,7 @@ export const FileManagement = ({
                 </code>
               </>
             }
+            disabled={isUploadingFile}
           />
         </Upload>
       </div>
