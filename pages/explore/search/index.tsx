@@ -252,7 +252,7 @@ const SearchResultPage = () => {
                   <Divider className="!my-0" />
 
                   {isTagFilterOpen ? (
-                    <div className="px-4 my-4 h-40 overflow-auto">
+                    <div className="px-4 my-4 max-h-[160px] overflow-auto">
                       <Checkbox.Group
                         className="p-4 !flex flex-wrap !gap-1.5"
                         value={tagFilter}
@@ -373,7 +373,7 @@ const SearchResultPage = () => {
               ) : null}
             </div>
 
-            <div className="p-8 pb-0 w-full">
+            <div className="p-4 md:p-8 pb-0 w-full">
               {query.query && apiRepos.length ? (
                 <div>
                   Showing {apiRepos.length} results for &quot;
