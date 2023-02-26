@@ -38,3 +38,25 @@
 .ant-popover-arrow-content::before {
   background-color: #2d31fa !important;
 }
+
+.ant-checkbox {
+  display: none !important;
+}
+
+.ant-checkbox-wrapper {
+  padding: 3px !important;
+  border: 1.5px solid rgb(203 213 225);
+  border-radius: 12px !important;
+  background-color: rgb(248 250 252);
+  user-select: none !important;
+}
+
+.ant-checkbox-wrapper-checked {
+  border: 1.5px solid #2d31fa;
+  color: #fff !important;
+  background-color: #2d31fa;
+}
+
+.ant-slider-handle {
+  border-color: #2d31fa !important;
+}

@@ -136,16 +136,15 @@ const APIDetailPage = () => {
                             label="Start using"
                             onClick={() => {
                               setIsLoading(!isLoading);
-                              setTimeout(
-                                () =>
+                              setTimeout(() => {
+                                if (currentAPI.username && currentAPI.alias)
                                   push(
                                     ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
                                       currentAPI.username,
                                       currentAPI.alias
                                     )
-                                  ),
-                                1000
-                              );
+                                  );
+                              }, 1000);
                             }}
                           />
                         </div>

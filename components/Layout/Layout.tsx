@@ -6,6 +6,7 @@ import { Topbar } from "../Topbar";
 import { Text } from "../Text";
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../../context/auth";
 import { useRouter } from "next/router";
+import { ROUTES } from "../../constants/routes";
 
 export const Layout = ({
   children,
@@ -26,12 +27,12 @@ export const Layout = ({
 
   useEffect(() => {
     if (!isAuthenticated) {
-      replace("/login");
+      replace(ROUTES.LOGIN);
     }
   }, [isAuthenticated, replace]);
 
   useEffect(() => {
-    if (!window.location.href.includes("/login")) {
+    if (!window.location.href.includes(ROUTES.LOGIN)) {
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href);
     }
   }, []);

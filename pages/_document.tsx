@@ -17,7 +17,7 @@ export default function Document() {
         />
         <meta name="theme-color" content="#2D31FA" />
         <meta property="og:image" content="/img/how-to-third.png" />
-        <meta property="og:url" content="https://apically.netlify.app" />
+        <meta property="og:url" content="https://apically-b2c2c.netlify.app" />
         <meta property="og:site_name" content="APIcally" />
         <meta property="og:title" content="APIcally" />
         <meta
