@@ -2,6 +2,7 @@
 import qs from "qs";
 
 export const ROUTES = {
+  LANDING_PAGE: "/",
   HOME: "/home",
   LOGIN: "/login",
   EXPLORE: "/explore",

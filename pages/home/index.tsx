@@ -97,21 +97,31 @@ const HomePage = () => {
                     apiReposData.filter(
                       (a) =>
                         a.subscribeStatus &&
-                        (a.alias.includes(searchQuerySubscribed) ||
-                          a.name.includes(searchQuerySubscribed) ||
-                          a.author.includes(searchQuerySubscribed) ||
-                          a.description.includes(searchQuerySubscribed) ||
-                          a.username.includes(searchQuerySubscribed))
+                        ((a.alias && a.alias.includes(searchQuerySubscribed)) ||
+                          (a.name && a.name.includes(searchQuerySubscribed)) ||
+                          (a.author &&
+                            a.author.includes(searchQuerySubscribed)) ||
+                          (a.description &&
+                            a.description.includes(searchQuerySubscribed)) ||
+                          (a.username &&
+                            a.username.includes(searchQuerySubscribed)))
                     ).length ? (
                       apiReposData
                         .filter(
                           (a) =>
                             a.subscribeStatus &&
-                            (a.alias.includes(searchQuerySubscribed) ||
-                              a.name.includes(searchQuerySubscribed) ||
-                              a.author.includes(searchQuerySubscribed) ||
-                              a.description.includes(searchQuerySubscribed) ||
-                              a.username.includes(searchQuerySubscribed))
+                            ((a.alias &&
+                              a.alias.includes(searchQuerySubscribed)) ||
+                              (a.name &&
+                                a.name.includes(searchQuerySubscribed)) ||
+                              (a.author &&
+                                a.author.includes(searchQuerySubscribed)) ||
+                              (a.description &&
+                                a.description.includes(
+                                  searchQuerySubscribed
+                                )) ||
+                              (a.username &&
+                                a.username.includes(searchQuerySubscribed)))
                         )
                         .map((a) => (
                           <ApiRepo key={a.id} data={a} hasShadow={false} />

@@ -3,7 +3,7 @@ export interface InputProps
   fullWidth?: boolean;
   filled?: boolean;
   readOnly?: boolean;
-  value?: string;
+  value?: string | number;
   invalid?: boolean;
   hasBorder?: boolean;
   onClear?: () => void;

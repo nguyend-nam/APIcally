@@ -4,11 +4,13 @@ import {
   PlaySquareOutlined,
   KeyOutlined,
 } from "@ant-design/icons";
-import { Tooltip, Typography } from "antd";
+import { Divider, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { apiRepoType } from "../../../../constants/mockData";
 import { ROUTES } from "../../../../constants/routes";
+import { formatCurrency } from "../../../../utils/currency";
 import { Card } from "../../../Card";
+import { TagsArray } from "../../../TagsArray";
 
 export const ApiRepo = ({
   data,
@@ -31,9 +33,13 @@ export const ApiRepo = ({
         <Typography.Title level={4} className="!m-0 !mb-2">
           <a
             className="!text-primary flex items-center"
-            onClick={() =>
-              push(ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias))
-            }
+            onClick={() => {
+              if (data?.username && data?.alias) {
+                push(
+                  ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias)
+                );
+              }
+            }}
           >
             <BookOutlined className="text-base !text-gray-400 mr-1" />
             {data.name}
@@ -49,26 +55,41 @@ export const ApiRepo = ({
         </Typography.Title>
 
         <div className="flex gap-4">
-          <Tooltip
-            placement="left"
-            title="Subscribers"
-            className="flex flex-col items-center w-6 h-max"
-          >
-            <UserAddOutlined className="text-xl !text-gray-400" />
-            <div>{data.statistics.subscribes}</div>
-          </Tooltip>
+          {data.statistics?.subscribes ? (
+            <Tooltip
+              placement="left"
+              title="Subscribers"
+              className="flex flex-col items-center w-6 h-max"
+            >
+              <UserAddOutlined className="text-xl !text-gray-400" />
+              <div>{data.statistics.subscribes}</div>
+            </Tooltip>
+          ) : null}
 
-          <Tooltip
-            placement="left"
-            title="Weekly utilizations"
-            className="flex flex-col items-center w-6 h-max"
-          >
-            <PlaySquareOutlined className="text-xl !text-gray-400" />
-            <div>{data.statistics.weeklyUtils}</div>
-          </Tooltip>
+          {data.statistics?.weeklyUtils ? (
+            <Tooltip
+              placement="left"
+              title="Weekly utilizations"
+              className="flex flex-col items-center w-6 h-max"
+            >
+              <PlaySquareOutlined className="text-xl !text-gray-400" />
+              <div>{data.statistics.weeklyUtils}</div>
+            </Tooltip>
+          ) : null}
         </div>
       </div>
-      <hr />
+
+      <div className="flex justify-between items-center">
+        <TagsArray tags={data.tags || []} visibleTagsCount={2} />
+        <div className="!text-sm">
+          {data.statistics?.price
+            ? formatCurrency(data.statistics?.price)
+            : "Free"}
+        </div>
+      </div>
+
+      <Divider className="!my-1 !mt-3" />
+
       <Typography.Paragraph>
         <p className="text-gray-500 !m-0 !mt-2">{data.description}</p>
       </Typography.Paragraph>

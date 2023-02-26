@@ -21,11 +21,9 @@ to see your project.
 
 ## Deployment
 
-| Environment | URL                              |
-| ----------- | -------------------------------- |
-| develop     | https://dev-apically.netlify.app |
-| staging     | https://stg-apically.netlify.app |
-| product     | -                                |
+| Environment | URL                                |
+| ----------- | ---------------------------------- |
+| staging     | https://apically-b2c2c.netlify.app |
 
 ## Resources
 

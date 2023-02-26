@@ -1,17 +1,21 @@
+import { apiTagTypes } from "./tagTypes";
+
 export type Statistic = {
-  subscribes: number;
-  weeklyUtils: number;
+  subscribes?: number;
+  weeklyUtils?: number;
+  price?: number;
 };
 
 export interface apiRepoType {
-  id: string;
-  subscribeStatus: boolean;
-  name: string;
-  alias: string;
-  author: string;
-  username: string;
-  description: string;
-  statistics: Statistic;
+  id?: string;
+  subscribeStatus?: boolean;
+  name?: string;
+  alias?: string;
+  author?: string;
+  username?: string;
+  description?: string;
+  statistics?: Statistic;
+  tags?: apiTagTypes[];
 }
 
 export const apiReposData: apiRepoType[] = [
@@ -27,7 +31,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 100,
       weeklyUtils: 30,
+      price: 0,
     },
+    tags: ["ai", "weather", "environment"],
   },
   {
     id: "2",
@@ -41,7 +47,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 30,
       weeklyUtils: 15,
+      price: 500000,
     },
+    tags: ["sport"],
   },
   {
     id: "3",
@@ -55,7 +63,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 50,
       weeklyUtils: 20,
+      price: 0,
     },
+    tags: ["environment"],
   },
   {
     id: "4",
@@ -69,7 +79,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 200,
       weeklyUtils: 80,
+      price: 0,
     },
+    tags: ["bank", "economics"],
   },
   {
     id: "5",
@@ -83,7 +95,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 60,
       weeklyUtils: 30,
+      price: 900000,
     },
+    tags: ["e-commerce"],
   },
   {
     id: "6",
@@ -97,7 +111,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 30,
       weeklyUtils: 8,
+      price: 0,
     },
+    tags: ["healthcare"],
   },
   {
     id: "7",
@@ -110,7 +126,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 90,
       weeklyUtils: 30,
+      price: 750000,
     },
+    tags: ["entertainment"],
   },
   {
     id: "8",
@@ -124,7 +142,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 150,
       weeklyUtils: 80,
+      price: 0,
     },
+    tags: ["ai", "entertainment"],
   },
   {
     id: "9",
@@ -138,7 +158,9 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 200,
       weeklyUtils: 120,
+      price: 0,
     },
+    tags: ["cooking"],
   },
   {
     id: "10",
@@ -152,6 +174,8 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 140,
       weeklyUtils: 70,
+      price: 100000,
     },
+    tags: ["social-network"],
   },
 ];
