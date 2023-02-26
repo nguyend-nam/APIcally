@@ -39,8 +39,8 @@ export const Layout = ({
   return isAuthenticated ? (
     <div className={`relative md:flex ${className}`}>
       <Sidebar
-        className={`top-0 min-w-max fixed md:sticky z-50 md:z-0 ${
-          isMenuOpen ? "ml-0" : "-ml-[304px]"
+        className={`top-0 min-w-max w-[calc(100vw-64px)] md:w-max fixed md:sticky z-50 md:z-0 ${
+          isMenuOpen ? "ml-0" : "-ml-[125%]"
         } md:ml-0`}
         style={{ transition: "0.4s" }}
       />

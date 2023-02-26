@@ -1,4 +1,4 @@
-import { Avatar, Col, Divider, Row, Typography, Form } from "antd";
+import { Avatar, Col, Divider, Row, Typography, Form, Tooltip } from "antd";
 import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
@@ -11,6 +11,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { checkInvalidFileNameFormat } from "../../../utils";
 import { ROUTES } from "../../../constants/routes";
 import { UserOutlined } from "@ant-design/icons";
+import { truncate } from "@dwarvesf/react-utils";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
@@ -50,7 +51,12 @@ const APICreatePage = () => {
                         icon={<UserOutlined size={64} />}
                         className="shrink-0"
                       />
-                      <div className="text-base !text-slate-500 mr-0 md:mr-2 py-1 px-1.5 rounded-md bg-slate-100 max-w-lg overflow-auto whitespace-nowrap">
+                      <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
+                        <Tooltip title="nguyend-nam" placement="bottom">
+                          {truncate("nguyend-nam", 10)}
+                        </Tooltip>
+                      </div>
+                      <div className="text-base !text-slate-500 block md:hidden mr-0 py-1 px-1.5 rounded-md bg-slate-100 w-screen overflow-auto whitespace-nowrap">
                         nguyend-nam
                       </div>
                       <div className="hidden md:block">/</div>

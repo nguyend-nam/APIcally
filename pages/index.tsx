@@ -14,16 +14,18 @@ import { Parallax } from "react-scroll-parallax";
 import { ROUTES } from "../constants/routes";
 
 const supplier = [
+  { href: "https://nextjs.org/", img: "img/nextjs-logo.png", height: 25 },
   {
     href: "https://github.com/suren-atoyan/monaco-react",
     img: "img/monaco-editor-logo.svg",
     height: 25,
   },
-  { href: "https://nextjs.org/", img: "img/nextjs-logo.png", height: 25 },
-  { href: "https://go.dev/", img: "img/golang-logo.png", height: 25 },
+  { href: "https://go.dev/", img: "img/golang-logo.png", height: 22 },
   { href: "https://nodejs.org/en/", img: "img/nodejs-logo.png", height: 30 },
-  { href: "https://www.python.org/", img: "img/python-logo.png", height: 30 },
+  { href: "https://aws.amazon.com/", img: "img/aws-logo.png", height: 25 },
   { href: "https://www.mongodb.com/", img: "img/mongodb-logo.png", height: 25 },
+  { href: "https://www.python.org/", img: "img/python-logo.png", height: 30 },
+  { href: "https://swr.vercel.app/", img: "img/swr-logo.jpeg", height: 35 },
   {
     href: "https://axios-http.com/docs/intro",
     img: "img/axios-logo.png",
@@ -159,7 +161,7 @@ const Home = () => {
               </Parallax>
               <Parallax speed={4}>
                 <div className="sticky max-w-fit md:max-w-sm bottom-3 flex-wrap flex items-center gap-x-4 md:gap-x-6 mt-1 mb-[24px] justify-end md:justify-start md:mr-0">
-                  {supplier.map((s) => (
+                  {supplier.slice(0, 7).map((s) => (
                     <Link key={s.href} href={s.href}>
                       <a className="mb-1" target="_blank">
                         <Image height={s.height} preview={false} src={s.img} />
