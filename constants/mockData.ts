@@ -2,7 +2,7 @@ import { apiTagTypes } from "./tagTypes";
 
 export type Statistic = {
   subscribes?: number;
-  weeklyUtils?: number;
+  starGazers?: number;
   price?: number;
 };
 
@@ -30,7 +30,7 @@ export const apiReposData: apiRepoType[] = [
       "Get 16 days weather forecast data - worldwide - geographical coordinates...",
     statistics: {
       subscribes: 100,
-      weeklyUtils: 30,
+      starGazers: 30,
       price: 0,
     },
     tags: ["ai", "weather", "environment"],
@@ -46,7 +46,7 @@ export const apiReposData: apiRepoType[] = [
       "Beta Program for api-football. Here you can test the next version of the API.",
     statistics: {
       subscribes: 30,
-      weeklyUtils: 15,
+      starGazers: 15,
       price: 500000,
     },
     tags: ["sport"],
@@ -62,7 +62,7 @@ export const apiReposData: apiRepoType[] = [
       "GreenHouseGas/CO2 compensation as a service. Get 1kg/month for free to see how easy it is to implement.",
     statistics: {
       subscribes: 50,
-      weeklyUtils: 20,
+      starGazers: 20,
       price: 0,
     },
     tags: ["environment"],
@@ -78,7 +78,7 @@ export const apiReposData: apiRepoType[] = [
       "An API for retrieving world development indicators, that provides high-quality and internationally comparable statistics about global development for the past 60 years. The data contains 1400 indicators for 217 economies and more than 40 country groups. This API also provides a charts API that allows you to visualize data and compare different economies in different charts.",
     statistics: {
       subscribes: 200,
-      weeklyUtils: 80,
+      starGazers: 80,
       price: 0,
     },
     tags: ["bank", "economics"],
@@ -94,7 +94,7 @@ export const apiReposData: apiRepoType[] = [
       "Get shopee E-commerce plat(Including Thailand, Philippines, Indonesia, Malaysia, Singapore, Vietnam, Taiwan, Brazil) product and shop data",
     statistics: {
       subscribes: 60,
-      weeklyUtils: 30,
+      starGazers: 30,
       price: 900000,
     },
     tags: ["e-commerce"],
@@ -110,7 +110,7 @@ export const apiReposData: apiRepoType[] = [
       "These are APIs for Pharmacity Company - the largest retail pharmacy chain in Vietnam",
     statistics: {
       subscribes: 30,
-      weeklyUtils: 8,
+      starGazers: 8,
       price: 0,
     },
     tags: ["healthcare"],
@@ -125,7 +125,7 @@ export const apiReposData: apiRepoType[] = [
     description: "Get Animes from MyAnimeList (Unofficial)",
     statistics: {
       subscribes: 90,
-      weeklyUtils: 30,
+      starGazers: 30,
       price: 750000,
     },
     tags: ["entertainment"],
@@ -141,7 +141,7 @@ export const apiReposData: apiRepoType[] = [
       "Utelly universal search and recommendations APIs for Movies, Series and TV shows.",
     statistics: {
       subscribes: 150,
-      weeklyUtils: 80,
+      starGazers: 80,
       price: 0,
     },
     tags: ["ai", "entertainment"],
@@ -157,7 +157,7 @@ export const apiReposData: apiRepoType[] = [
       "API to query data about recipe, plan, ingredients, etc… as on official site",
     statistics: {
       subscribes: 200,
-      weeklyUtils: 120,
+      starGazers: 120,
       price: 0,
     },
     tags: ["cooking"],
@@ -173,7 +173,7 @@ export const apiReposData: apiRepoType[] = [
       "An API for showing the best memes on the internet using Reddit",
     statistics: {
       subscribes: 140,
-      weeklyUtils: 70,
+      starGazers: 70,
       price: 100000,
     },
     tags: ["social-network"],
