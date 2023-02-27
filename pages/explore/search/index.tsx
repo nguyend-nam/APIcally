@@ -141,7 +141,7 @@ const SearchResultPage = () => {
     }
 
     if ((apiRepos || []).length === 0) {
-      return <Empty description="No api found" />;
+      return <Empty description="No API found" />;
     }
 
     return apiRepos.map((a) => (
@@ -239,7 +239,7 @@ const SearchResultPage = () => {
                 <div>
                   <Typography.Title
                     level={4}
-                    className="px-4 py-3 md:py-4 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
                     onClick={() => setIsTagFilterOpen(!isTagFilterOpen)}
                   >
                     Category
@@ -269,7 +269,7 @@ const SearchResultPage = () => {
 
                   <Typography.Title
                     level={4}
-                    className="px-4 py-3 md:py-4 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
                     onClick={() => setIsPriceFilterOpen(!isPriceFilterOpen)}
                   >
                     <span>
@@ -333,7 +333,7 @@ const SearchResultPage = () => {
 
                   <Typography.Title
                     level={4}
-                    className="px-4 py-3 md:py-4 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
                     onClick={() => setSubscribedFilter(!subscribedFilter)}
                   >
                     Subscribed

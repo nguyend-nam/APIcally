@@ -1,9 +1,10 @@
 import {
   BookOutlined,
   UserAddOutlined,
-  PlaySquareOutlined,
+  StarOutlined,
   KeyOutlined,
 } from "@ant-design/icons";
+import { truncate } from "@dwarvesf/react-utils";
 import { Divider, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { apiRepoType } from "../../../../constants/mockData";
@@ -30,7 +31,10 @@ export const ApiRepo = ({
       hasShadow={hasShadow}
     >
       <div className="flex justify-between gap-8">
-        <Typography.Title level={4} className="!m-0 !mb-2">
+        <Typography.Title
+          level={4}
+          className="!m-0 !mb-2 flex items-center !text-lg md:!text-xl"
+        >
           <a
             className="!text-primary flex items-center"
             onClick={() => {
@@ -43,15 +47,12 @@ export const ApiRepo = ({
           >
             <BookOutlined className="text-base !text-gray-400 mr-1" />
             {data.name}
-            {data.subscribeStatus && (
-              <Tooltip title="Subscribed" className="ml-1">
-                <KeyOutlined className="text-base !text-green-500 mr-1" />
-              </Tooltip>
-            )}
           </a>
-          <a className="!font-normal !text-base !text-gray-600">
-            {data.author}
-          </a>
+          {data.subscribeStatus && (
+            <Tooltip title="Subscribed" className="ml-1">
+              <KeyOutlined className="text-base !text-green-500 mr-1" />
+            </Tooltip>
+          )}
         </Typography.Title>
 
         <div className="flex gap-4">
@@ -61,38 +62,42 @@ export const ApiRepo = ({
               title="Subscribers"
               className="flex flex-col items-center w-6 h-max"
             >
-              <UserAddOutlined className="text-xl !text-gray-400" />
+              <UserAddOutlined className="text-xl !text-indigo-400" />
               <div>{data.statistics.subscribes}</div>
             </Tooltip>
           ) : null}
 
-          {data.statistics?.weeklyUtils ? (
+          {data.statistics?.starGazers ? (
             <Tooltip
               placement="left"
-              title="Weekly utilizations"
+              title="Stars"
               className="flex flex-col items-center w-6 h-max"
             >
-              <PlaySquareOutlined className="text-xl !text-gray-400" />
-              <div>{data.statistics.weeklyUtils}</div>
+              <StarOutlined className="text-xl !text-amber-300" />
+              <div>{data.statistics.starGazers}</div>
             </Tooltip>
           ) : null}
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <TagsArray tags={data.tags || []} visibleTagsCount={2} />
-        <div className="!text-sm">
-          {data.statistics?.price
-            ? formatCurrency(data.statistics?.price)
-            : "Free"}
-        </div>
+      <TagsArray tags={data.tags || []} visibleTagsCount={2} />
+
+      <div className="!mt-2 h-6 relative flex items-center">
+        <a className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600">
+          {data.author}
+        </a>
+        <Divider className="!my-2" />
       </div>
 
-      <Divider className="!my-1 !mt-3" />
-
-      <Typography.Paragraph>
-        <p className="text-gray-500 !m-0 !mt-2">{data.description}</p>
+      <Typography.Paragraph className="!text-slate-500 !m-0 !my-2">
+        <p>{truncate(data.description || "", 100)}</p>
       </Typography.Paragraph>
+
+      <div className="!text-base md:!text-lg font-semibold text-white rounded-r-xl rounded-l -ml-5 pr-3 pl-5 py-1 bg-gradient-to-r from-indigo-500 to-sky-400 w-max">
+        {data.statistics?.price
+          ? formatCurrency(data.statistics?.price)
+          : "Free"}
+      </div>
     </Card>
   );
 };
