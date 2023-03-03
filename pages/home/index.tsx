@@ -5,7 +5,7 @@ import { Card } from "../../components/Card";
 import { Layout } from "../../components/Layout";
 import { Text } from "../../components/Text";
 import { Image } from "antd";
-import { useIsMobile } from "../../hooks/mobile";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import Head from "next/head";

@@ -4,7 +4,11 @@ import { WithChildren } from "../../types/common";
 import { Sidebar } from "../Sidebar";
 import { Topbar } from "../Topbar";
 import { Text } from "../Text";
-import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../../context/auth";
+import {
+  APICALLY_KEY,
+  LOGIN_REDIRECTION_KEY,
+  useAuthContext,
+} from "../../context/auth";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
 
@@ -23,13 +27,24 @@ export const Layout = ({
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { replace } = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
 
   useEffect(() => {
     if (!isAuthenticated) {
       replace(ROUTES.LOGIN);
     }
   }, [isAuthenticated, replace]);
+
+  useEffect(() => {
+    const value =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem(APICALLY_KEY)
+        : undefined;
+
+    if (!value) {
+      logout();
+    }
+  }, [logout]);
 
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {

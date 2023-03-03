@@ -1,10 +1,10 @@
 import { Card } from "../components/Card";
-import { Image } from "antd";
+import { Form, Image, notification } from "antd";
 import { Logo } from "../components/Logo";
 import { Text } from "../components/Text";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { useIsMobile } from "../hooks/mobile";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Head from "next/head";
@@ -16,12 +16,10 @@ const LoginPage = () => {
   const isMobile = useIsMobile();
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isUseTestAccountLoading, setIsUseTestAccountLoading] =
-    useState<boolean>(false);
   const [isSSR, setIsSSR] = useState<boolean>(true);
   useEffect(() => setIsSSR(false), []);
 
-  const { setIsAuthenticated, isAuthenticated } = useAuthContext();
+  const { login, isAuthenticated } = useAuthContext();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,6 +30,19 @@ const LoginPage = () => {
       });
     }
   }, [push, isAuthenticated]);
+
+  const onSubmit = async (values: { username: string; password: string }) => {
+    console.log(values);
+    try {
+      setIsLoading(true);
+      setTimeout(() => login(values.username, values.password), 1000);
+    } catch (error) {
+      setIsLoading(false);
+      notification.error({
+        message: "Could not login",
+      });
+    }
+  };
 
   return (
     !isSSR && (
@@ -74,12 +85,7 @@ const LoginPage = () => {
               </div>
             </Card>
             <div className="w-full sm:w-1/2 p-6 sm:p-8 flex flex-col justify-between">
-              <form
-                className="mb-2"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-              >
+              <Form className="mb-2" onFinish={onSubmit}>
                 <label className="text-center">
                   <h1 className="text-3xl sm:font-semibold mt-0 mb-5">Login</h1>
                 </label>
@@ -89,50 +95,58 @@ const LoginPage = () => {
                 >
                   Username
                 </label>
-                <Input
-                  type="text"
-                  id="username-input"
-                  fullWidth
-                  placeholder="Enter username..."
+                <Form.Item
+                  name="username"
+                  rules={[{ required: true, message: "Required" }]}
                   className="mt-1 mb-4"
-                />
+                >
+                  <Input
+                    type="text"
+                    id="username-input"
+                    fullWidth
+                    placeholder="Enter username..."
+                  />
+                </Form.Item>
+
                 <label
                   htmlFor="password-input"
                   className="text-lg text-primary"
                 >
                   Password
                 </label>
-                <Input
-                  type="password"
-                  id="password-input"
-                  fullWidth
-                  placeholder="Enter password..."
+                <Form.Item
+                  name="password"
+                  rules={[{ required: true, message: "Required" }]}
                   className="mt-1"
-                />
+                >
+                  <Input
+                    type="password"
+                    id="password-input"
+                    fullWidth
+                    placeholder="Enter password..."
+                  />
+                </Form.Item>
+
                 <div className="w-full text-center mt-5">
                   <Button
                     label="Login"
                     className="w-[125px]"
                     type="submit"
-                    onClick={() => {
-                      setIsLoading(true);
-                      setTimeout(() => setIsAuthenticated(true), 1000);
-                    }}
                     isLoading={isLoading}
                   />
                 </div>
-                <div className="w-full text-center mt-5">
+                {/* <div className="w-full text-center mt-5">
                   <Button
                     label="Or use testing account"
                     appearance="link"
                     onClick={() => {
                       setIsUseTestAccountLoading(true);
-                      setTimeout(() => setIsAuthenticated(true), 1000);
+                      setTimeout(() => login(), 1000);
                     }}
                     isLoading={isUseTestAccountLoading}
                   />
-                </div>
-              </form>
+                </div> */}
+              </Form>
               <div className="flex justify-center mt-2">
                 <Text className="text-base m-0 text-slate-500">
                   &copy; 2022 APIcally team.

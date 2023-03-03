@@ -93,7 +93,11 @@ export const ApiRepo = ({
         <p>{truncate(data.description || "", 100)}</p>
       </Typography.Paragraph>
 
-      <div className="!text-base md:!text-lg font-semibold text-white rounded-r-xl rounded-l -ml-5 pr-3 pl-5 py-1 bg-gradient-to-r from-indigo-500 to-sky-400 w-max">
+      <div
+        className={`!text-base md:!text-lg font-semibold rounded-r-xl rounded-l -ml-5 pr-3 pl-5 py-1 bg-gradient-to-r from-indigo-500 to-sky-400 w-max ${
+          data.statistics?.price ? "text-white" : "text-yellow-200"
+        }`}
+      >
         {data.statistics?.price
           ? formatCurrency(data.statistics?.price)
           : "Free"}
