@@ -25,7 +25,7 @@ import { FULL_PRICE_FILTER } from "../../../constants/filter";
 import { apiReposData } from "../../../constants/mockData";
 import { ROUTES } from "../../../constants/routes";
 import { apiTags, apiTagTypes } from "../../../constants/tagTypes";
-import { useIsMobile } from "../../../hooks/mobile";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 const SearchResultPage = () => {
   const { query, push } = useRouter();

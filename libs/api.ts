@@ -1,7 +1,9 @@
 import fetcher from "./fetcher";
 
-const BASE_API_URL =
-  process.env.BASE_URL || "https://develop-api.konvoykegs.com/api";
+const BASE_API_URL = process.env.BASE_URL;
+
+// keys for SWR
+export const GET_PATHS = {};
 
 class Client {
   headers: HeadersInit = {
@@ -23,13 +25,13 @@ class Client {
     this.privateHeaders = { ...this.headers };
   }
 
-  public login(email: string, password: string) {
-    return fetcher<any>(`${BASE_API_URL}/login_check`, {
+  public login(username: string, password: string) {
+    return fetcher<any>(`${BASE_API_URL}/authenticate`, {
       method: "POST",
       headers: {
         ...this.headers,
       },
-      body: JSON.stringify({ username: email, password }),
+      body: JSON.stringify({ username, password }),
     });
   }
 }

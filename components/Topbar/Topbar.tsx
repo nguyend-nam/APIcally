@@ -24,7 +24,7 @@ export const Topbar = ({
   isMenuOpen: boolean;
 }) => {
   const { pathname } = useRouter();
-  const { setIsAuthenticated } = useAuthContext();
+  const { logout } = useAuthContext();
 
   return (
     <div
@@ -67,7 +67,7 @@ export const Topbar = ({
                 }
                 className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
                 borderRadius="none"
-                onClick={() => setIsAuthenticated(false)}
+                onClick={logout}
               />
             </div>
           }

@@ -10,7 +10,7 @@ import { Card } from "../../../../../components/Card";
 import { multipleStates, variableTypes } from "../../../../../constants/python";
 import { Input } from "../../../../../components/Input";
 import { ColumnsType } from "antd/lib/table";
-import { useIsMobile } from "../../../../../hooks/mobile";
+import { useIsMobile } from "../../../../../hooks/useIsMobile";
 import { Button } from "../../../../../components/Button";
 import { CaretRightOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";

@@ -16,6 +16,7 @@ import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
 import { CREATE_API_NAME_KEY } from "../new";
+import { checkInvalidFileNameFormat } from "../../../utils";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -64,7 +65,11 @@ const DocumentationPage = () => {
 
     console.log(createAPIName);
 
-    if (!createAPIName) {
+    if (
+      !createAPIName ||
+      checkInvalidFileNameFormat(createAPIName) ||
+      createAPIName.includes(".")
+    ) {
       push(ROUTES.API_WORKSPACE_CREATE);
     }
   }, [push]);

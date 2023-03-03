@@ -6,7 +6,7 @@ import { Logo } from "../components/Logo";
 import { Text } from "../components/Text";
 import { Image } from "antd";
 import Link from "next/link";
-import { useIsMobile } from "../hooks/mobile";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import { useAuthContext } from "../context/auth";

@@ -1,30 +1,53 @@
 import { createContext } from "@dwarvesf/react-utils";
-import { useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+// import { client } from "../libs/api";
 import { WithChildren } from "../types/common";
+import { encodeData } from "../utils/crypto";
 
 const [Provider, useAuthContext] = createContext<any>();
 
-const APICALLY_KEY = "apically-token";
+export const APICALLY_KEY = "apically-token";
 export const LOGIN_REDIRECTION_KEY = "apically-redirection-key";
 
 const AuthProvider = ({ children }: WithChildren) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+  const [authToken, setAuthToken] = useState(() => {
     const value =
       typeof window !== "undefined"
         ? window.localStorage.getItem(APICALLY_KEY)
-        : "";
-    return value && value !== undefined ? JSON.parse(value) : false;
+        : undefined;
+    return value;
   });
 
-  useEffect(() => {
-    window.localStorage.setItem(APICALLY_KEY, String(isAuthenticated));
-  }, [isAuthenticated]);
+  const isAuthenticated = useMemo(() => Boolean(authToken), [authToken]);
+
+  const login = useCallback(async (username: string, password: string) => {
+    try {
+      // const { token } = await client.login(username, password);
+      const token = encodeData({ username, password });
+
+      if (token) {
+        window.localStorage.setItem(APICALLY_KEY, token);
+        setAuthToken(token);
+        // client.setAuthToken(token);
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    setAuthToken(undefined);
+    window.localStorage.removeItem(APICALLY_KEY);
+    // client.clearAuthToken();
+  }, []);
 
   return (
     <Provider
       value={{
         isAuthenticated,
-        setIsAuthenticated,
+        login,
+        logout,
       }}
     >
       {children}
