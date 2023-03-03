@@ -22,3 +22,12 @@ export const formatPathname = (pathname: string) => {
   const result = newPathname[0].toUpperCase() + newPathname.slice(1);
   return result.replace("-", " ").split("/")[0];
 };
+
+export function capitalizeFirstLetter(value = "") {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+export const snakeCaseToNormalString = (snakeCase: string) => {
+  const result = snakeCase.replace("-", " ");
+  return result.charAt(0).toUpperCase() + result.slice(1);
+};

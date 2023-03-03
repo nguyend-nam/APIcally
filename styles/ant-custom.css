@@ -12,6 +12,14 @@
   padding: 4px 8px !important;
 }
 
+.white-bg > .ant-select-selector {
+  background-color: #fff !important;
+}
+
+.small-text > .ant-select-selector > .ant-select-selection-item {
+  font-size: 16px !important;
+}
+
 .ant-spin-dot-item {
   background-color: #9698fd !important;
 }

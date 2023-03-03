@@ -7,7 +7,7 @@ import {
 import { truncate } from "@dwarvesf/react-utils";
 import { Divider, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { apiRepoType } from "../../../../constants/mockData";
+import { apiRepoType } from "../../../../pages/explore/search";
 import { ROUTES } from "../../../../constants/routes";
 import { formatCurrency } from "../../../../utils/currency";
 import { Card } from "../../../Card";
