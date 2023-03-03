@@ -1,4 +1,6 @@
 import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
   DownOutlined,
   LineOutlined,
   SearchOutlined,
@@ -13,10 +15,11 @@ import {
   Spin,
   Input as AntInput,
   Empty,
+  Select,
 } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Layout } from "../../../components/Layout";
@@ -26,13 +29,51 @@ import { apiReposData } from "../../../constants/mockData";
 import { ROUTES } from "../../../constants/routes";
 import { apiTags, apiTagTypes } from "../../../constants/tagTypes";
 import { useIsMobile } from "../../../hooks/useIsMobile";
+import { capitalizeFirstLetter } from "../../../utils";
+import {
+  priceAscSorter,
+  priceDescSorter,
+  starsAscSorter,
+  starsDescSorter,
+  subscribersAscSorter,
+  subscribersDescSorter,
+} from "../../../utils/sort";
+
+export type Statistic = {
+  subscribes?: number;
+  starGazers?: number;
+  price?: number;
+};
+
+export interface apiRepoType {
+  id?: string;
+  subscribeStatus?: boolean;
+  name?: string;
+  alias?: string;
+  author?: string;
+  username?: string;
+  description?: string;
+  statistics?: Statistic;
+  tags?: apiTagTypes[];
+}
+
+const sorterCategories = ["price", "stars", "subscribers"];
+
+const sorters = {
+  "price-ascending": priceAscSorter,
+  "price-descending": priceDescSorter,
+  "stars-ascending": starsAscSorter,
+  "stars-descending": starsDescSorter,
+  "subscribers-ascending": subscribersAscSorter,
+  "subscribers-descending": subscribersDescSorter,
+};
 
 const SearchResultPage = () => {
   const { query, push } = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const isMobile = useIsMobile();
 
-  const [apiRepos, setApiRepos] = useState(apiReposData);
+  const [apiRepos, setApiRepos] = useState<apiRepoType[]>(apiReposData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // filter states
@@ -58,6 +99,14 @@ const SearchResultPage = () => {
   const [appliedTagFilter, setAppliedTagFilter] = useState<apiTagTypes[]>([]);
   const [appliedSubscribedFilter, setAppliedSubscribedFilter] =
     useState<boolean>(false);
+
+  // sorter
+  const [sortCriteria, setSortCriteria] = useState<
+    "price" | "stars" | "subscribers"
+  >("subscribers");
+  const [sortDirection, setSortDirection] = useState<
+    "ascending" | "descending"
+  >("descending");
 
   const onFilterApply = async () => {
     setIsLoading(true);
@@ -95,7 +144,7 @@ const SearchResultPage = () => {
           }
 
           let has = false;
-          (a.tags || []).forEach((t) => {
+          (a.tags || []).forEach((t: apiTagTypes) => {
             if (appliedTagFilter.includes(t)) {
               has = true;
             }
@@ -135,6 +184,42 @@ const SearchResultPage = () => {
     setApiRepos,
   ]);
 
+  const sortsRenderer = useMemo(() => {
+    let icon: ReactNode;
+    if (sortDirection === "ascending") {
+      icon = <ArrowUpOutlined className="mb-1" />;
+    } else {
+      icon = <ArrowDownOutlined className="mb-1" />;
+    }
+
+    return (
+      <div className="w-full md:w-full max-w-2xl flex justify-end gap-2">
+        <Select
+          value={sortCriteria}
+          onChange={setSortCriteria}
+          className="white-bg small-text"
+          style={{ width: 140 }}
+          options={sorterCategories.map((k) => ({
+            value: k,
+            label: capitalizeFirstLetter(k),
+          }))}
+        />
+        <Button
+          borderRadius="full"
+          className="pt-0 h-[38px]"
+          label={icon}
+          onClick={() => {
+            if (sortDirection === "descending") {
+              setSortDirection("ascending");
+            } else {
+              setSortDirection("descending");
+            }
+          }}
+        />
+      </div>
+    );
+  }, [sortCriteria, sortDirection, setSortDirection, setSortCriteria]);
+
   const apiListRenderer = useMemo(() => {
     if (isLoading) {
       return <Spin size="large" />;
@@ -144,43 +229,25 @@ const SearchResultPage = () => {
       return <Empty description="No API found" />;
     }
 
-    return apiRepos.map((a) => (
-      <ApiRepo key={a.alias} data={a} className="w-full md:w-full max-w-2xl" />
-    ));
-  }, [apiRepos, isLoading]);
+    const currentSorter = `${sortCriteria}-${sortDirection}`;
+
+    return apiRepos
+      .sort(sorters[currentSorter as keyof typeof sorters])
+      .reverse()
+      .map((a) => (
+        <ApiRepo
+          key={a.alias}
+          data={a}
+          className="w-full md:w-full max-w-2xl"
+        />
+      ));
+  }, [apiRepos, isLoading, sortCriteria, sortDirection]);
 
   useEffect(() => {
-    // if (query.status !== undefined) {
-    //   setFilterSubscribed(query.status === "subscribed");
-    // }
     if (query.query !== undefined && typeof query.query === "string") {
       setSearchQuery(query.query);
     }
   }, [query]);
-
-  // const renderAntCheckbox = useMemo(() => {
-  //   return (
-  //     <AntInput
-  //       type="checkbox"
-  //       id="subscribed-checkbox"
-  //       name="subscribed-checkbox"
-  //       className="h-fit !ml-2 text-primary"
-  //       onClick={(e) => {
-  //         setFilterSubscribed((e.target as HTMLInputElement)?.checked);
-  //         if ((e.target as HTMLInputElement)?.checked) {
-  //           push(
-  //             ROUTES.EXPLORE_SEARCH(query.query as string, {
-  //               status: "subscribed",
-  //             })
-  //           );
-  //         } else {
-  //           push(ROUTES.EXPLORE_SEARCH(query.query as string));
-  //         }
-  //       }}
-  //       checked={query.status !== undefined && query.status === "subscribed"}
-  //     />
-  //   );
-  // }, [push, query]);
 
   const [isSSR, setIsSSR] = useState<boolean>(true);
 
@@ -382,11 +449,8 @@ const SearchResultPage = () => {
                 </div>
               ) : null}
 
-              <div className="flex flex-col items-center gap-4 mt-2 md:mt-4 w-full">
-                {/* <div className="self-end flex items-center">
-                  <label htmlFor="subscribed-checkbox">Subscribed</label>
-                  {renderAntCheckbox}
-                </div> */}
+              <div className="flex flex-col items-center gap-6 mt-2 md:mt-4 w-full">
+                {sortsRenderer}
                 {apiListRenderer}
               </div>
             </div>

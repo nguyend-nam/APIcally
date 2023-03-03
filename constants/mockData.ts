@@ -1,22 +1,4 @@
-import { apiTagTypes } from "./tagTypes";
-
-export type Statistic = {
-  subscribes?: number;
-  starGazers?: number;
-  price?: number;
-};
-
-export interface apiRepoType {
-  id?: string;
-  subscribeStatus?: boolean;
-  name?: string;
-  alias?: string;
-  author?: string;
-  username?: string;
-  description?: string;
-  statistics?: Statistic;
-  tags?: apiTagTypes[];
-}
+import { apiRepoType } from "../pages/explore/search";
 
 export const apiReposData: apiRepoType[] = [
   {
