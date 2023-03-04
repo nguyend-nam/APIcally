@@ -159,17 +159,15 @@ const Home = () => {
                   />
                 </Card>
               </Parallax>
-              <Parallax speed={4}>
-                <div className="sticky max-w-fit md:max-w-sm bottom-3 flex-wrap flex items-center gap-x-4 md:gap-x-6 mt-1 mb-[24px] justify-end md:justify-start md:mr-0">
-                  {supplier.slice(0, 7).map((s) => (
-                    <Link key={s.href} href={s.href}>
-                      <a className="mb-1" target="_blank">
-                        <Image height={s.height} preview={false} src={s.img} />
-                      </a>
-                    </Link>
-                  ))}
-                </div>
-              </Parallax>
+              <div className="sticky max-w-fit md:max-w-sm bottom-3 flex-wrap flex items-center gap-x-4 md:gap-x-6 mt-4 justify-end md:justify-start md:mr-0">
+                {supplier.slice(0, 7).map((s) => (
+                  <Link key={s.href} href={s.href}>
+                    <a className="mb-1" target="_blank">
+                      <Image height={s.height} preview={false} src={s.img} />
+                    </a>
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="p-4 pb-16 pt-32">
