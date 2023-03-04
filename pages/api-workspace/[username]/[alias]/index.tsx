@@ -126,12 +126,8 @@ const APIDetailPage = () => {
                             You already subscribed to this API
                           </Typography.Text>
                         </div>
-                        <div className="mt-4">
-                          <Button
-                            appearance="outline"
-                            label="Unsubscribe"
-                            className="mr-2"
-                          />
+                        <div className="flex gap-2 flex-wrap">
+                          <Button appearance="outline" label="Unsubscribe" />
                           <Button
                             label="Start using"
                             onClick={() => {
