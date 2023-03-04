@@ -1,5 +1,4 @@
 import {
-  ApiOutlined,
   ExportOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -11,6 +10,7 @@ import { formatPathname } from "../../utils";
 import { ReactNode } from "react";
 import { Avatar, Dropdown } from "antd";
 import { useAuthContext } from "../../context/auth";
+import { ROUTES } from "../../constants/routes";
 
 export const Topbar = ({
   className,
@@ -23,12 +23,12 @@ export const Topbar = ({
   extraLeft?: ReactNode;
   isMenuOpen: boolean;
 }) => {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const { logout } = useAuthContext();
 
   return (
     <div
-      className={`p-8 py-4 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md ${className}`}
+      className={`p-8 py-4 gap-2 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md ${className}`}
     >
       <div className="flex flex-col md:flex-row items-start text-xl md:text-2xl">
         {extraLeft}
@@ -47,16 +47,7 @@ export const Topbar = ({
                 }
                 className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
                 borderRadius="none"
-              />
-              <Button
-                label={
-                  <div className="flex items-center gap-2 text-black">
-                    <ApiOutlined className="!text-primary" />
-                    APIs
-                  </div>
-                }
-                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
-                borderRadius="none"
+                onClick={() => push(ROUTES.PROFILE)}
               />
               <Button
                 label={

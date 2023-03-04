@@ -1,15 +1,17 @@
 export type apiTagTypes =
   | "ai"
-  | "weather"
-  | "environment"
-  | "sport"
   | "bank"
-  | "economics"
-  | "e-commerce"
-  | "healthcare"
-  | "entertainment"
   | "cooking"
-  | "social-network";
+  | "e-commerce"
+  | "economics"
+  | "environment"
+  | "entertainment"
+  | "healthcare"
+  | "social-network"
+  | "sport"
+  | "technology"
+  | "weather"
+  | "other";
 
 export const apiTags: Record<apiTagTypes, string> = {
   ai: "AI",
@@ -22,5 +24,7 @@ export const apiTags: Record<apiTagTypes, string> = {
   healthcare: "Healthcare",
   "social-network": "Social network",
   sport: "Sport",
+  technology: "Technology",
   weather: "Weather",
+  other: "Other",
 };
