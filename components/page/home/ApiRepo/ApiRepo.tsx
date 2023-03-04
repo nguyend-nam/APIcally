@@ -2,16 +2,17 @@ import {
   BookOutlined,
   UserAddOutlined,
   StarOutlined,
-  KeyOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
 import { Divider, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import { apiRepoType } from "../../../../pages/explore/search";
+import { apiRepoType } from "../../../../pages/explore";
 import { ROUTES } from "../../../../constants/routes";
 import { formatCurrency } from "../../../../utils/currency";
 import { Card } from "../../../Card";
 import { TagsArray } from "../../../TagsArray";
+import { useIsMobile } from "../../../../hooks/useIsMobile";
 
 export const ApiRepo = ({
   data,
@@ -23,6 +24,7 @@ export const ApiRepo = ({
   hasShadow?: boolean;
 }) => {
   const { push } = useRouter();
+  const isMobile = useIsMobile();
 
   return (
     <Card
@@ -30,10 +32,10 @@ export const ApiRepo = ({
       className={`bg-white p-4 ${className}`}
       hasShadow={hasShadow}
     >
-      <div className="flex justify-between gap-8">
+      <div className="flex justify-between !mb-2 gap-2 flex-col md:flex-row">
         <Typography.Title
           level={4}
-          className="!m-0 !mb-2 flex items-center !text-lg md:!text-xl"
+          className="!m-0 flex items-center !text-lg md:!text-xl"
         >
           <a
             className="!text-primary flex items-center"
@@ -50,7 +52,7 @@ export const ApiRepo = ({
           </a>
           {data.subscribeStatus && (
             <Tooltip title="Subscribed" className="ml-1">
-              <KeyOutlined className="text-base !text-green-500 mr-1" />
+              <CheckCircleOutlined className="text-base !text-green-500 mr-1" />
             </Tooltip>
           )}
         </Typography.Title>
@@ -58,7 +60,7 @@ export const ApiRepo = ({
         <div className="flex gap-4">
           {data.statistics?.subscribes ? (
             <Tooltip
-              placement="left"
+              placement={isMobile ? "right" : "left"}
               title="Subscribers"
               className="flex flex-col items-center w-6 h-max"
             >
@@ -69,7 +71,7 @@ export const ApiRepo = ({
 
           {data.statistics?.starGazers ? (
             <Tooltip
-              placement="left"
+              placement={isMobile ? "right" : "left"}
               title="Stars"
               className="flex flex-col items-center w-6 h-max"
             >

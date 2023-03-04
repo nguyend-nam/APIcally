@@ -1,4 +1,4 @@
-import { apiRepoType } from "../pages/explore/search";
+import { apiRepoType } from "../pages/explore";
 
 export const apiReposData: apiRepoType[] = [
   {
@@ -79,7 +79,7 @@ export const apiReposData: apiRepoType[] = [
       starGazers: 30,
       price: 900000,
     },
-    tags: ["e-commerce"],
+    tags: ["e-commerce", "technology"],
   },
   {
     id: "6",
@@ -159,5 +159,21 @@ export const apiReposData: apiRepoType[] = [
       price: 100000,
     },
     tags: ["social-network"],
+  },
+  {
+    id: "11",
+    subscribeStatus: true,
+    name: "React three fiber image gallery",
+    alias: "r3f-image-gallery",
+    author: "Nam Nguyen Dinh",
+    username: "nguyend-nam",
+    description:
+      "ThreeJS image gallery made with React three fiber and NextJS, TypeScript",
+    statistics: {
+      subscribes: 2,
+      starGazers: 1,
+      price: 0,
+    },
+    tags: ["technology"],
   },
 ];

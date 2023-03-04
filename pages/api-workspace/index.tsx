@@ -1,17 +1,16 @@
 import { Button } from "../../components/Button";
 import { Layout } from "../../components/Layout";
-import { Empty, Form, Modal, Typography } from "antd";
+import { Form, Modal, Typography } from "antd";
 import { Card } from "../../components/Card";
 import { Input } from "../../components/Input";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Text } from "../../components/Text";
-import { ApiRepo } from "../../components/page/home/ApiRepo";
-import { apiReposData } from "../../constants/mockData";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { SearchOutlined } from "@ant-design/icons";
 import { ROUTES } from "../../constants/routes";
+import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedApiRepoList";
 
 const CodeEditorPage = () => {
   const { push } = useRouter();
@@ -55,7 +54,7 @@ const CodeEditorPage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
+                      push(ROUTES.EXPLORE(searchQuery));
                     }
                   }}
                 />
@@ -70,7 +69,7 @@ const CodeEditorPage = () => {
             >
               Select an API to utilize or create your own
             </Typography.Title>
-            <div className="flex gap-4 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
+            <div className="flex gap-5 mt-2 lg:mt-4 justify-center flex-wrap lg:flex-nowrap">
               <Card
                 shadowSize="md"
                 className="bg-white p-8 w-full lg:w-[330px] h-max lg:h-[400px] flex flex-col items-center justify-between gap-10"
@@ -121,7 +120,7 @@ const CodeEditorPage = () => {
                     type="submit"
                     label="View subscribed APIs"
                     onClick={() => {
-                      push(ROUTES.PROFILE_APIS);
+                      push(ROUTES.PROFILE);
                     }}
                   />
                 </Card>
@@ -145,53 +144,7 @@ const CodeEditorPage = () => {
               className="!font-normal !placeholder:font-normal mb-4"
               onChange={(e) => setSearchQuerySubscribed(e.target.value)}
             />
-            <div className="h-[350px] overflow-auto">
-              {searchQuerySubscribed ? (
-                apiReposData.filter(
-                  (a) =>
-                    a.subscribeStatus &&
-                    ((a.alias && a.alias.includes(searchQuerySubscribed)) ||
-                      (a.name && a.name.includes(searchQuerySubscribed)) ||
-                      (a.author && a.author.includes(searchQuerySubscribed)) ||
-                      (a.description &&
-                        a.description.includes(searchQuerySubscribed)) ||
-                      (a.username &&
-                        a.username.includes(searchQuerySubscribed)))
-                ).length ? (
-                  apiReposData
-                    .filter(
-                      (a) =>
-                        a.subscribeStatus &&
-                        ((a.alias && a.alias.includes(searchQuerySubscribed)) ||
-                          (a.name && a.name.includes(searchQuerySubscribed)) ||
-                          (a.author &&
-                            a.author.includes(searchQuerySubscribed)) ||
-                          (a.description &&
-                            a.description.includes(searchQuerySubscribed)) ||
-                          (a.username &&
-                            a.username.includes(searchQuerySubscribed)))
-                    )
-                    .map((a) => (
-                      <ApiRepo key={a.id} data={a} hasShadow={false} />
-                    ))
-                ) : (
-                  <div className="h-full flex flex-col justify-center">
-                    <Empty
-                      description={
-                        <Text as="div" className="text-base">
-                          No subscribed APIs found with keyword &quot;
-                          {searchQuerySubscribed}&quot;
-                        </Text>
-                      }
-                    />
-                  </div>
-                )
-              ) : (
-                apiReposData
-                  .filter((a) => a.subscribeStatus)
-                  .map((a) => <ApiRepo key={a.id} data={a} hasShadow={false} />)
-              )}
-            </div>
+            <SubscribedApiRepoList searchQuery={searchQuerySubscribed} />
           </Modal>
         )}
       </>

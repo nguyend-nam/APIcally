@@ -186,12 +186,12 @@ const UtilizerPage = () => {
                         query.status === "subscribed"
                       ) {
                         push(
-                          ROUTES.EXPLORE_SEARCH(searchQuery, {
+                          ROUTES.EXPLORE(searchQuery, {
                             status: "subscribed",
                           })
                         );
                       } else {
-                        push(ROUTES.EXPLORE_SEARCH(searchQuery));
+                        push(ROUTES.EXPLORE(searchQuery));
                       }
                     }
                   }}

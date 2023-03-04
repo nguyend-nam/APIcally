@@ -210,7 +210,7 @@ const DocumentationPage = () => {
                 notification.success({
                   message: "Algorithm successfully submitted!",
                 });
-                push(ROUTES.PROFILE_APIS);
+                push(ROUTES.PROFILE);
               }, 1000);
               window.localStorage.removeItem(CREATE_API_NAME_KEY);
             }}

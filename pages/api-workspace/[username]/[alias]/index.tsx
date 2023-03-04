@@ -85,12 +85,12 @@ const APIDetailPage = () => {
                         query.status === "subscribed"
                       ) {
                         push(
-                          ROUTES.EXPLORE_SEARCH(searchQuery, {
+                          ROUTES.EXPLORE(searchQuery, {
                             status: "subscribed",
                           })
                         );
                       } else {
-                        push(ROUTES.EXPLORE_SEARCH(searchQuery));
+                        push(ROUTES.EXPLORE(searchQuery));
                       }
                     }
                   }}
@@ -126,12 +126,8 @@ const APIDetailPage = () => {
                             You already subscribed to this API
                           </Typography.Text>
                         </div>
-                        <div className="mt-4">
-                          <Button
-                            appearance="outline"
-                            label="Unsubscribe"
-                            className="mr-2"
-                          />
+                        <div className="flex gap-2 flex-wrap">
+                          <Button appearance="outline" label="Unsubscribe" />
                           <Button
                             label="Start using"
                             onClick={() => {

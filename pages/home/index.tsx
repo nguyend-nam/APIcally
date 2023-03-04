@@ -10,9 +10,8 @@ import { useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import Head from "next/head";
 import { SearchOutlined } from "@ant-design/icons";
-import { apiReposData } from "../../constants/mockData";
-import { ApiRepo } from "../../components/page/home/ApiRepo";
 import { ROUTES } from "../../constants/routes";
+import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedApiRepoList";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -50,7 +49,7 @@ const HomePage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
+                      push(ROUTES.EXPLORE(searchQuery));
                     }
                   }}
                 />
@@ -92,60 +91,7 @@ const HomePage = () => {
                   className="!font-normal !placeholder:font-normal mb-4"
                   onChange={(e) => setSearchQuerySubscribed(e.target.value)}
                 />
-                <div className="h-[350px] overflow-auto ">
-                  {searchQuerySubscribed ? (
-                    apiReposData.filter(
-                      (a) =>
-                        a.subscribeStatus &&
-                        ((a.alias && a.alias.includes(searchQuerySubscribed)) ||
-                          (a.name && a.name.includes(searchQuerySubscribed)) ||
-                          (a.author &&
-                            a.author.includes(searchQuerySubscribed)) ||
-                          (a.description &&
-                            a.description.includes(searchQuerySubscribed)) ||
-                          (a.username &&
-                            a.username.includes(searchQuerySubscribed)))
-                    ).length ? (
-                      apiReposData
-                        .filter(
-                          (a) =>
-                            a.subscribeStatus &&
-                            ((a.alias &&
-                              a.alias.includes(searchQuerySubscribed)) ||
-                              (a.name &&
-                                a.name.includes(searchQuerySubscribed)) ||
-                              (a.author &&
-                                a.author.includes(searchQuerySubscribed)) ||
-                              (a.description &&
-                                a.description.includes(
-                                  searchQuerySubscribed
-                                )) ||
-                              (a.username &&
-                                a.username.includes(searchQuerySubscribed)))
-                        )
-                        .map((a) => (
-                          <ApiRepo key={a.id} data={a} hasShadow={false} />
-                        ))
-                    ) : (
-                      <div className="h-full flex flex-col justify-center">
-                        <Empty
-                          description={
-                            <Text as="div" className="text-base">
-                              No subscribed APIs found with keyword &quot;
-                              {searchQuerySubscribed}&quot;
-                            </Text>
-                          }
-                        />
-                      </div>
-                    )
-                  ) : (
-                    apiReposData
-                      .filter((a) => a.subscribeStatus)
-                      .map((a) => (
-                        <ApiRepo key={a.id} data={a} hasShadow={false} />
-                      ))
-                  )}
-                </div>
+                <SubscribedApiRepoList searchQuery={searchQuerySubscribed} />
               </Card>
             </Col>
           </Row>
@@ -210,7 +156,7 @@ const HomePage = () => {
                 <div
                   role="button"
                   className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push(ROUTES.EXPLORE)}
+                  onClick={() => push(ROUTES.EXPLORE())}
                 >
                   <Image
                     height={isMobile ? 150 : 200}

@@ -42,7 +42,7 @@ const UserAPIsPage = () => {
                   className="h-8 flex justify-center items-center !p-2"
                   onClick={() => {
                     if (searchQuery) {
-                      push(ROUTES.EXPLORE_SEARCH(searchQuery));
+                      push(ROUTES.EXPLORE(searchQuery));
                     }
                   }}
                 />

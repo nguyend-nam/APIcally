@@ -1,4 +1,4 @@
-import { apiRepoType } from "../pages/explore/search";
+import { apiRepoType } from "../pages/explore";
 
 // price
 export const priceAscSorter = (a: apiRepoType, b: apiRepoType) =>

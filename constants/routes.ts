@@ -5,14 +5,16 @@ export const ROUTES = {
   LANDING_PAGE: "/",
   HOME: "/home",
   LOGIN: "/login",
-  EXPLORE: "/explore",
-  EXPLORE_SEARCH: (keyword?: string, filterQueries?: any) => {
+  EXPLORE: (keyword?: string, filterQueries?: any) => {
+    if (!keyword && !filterQueries) {
+      return "/explore";
+    }
     if (filterQueries) {
       // @ts-ignore
       const filterQueriesString = qs.stringify(filterQueries);
-      return `/explore/search?query=${keyword}&${filterQueriesString}`;
+      return `/explore?query=${keyword}&${filterQueriesString}`;
     }
-    return `/explore/search?query=${keyword}`;
+    return `/explore?query=${keyword}`;
   },
   API_WORKSPACE: "/api-workspace",
   API_WORKSPACE_API_DETAIL: (username: string, alias: string) =>
@@ -23,5 +25,4 @@ export const ROUTES = {
   API_WORKSPACE_CODE_EDITOR: "/api-workspace/code-editor",
   API_WORKSPACE_DOCUMENTATION: "/api-workspace/documentation",
   PROFILE: "/profile",
-  PROFILE_APIS: "/profile/apis",
 };
