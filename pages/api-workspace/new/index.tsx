@@ -147,7 +147,8 @@ const APICreatePage = () => {
                 disabled={
                   !apiName ||
                   checkInvalidFileNameFormat(apiName) ||
-                  apiName.includes(".")
+                  apiName.includes(".") ||
+                  !apiDisplayName
                 }
                 isLoading={isLoading}
                 label="Create"
