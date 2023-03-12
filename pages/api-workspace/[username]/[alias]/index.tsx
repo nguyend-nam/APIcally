@@ -120,14 +120,20 @@ const APIDetailPage = () => {
                   <Col span={24} md={{ span: 8 }}>
                     <Card className="p-4 h-full" shadowSize="md">
                       <Spin spinning={isLoading}>
-                        <div className="flex items-center">
+                        <div className="flex items-center mb-2">
                           <CheckCircleOutlined className="!text-success text-lg mr-1" />
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
-                            You already subscribed to this API
+                            You{" "}
+                            {currentAPI.username === "nguyend-nam"
+                              ? "owned"
+                              : "already subscribed to"}{" "}
+                            this API
                           </Typography.Text>
                         </div>
                         <div className="flex gap-2 flex-wrap">
-                          <Button appearance="outline" label="Unsubscribe" />
+                          {currentAPI.username === "nguyend-nam" ? null : (
+                            <Button appearance="outline" label="Unsubscribe" />
+                          )}
                           <Button
                             label="Start using"
                             onClick={() => {

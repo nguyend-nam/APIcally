@@ -7,9 +7,14 @@ import { useMemo } from "react";
 interface Props {
   searchQuery?: string;
   className?: string;
+  showSummary?: boolean;
 }
 
-export const SubscribedApiRepoList = ({ searchQuery, className }: Props) => {
+export const SubscribedApiRepoList = ({
+  searchQuery,
+  className,
+  showSummary = true,
+}: Props) => {
   const displayedApiRepos = useMemo(() => {
     return searchQuery
       ? apiReposData
@@ -50,6 +55,7 @@ export const SubscribedApiRepoList = ({ searchQuery, className }: Props) => {
             data={a}
             hasShadow={false}
             className="border border-slate-200"
+            showSummary={showSummary}
           />
         ))}
     </div>

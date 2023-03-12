@@ -259,7 +259,7 @@ const ExplorePage = () => {
     !isSSR && (
       <>
         <Head>
-          <title>Search &quot;{query.query}&quot; | APIcally</title>
+          <title>Explore | APIcally</title>
         </Head>
 
         <Layout
