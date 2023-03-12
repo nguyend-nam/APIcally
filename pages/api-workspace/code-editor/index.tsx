@@ -2,62 +2,107 @@ import { useEffect, useMemo, useState } from "react";
 import { CodeEditor } from "../../../components/CodeEditor";
 import { FileHeader, FileManagement } from "../../../components/FileExplorer";
 import { fileObj, useFileListContext } from "../../../context";
-import axios from "axios";
 import FormData from "form-data";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { ROUTES } from "../../../constants/routes";
-import { CREATE_API_NAME_KEY } from "../new";
 import { checkInvalidFileNameFormat } from "../../../utils";
-
-const sendData = async (data: FormData, fileList: fileObj[]) => {
-  fileList.forEach((file) => {
-    if (file.fileName === "main.py") {
-      const newFile = new File([file.codeContent], file.fileName);
-      data.append("file", newFile);
-    }
-  });
-
-  console.log(data);
-
-  const config = {
-    method: "post",
-    url: "http://localhost:5000/api/v1",
-    headers: { ...data.getHeaders, "Content-Type": "multipart/form-data" },
-    data: data,
-  };
-
-  axios(config)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+import { client, GET_PATHS } from "../../../libs/api";
+import { notification } from "antd";
+import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 
 const CodeEditorPage = () => {
   const { fileList } = useFileListContext() as { fileList: fileObj[] };
+  const filesData = useMemo(() => new FormData(), []);
 
-  const data = useMemo(() => new FormData(), []);
+  const { push, query, isReady } = useRouter();
 
-  const { push } = useRouter();
+  const { data, error } = useFetchWithCache(
+    [GET_PATHS.GET_PROJECT_BY_ALIAS("tan", query.alias as string)],
+    () => client.getProjectByAlias("tan", query.alias as string)
+  );
 
   useEffect(() => {
-    const createAPIName = window.localStorage.getItem(CREATE_API_NAME_KEY);
+    if (isReady) {
+      if (
+        !query.alias ||
+        !query.username ||
+        typeof query.alias !== "string" ||
+        typeof query.username !== "string"
+      ) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
 
-    console.log(createAPIName);
+      if (
+        checkInvalidFileNameFormat(query.alias as string) ||
+        query.alias!.includes(".")
+      ) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
 
-    if (
-      !createAPIName ||
-      checkInvalidFileNameFormat(createAPIName) ||
-      createAPIName.includes(".")
-    ) {
-      push(ROUTES.API_WORKSPACE_CREATE);
+      if (error?.message === "Project not found") {
+        notification.error({
+          message:
+            "You don't have access to that project or it has been deleted",
+        });
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
+
+      if (data && data.code !== 200) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      } else {
+        console.log(data);
+      }
     }
-  }, [push]);
+  }, [push, query, isReady, data, error]);
+
+  const onSubmit = async (ownerId: string, alias: string) => {
+    try {
+      setIsLoading(true);
+
+      const mainFile = fileList.find((file) => file.fileName === "main.py");
+
+      if (mainFile) {
+        const newFile = new File([mainFile.codeContent], mainFile.fileName);
+        filesData.append("", newFile, mainFile.fileName);
+
+        const data = await client.uploadProjectFiles(ownerId, alias, filesData);
+        console.log(data);
+
+        // const requestOptions = {
+        //   method: "POST",
+        //   body: filesData,
+        //   redirect: "follow",
+        // };
+
+        // fetch(
+        //   `http://localhost:5000/v1/${ownerId}/${alias}/upload`,
+        //   requestOptions
+        // )
+        //   .then((response) => response.text())
+        //   .then((result) => console.log(result))
+        //   .catch((error) => console.log("error", error));
+
+        if (data) {
+          if (data.code === 200) {
+            notification.success({ message: "Files uploaded successfully" });
+            // push(
+            //   ROUTES.API_WORKSPACE_DOCUMENTATION(ownerId, query.alias as string)
+            // );
+          }
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      notification.error({
+        message: error.message || "Could not upload files",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const [currentFile, setCurrentFile] = useState<number>(0);
   const [value, setValue] = useState<string | undefined>("");
@@ -113,12 +158,7 @@ const CodeEditorPage = () => {
                 <Button
                   label="Submit algorithm"
                   onClick={() => {
-                    setIsLoading(true);
-                    sendData(data, fileList);
-                    setTimeout(
-                      () => push(ROUTES.API_WORKSPACE_DOCUMENTATION),
-                      1000
-                    );
+                    onSubmit(query.username as string, query.alias as string);
                   }}
                   isLoading={isLoading}
                 />

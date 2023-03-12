@@ -17,6 +17,8 @@ import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
 import { CREATE_API_NAME_KEY } from "../new";
 import { checkInvalidFileNameFormat } from "../../../utils";
+import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../../libs/api";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -58,21 +60,46 @@ const DocumentationPage = () => {
     onClose: closeAddInputDialog,
   } = useDisclosure();
 
-  const { push } = useRouter();
+  const { push, query, isReady } = useRouter();
+
+  const { data, error } = useFetchWithCache(
+    [GET_PATHS.GET_PROJECT_BY_ALIAS("tan", query.alias as string)],
+    () => client.getProjectByAlias("tan", query.alias as string)
+  );
 
   useEffect(() => {
-    const createAPIName = window.localStorage.getItem(CREATE_API_NAME_KEY);
+    if (isReady) {
+      if (
+        !query.alias ||
+        !query.username ||
+        typeof query.alias !== "string" ||
+        typeof query.username !== "string"
+      ) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
 
-    console.log(createAPIName);
+      if (
+        checkInvalidFileNameFormat(query.alias as string) ||
+        query.alias!.includes(".")
+      ) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
 
-    if (
-      !createAPIName ||
-      checkInvalidFileNameFormat(createAPIName) ||
-      createAPIName.includes(".")
-    ) {
-      push(ROUTES.API_WORKSPACE_CREATE);
+      if (error?.message === "Project not found") {
+        notification.error({
+          message:
+            "You don't have access to that project or it has been deleted",
+        });
+        push(ROUTES.API_WORKSPACE_CREATE);
+      }
+
+      if (data && data.code !== 200) {
+        push(ROUTES.API_WORKSPACE_CREATE);
+      } else {
+        console.log(data);
+      }
     }
-  }, [push]);
+  }, [push, query, isReady, data, error]);
 
   const [form] = useForm();
 

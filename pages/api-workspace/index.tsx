@@ -144,7 +144,10 @@ const CodeEditorPage = () => {
               className="!font-normal !placeholder:font-normal mb-4"
               onChange={(e) => setSearchQuerySubscribed(e.target.value)}
             />
-            <SubscribedApiRepoList searchQuery={searchQuerySubscribed} />
+            <SubscribedApiRepoList
+              searchQuery={searchQuerySubscribed}
+              showSummary={false}
+            />
           </Modal>
         )}
       </>
