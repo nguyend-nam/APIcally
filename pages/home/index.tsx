@@ -59,7 +59,7 @@ const HomePage = () => {
         >
           <Row gutter={[20, 20]}>
             <Col span={24} md={{ span: 12 }}>
-              <Card shadowSize="md" className="p-4">
+              <Card shadowSize="sm" className="p-4">
                 <Text as="h2" className="text-lg">
                   Recently created
                 </Text>
@@ -80,7 +80,7 @@ const HomePage = () => {
               </Card>
             </Col>
             <Col span={24} md={{ span: 12 }}>
-              <Card shadowSize="md" className="p-4">
+              <Card shadowSize="sm" className="p-4">
                 <Text as="h2" className="text-lg">
                   Subscribed APIs
                 </Text>
@@ -109,7 +109,7 @@ const HomePage = () => {
             <Col span={24} md={{ span: 12 }}>
               <Card
                 hasShadow={false}
-                className="hover:shadow-md"
+                className="hover:shadow"
                 style={{ transition: "0.2s" }}
               >
                 <div
@@ -131,7 +131,7 @@ const HomePage = () => {
             <Col span={24} md={{ span: 12 }}>
               <Card
                 hasShadow={false}
-                className="hover:shadow-md"
+                className="hover:shadow"
                 style={{ transition: "0.2s" }}
               >
                 <div
@@ -153,7 +153,7 @@ const HomePage = () => {
             <Col span={24} md={{ span: 12 }}>
               <Card
                 hasShadow={false}
-                className="hover:shadow-md"
+                className="hover:shadow"
                 style={{ transition: "0.2s" }}
               >
                 <div

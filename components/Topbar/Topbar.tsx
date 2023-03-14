@@ -40,23 +40,23 @@ export const Topbar = ({
             <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
               <Button
                 label={
-                  <div className="flex items-center gap-2 text-black">
+                  <div className="flex items-center gap-2 text-slate-600">
                     <UserOutlined className="!text-primary" />
                     Profile
                   </div>
                 }
-                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
+                className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
                 borderRadius="none"
                 onClick={() => push(ROUTES.PROFILE)}
               />
               <Button
                 label={
-                  <div className="flex items-center gap-2 text-black">
+                  <div className="flex items-center gap-2 text-slate-600">
                     <ExportOutlined className="!text-primary" rotate={180} />
                     Logout
                   </div>
                 }
-                className="!text-base !p-3 !py-2 !bg-white hover:!bg-gray-100 !text-gray-600 w-full text-left"
+                className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
                 borderRadius="none"
                 onClick={logout}
               />

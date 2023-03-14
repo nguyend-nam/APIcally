@@ -17,7 +17,7 @@ export const GeneralInfo = () => {
   const { logout } = useAuthContext();
 
   return (
-    <Card className="relative overflow-hidden" shadowSize="md">
+    <Card className="relative overflow-hidden" shadowSize="sm">
       <div className="h-32 bg-gradient-to-r from-primary to-sky-500" />
       <Card className="p-4 md:p-6">
         <Avatar

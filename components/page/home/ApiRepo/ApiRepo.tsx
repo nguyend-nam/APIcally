@@ -30,7 +30,7 @@ export const ApiRepo = ({
 
   return (
     <Card
-      shadowSize="md"
+      shadowSize="sm"
       className={`bg-white p-4 ${className}`}
       hasShadow={hasShadow}
     >

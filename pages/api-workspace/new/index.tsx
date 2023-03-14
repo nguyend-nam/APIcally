@@ -67,7 +67,7 @@ const APICreatePage = () => {
         </Head>
 
         <Layout>
-          <Card className="max-w-xl m-auto p-4">
+          <Card className="max-w-xl m-auto p-4" shadowSize="md">
             <Typography.Title level={4} className="!text-slate-600">
               Create API
             </Typography.Title>

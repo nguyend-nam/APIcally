@@ -97,7 +97,7 @@ const UserPage = () => {
             </Col>
             <Col span={24} xl={{ span: 16 }}>
               <AntCard
-                className="!border-none shadow-md !rounded-r-lg !rounded-bl-lg"
+                className="!border-none shadow !rounded-r-lg !rounded-bl-lg"
                 headStyle={{ padding: isMobile ? "0 16px" : "0 24px" }}
                 bodyStyle={{ padding: isMobile ? 16 : 24 }}
                 tabList={tabList}
@@ -114,7 +114,7 @@ const UserPage = () => {
                 {tabContentList[activeTabKey]}
               </AntCard>
 
-              <Card shadowSize="md" className="p-6 mt-5">
+              <Card shadowSize="sm" className="p-6 mt-5">
                 <Text as="h2" className="text-lg">
                   APIs in cart
                 </Text>
