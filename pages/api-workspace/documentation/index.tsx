@@ -160,7 +160,7 @@ const DocumentationPage = () => {
   const renderTable = useMemo(() => {
     console.log();
     return (
-      <Card className="p-4" hasShadow={false}>
+      <Card className="p-4" shadowSize="sm">
         <Table
           rowKey="name"
           columns={columns}

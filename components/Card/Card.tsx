@@ -37,7 +37,7 @@ export const Card = ({
   style,
 }: WithChildren & {
   hasShadow?: boolean;
-  shadowSize?: "lg" | "md";
+  shadowSize?: "lg" | "md" | "sm";
   borderRadius?:
     | "top"
     | "right"
@@ -53,11 +53,24 @@ export const Card = ({
   className?: string;
   style?: CSSProperties;
 }) => {
+  let shadowClassname;
+  switch (shadowSize) {
+    case "lg":
+      shadowClassname = "shadow-lg";
+      break;
+    case "md":
+      shadowClassname = "shadow-md";
+      break;
+    default:
+      shadowClassname = "shadow";
+      break;
+  }
+
   return (
     <div
       style={style}
       className={`bg-white ${getBorderRadius(borderRadius)} ${
-        hasShadow && (shadowSize === "lg" ? "shadow-lg" : "shadow-md")
+        hasShadow && shadowClassname
       } ${className}`}
     >
       {children}
