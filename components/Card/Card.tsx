@@ -53,16 +53,16 @@ export const Card = ({
   className?: string;
   style?: CSSProperties;
 }) => {
-  let shadowClassname;
+  let shadowClassName;
   switch (shadowSize) {
     case "lg":
-      shadowClassname = "shadow-lg";
+      shadowClassName = "shadow-lg";
       break;
     case "md":
-      shadowClassname = "shadow-md";
+      shadowClassName = "shadow-md";
       break;
     default:
-      shadowClassname = "shadow";
+      shadowClassName = "shadow";
       break;
   }
 
@@ -70,7 +70,7 @@ export const Card = ({
     <div
       style={style}
       className={`bg-white ${getBorderRadius(borderRadius)} ${
-        hasShadow && shadowClassname
+        hasShadow && shadowClassName
       } ${className}`}
     >
       {children}
