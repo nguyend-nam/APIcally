@@ -122,7 +122,7 @@ const APIDetailPage = () => {
                 </Col>
                 {currentAPI.subscribeStatus ? (
                   <Col span={24} md={{ span: 8 }}>
-                    <Card className="p-4 h-full" hasShadow={false}>
+                    <Card className="p-4 h-full" shadowSize="sm">
                       <Spin spinning={isLoading}>
                         <div className="flex items-center mb-2">
                           <CheckCircleOutlined className="!text-success text-lg mr-1" />
@@ -161,8 +161,7 @@ const APIDetailPage = () => {
                   <Col span={24} md={{ span: 8 }}>
                     <Card
                       className="p-4 h-full flex flex-col justify-between"
-                      shadowSize="md"
-                      hasShadow={false}
+                      shadowSize="sm"
                     >
                       <div className="flex justify-between align-middle">
                         <Typography.Text className="text-lg !m-0 !text-gray-600">
