@@ -99,7 +99,7 @@ const Home = () => {
           <div className="w-full absolute top-0">
             <Card
               borderRadius={isMobile ? "bottomLeft" : "none"}
-              className="z-50 fixed top-0 backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-12 w-full flex items-center justify-between shadow-sm md:shadow-md"
+              className="z-50 fixed top-0 !backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-8 w-full flex items-center justify-between shadow md:shadow-slate-50/0"
             >
               <Logo size={isMobile ? "xs" : "sm"} />
               {isAuthenticated ? (
@@ -113,15 +113,9 @@ const Home = () => {
               ) : (
                 <div>
                   <Button
-                    appearance="link"
-                    className="text-base md:text-lg mr-3 md:mr-4"
-                    label="Login"
-                    onClick={() => push(ROUTES.LOGIN)}
-                  />
-                  <Button
                     appearance="outline"
-                    className="text-base md:text-lg bg-white/0"
-                    label="Register"
+                    className="text-base md:text-lg !px-4"
+                    label="Login"
                     onClick={() => push(ROUTES.LOGIN)}
                   />
                 </div>
@@ -136,19 +130,16 @@ const Home = () => {
                   zIndex: 20,
                 }}
               >
-                <Card className="w-max p-4 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg mt-6 md:mt-2">
+                <Card className="w-max p-5 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg mt-6 md:mt-2">
                   <Text className="text-lg text-slate-400 m-0 hidden md:block">
                     Welcome to
                   </Text>
-                  <Text className="text-4xl md:text-5xl tracking-[1px] font-bold text-primary m-0 mb-2 md:mb-6">
+                  <Text className="text-4xl md:text-5xl tracking-[1px] font-bold text-primary m-0 mb-4 md:mb-8">
                     APIcally
                   </Text>
-                  <Text className="text-xl md:text-2xl font-medium text-slate-700 m-0 mb-2 md:mb-6">
-                    Where APIs get into work
-                  </Text>
-                  <Text className="text-base md:text-lg font-normal text-slate-700 m-0">
-                    A platform to run, host and utilize APIs. Provide your
-                    algorithm, let us do the rest.
+                  <Text className="text-base md:text-lg text-slate-700 m-0">
+                    An e-commerce platform for your APIs. Provide your
+                    algorithms, let us bring them to the community.
                   </Text>
                   <Button
                     className="text-lg md:text-xl mt-2 md:mt-4"
@@ -171,7 +162,7 @@ const Home = () => {
             </div>
 
             <div className="p-4 pb-16 pt-32">
-              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
+              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
                 How APIcally works
               </Text>
               <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
@@ -202,7 +193,7 @@ const Home = () => {
             </div>
 
             <div className="p-4 pb-16 pt-16">
-              <Text className="text-2xl md:text-4xl font-semibold text-primary text-center mb-12 md:mb-16">
+              <Text className="text-2xl md:text-4xl font-medium text-primary text-center mb-12 md:mb-16">
                 How the delivery goes
               </Text>
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
@@ -216,7 +207,7 @@ const Home = () => {
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
                       as="h4"
-                      className="text-lg md:text-xl font-semibold text-slate-600"
+                      className="text-lg md:text-xl font-medium text-slate-600"
                     >
                       As a <u>Developer</u>
                     </Text>
@@ -239,7 +230,7 @@ const Home = () => {
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
                       as="h4"
-                      className="text-lg md:text-xl font-semibold text-slate-600"
+                      className="text-lg md:text-xl font-medium text-slate-600"
                     >
                       As a <u>Domain-specialized user</u>
                     </Text>
@@ -256,8 +247,8 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4">
-              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
-                What APIcally can &quot;digests&quot;
+              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
+                What can APIcally &quot;digests&quot;?
               </Text>
               <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-4">
                 {types.map((t) => (
@@ -282,7 +273,7 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4">
-              <Text className="text-2xl md:text-4xl font-semibold text-slate-700 text-center mb-12 md:mb-16">
+              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
                 Made with
               </Text>
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">

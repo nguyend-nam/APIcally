@@ -142,7 +142,7 @@ const CodeEditorPage = () => {
             <FileManagement
               currentFile={currentFile}
               setCurrentFile={setCurrentFile}
-              className="sticky top-0 w-[400px] bg-white"
+              className="sticky top-0 w-[350px] bg-white"
             />
             <div className="w-full">
               <FileHeader

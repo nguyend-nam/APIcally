@@ -319,7 +319,7 @@ const ExplorePage = () => {
                   <Divider className="!my-0" />
 
                   {isTagFilterOpen ? (
-                    <div className="px-4 my-4 max-h-[160px] overflow-auto">
+                    <div className="px-4 my-4 mb-6 max-h-[160px] overflow-auto">
                       <Checkbox.Group
                         className="p-4 !flex flex-wrap !gap-1.5"
                         value={tagFilter}

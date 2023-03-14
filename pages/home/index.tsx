@@ -59,7 +59,7 @@ const HomePage = () => {
         >
           <Row gutter={[20, 20]}>
             <Col span={24} md={{ span: 12 }}>
-              <Card shadowSize="md" className="p-4">
+              <Card hasShadow={false} className="p-4">
                 <Text as="h2" className="text-lg">
                   Recently created
                 </Text>
@@ -80,7 +80,7 @@ const HomePage = () => {
               </Card>
             </Col>
             <Col span={24} md={{ span: 12 }}>
-              <Card shadowSize="md" className="p-4">
+              <Card hasShadow={false} className="p-4">
                 <Text as="h2" className="text-lg">
                   Subscribed APIs
                 </Text>
