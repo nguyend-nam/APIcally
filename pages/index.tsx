@@ -174,7 +174,7 @@ const Home = () => {
                   >
                     <div className="max-w-full overflow-hidden flex justify-center">
                       <Image
-                        height={250}
+                        height={isMobile ? 200 : 250}
                         width={375}
                         className="object-cover"
                         preview={false}
@@ -199,10 +199,10 @@ const Home = () => {
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
                   <Image
-                    height={isMobile ? 200 : 260}
+                    height={isMobile ? 240 : 280}
                     className="object-contain"
                     preview={false}
-                    src="img/developer-art.svg"
+                    src="img/developer-art.png"
                   />
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
@@ -222,10 +222,10 @@ const Home = () => {
                 </div>
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
                   <Image
-                    height={isMobile ? 200 : 260}
+                    height={isMobile ? 240 : 280}
                     className="object-contain"
                     preview={false}
-                    src="img/non-tech-art.svg"
+                    src="img/non-tech-art.png"
                   />
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
@@ -259,8 +259,8 @@ const Home = () => {
                   >
                     <div className="max-w-fit overflow-hidden flex justify-center">
                       <Image
-                        height={100}
-                        width={300}
+                        height={isMobile ? 80 : 100}
+                        width={isMobile ? 240 : 300}
                         className="object-cover rounded-lg rounded-tl-none"
                         preview={false}
                         src={t.img}
@@ -274,7 +274,7 @@ const Home = () => {
 
             <div className="p-16 px-4">
               <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
-                Made with
+                Made with...
               </Text>
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (

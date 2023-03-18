@@ -122,31 +122,9 @@ const HomePage = () => {
                     width="100%"
                     className="object-contain"
                     preview={false}
-                    src="img/api-art.svg"
+                    src="img/developer-art.png"
                   />
                   <Text className="pt-4 text-lg mb-0">Create APIs</Text>
-                </div>
-              </Card>
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <Card
-                hasShadow={false}
-                className="hover:shadow"
-                style={{ transition: "0.2s" }}
-              >
-                <div
-                  role="button"
-                  className="flex flex-col items-center p-4 hover:text-primary"
-                  onClick={() => push(ROUTES.API_WORKSPACE)}
-                >
-                  <Image
-                    height={isMobile ? 150 : 200}
-                    width="100%"
-                    className="object-contain"
-                    preview={false}
-                    src="img/utilize-art.svg"
-                  />
-                  <Text className="pt-4 text-lg mb-0">Utilize and serve</Text>
                 </div>
               </Card>
             </Col>
@@ -166,9 +144,31 @@ const HomePage = () => {
                     width="100%"
                     className="object-contain"
                     preview={false}
-                    src="img/feed-art.svg"
+                    src="img/explore-art.png"
                   />
                   <Text className="pt-4 text-lg mb-0">Explore APIs</Text>
+                </div>
+              </Card>
+            </Col>
+            <Col span={24} md={{ span: 12 }}>
+              <Card
+                hasShadow={false}
+                className="hover:shadow"
+                style={{ transition: "0.2s" }}
+              >
+                <div
+                  role="button"
+                  className="flex flex-col items-center p-4 hover:text-primary"
+                  onClick={() => push(ROUTES.API_WORKSPACE)}
+                >
+                  <Image
+                    height={isMobile ? 150 : 200}
+                    width="100%"
+                    className="object-contain"
+                    preview={false}
+                    src="img/utilize-art.png"
+                  />
+                  <Text className="pt-4 text-lg mb-0">Utilize and serve</Text>
                 </div>
               </Card>
             </Col>

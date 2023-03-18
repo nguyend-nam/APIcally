@@ -3,6 +3,7 @@ import {
   UserAddOutlined,
   StarOutlined,
   CheckCircleOutlined,
+  CaretLeftOutlined,
 } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
 import { Divider, Tooltip, Typography } from "antd";
@@ -40,7 +41,7 @@ export const ApiRepo = ({
           className="!m-0 flex items-center !text-lg md:!text-xl"
         >
           <a
-            className="!text-primary flex items-center"
+            className="!text-primary inline items-center"
             onClick={() => {
               if (data?.username && data?.alias) {
                 push(
@@ -49,7 +50,7 @@ export const ApiRepo = ({
               }
             }}
           >
-            <BookOutlined className="text-base !text-gray-400 mr-1" />
+            <BookOutlined className="text-base -translate-y-1 !text-gray-400 mr-1" />
             {data.name}
           </a>
           {data.subscribeStatus && (
@@ -100,13 +101,16 @@ export const ApiRepo = ({
           </Typography.Paragraph>
 
           <div
-            className={`!text-base md:!text-lg font-semibold rounded-r-xl rounded-l -ml-5 pr-3 pl-5 py-1 bg-gradient-to-r from-indigo-500 to-sky-400 w-max ${
-              data.statistics?.price ? "text-white" : "text-yellow-200"
+            className={`relative !text-base md:!text-lg font-semibold rounded-l -ml-5 pr-7 md:pr-8 pl-5 py-1 bg-gradient-to-r w-max text-white ${
+              data.statistics?.price
+                ? "from-indigo-500 to-sky-400"
+                : "from-amber-500 to-yellow-400"
             }`}
           >
             {data.statistics?.price
               ? formatCurrency(data.statistics?.price)
               : "Free"}
+            <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
           </div>
         </>
       ) : null}
