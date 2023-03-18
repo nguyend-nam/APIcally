@@ -199,7 +199,7 @@ const Home = () => {
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
                   <Image
-                    height={isMobile ? 240 : 260}
+                    height={isMobile ? 240 : 280}
                     className="object-contain"
                     preview={false}
                     src="img/developer-art.png"
@@ -222,7 +222,7 @@ const Home = () => {
                 </div>
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
                   <Image
-                    height={isMobile ? 240 : 260}
+                    height={isMobile ? 240 : 280}
                     className="object-contain"
                     preview={false}
                     src="img/non-tech-art.png"
@@ -260,7 +260,7 @@ const Home = () => {
                     <div className="max-w-fit overflow-hidden flex justify-center">
                       <Image
                         height={isMobile ? 80 : 100}
-                        width={isMobile ? 260 : 300}
+                        width={isMobile ? 240 : 300}
                         className="object-cover rounded-lg rounded-tl-none"
                         preview={false}
                         src={t.img}
