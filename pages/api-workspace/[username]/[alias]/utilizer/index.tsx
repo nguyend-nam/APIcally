@@ -170,7 +170,7 @@ const UtilizerPage = () => {
 
             <Row className="my-8" gutter={[16, 16]}>
               <Col span={24} lg={{ span: 12 }}>
-                <Card className="p-4" shadowSize="md">
+                <Card className="p-4" shadowSize="sm">
                   <Typography.Title level={3} className="!m-0 !mb-4">
                     Provide inputs
                   </Typography.Title>
@@ -188,7 +188,7 @@ const UtilizerPage = () => {
               <Col span={24} lg={{ span: 12 }}>
                 <Card
                   className="p-4 min-h-[200px] flex flex-col"
-                  shadowSize="md"
+                  shadowSize="sm"
                 >
                   <div className="flex justify-between items-center mb-4">
                     <Typography.Title level={3} className="!m-0">
