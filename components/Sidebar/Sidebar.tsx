@@ -1,5 +1,6 @@
 import {
   ToTopOutlined,
+  CloseOutlined,
   HomeOutlined,
   CodeOutlined,
   UserOutlined,
@@ -85,9 +86,9 @@ export const Sidebar = ({
       className={`flex flex-col bg-primary w-max h-screen items-center ${className}`}
       style={style}
     >
-      <div className="h-32 w-full flex justify-center items-center">
+      <div className="h-32 w-full flex justify-center relative items-center">
         <Link href="/">
-          <a>
+          <a onClick={() => setIsMenuOpen(false)}>
             <Logo
               size={isExpanded ? "sm" : "xs"}
               hasText={isExpanded}
@@ -96,6 +97,16 @@ export const Sidebar = ({
             />
           </a>
         </Link>
+        <Button
+          label={
+            <CloseOutlined
+              className="text-lg"
+              style={{ transition: "transform 0.3s" }}
+            />
+          }
+          className="!p-1.5 !pt-0 !bg-info !text-white md:hidden absolute right-[17px] block !-mt-11"
+          onClick={() => setIsMenuOpen(false)}
+        />
       </div>
       <div className="h-full overflow-y-auto overflow-x-hidden w-full">
         {sidebarRoutes.map((route) =>
@@ -215,16 +226,6 @@ export const Sidebar = ({
           setSidebarStatus(!isExpanded);
           setIsWorkspaceOpen(false);
         }}
-      />
-      <Button
-        label={
-          <ToTopOutlined
-            className={`text-2xl -rotate-90`}
-            style={{ transition: "transform 0.3s" }}
-          />
-        }
-        className="!p-4 w-full md:hidden block"
-        onClick={() => setIsMenuOpen(false)}
       />
     </div>
   );
