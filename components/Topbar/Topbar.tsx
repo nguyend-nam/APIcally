@@ -66,7 +66,7 @@ export const Topbar = ({
           trigger={["click"]}
           className="cursor-pointer !hidden md:!block"
         >
-          <Avatar icon={<UserOutlined size={64} />} />
+          <Avatar icon={<UserOutlined size={64} />} className="!bg-slate-300" />
         </Dropdown>
         <Button
           label={

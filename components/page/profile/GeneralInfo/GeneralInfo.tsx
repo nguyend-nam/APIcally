@@ -22,7 +22,7 @@ export const GeneralInfo = () => {
       <Card className="p-4 md:p-6">
         <Avatar
           size={92}
-          className="!absolute top-10 md:top-[39px] border-4 border-white"
+          className="!absolute top-10 md:top-[39px] border-4 border-white !bg-slate-300"
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">

@@ -51,7 +51,7 @@ const DocumentationPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleEditorChange = ({ text }: { text: string }) => {
-    console.log(text);
+    console.log(text); // TODO: update content for API project update
   };
 
   const {
@@ -95,8 +95,6 @@ const DocumentationPage = () => {
 
       if (data && data.code !== 200) {
         push(ROUTES.API_WORKSPACE_CREATE);
-      } else {
-        console.log(data);
       }
     }
   }, [push, query, isReady, data, error]);
@@ -158,7 +156,6 @@ const DocumentationPage = () => {
   ];
 
   const renderTable = useMemo(() => {
-    console.log();
     return (
       <Card className="p-4" shadowSize="sm">
         <Table
@@ -171,82 +168,75 @@ const DocumentationPage = () => {
     );
   }, [dataSource]); // eslint-disable-line
 
-  const [isSSR, setIsSSR] = useState<boolean>(true);
-
-  useEffect(() => {
-    setIsSSR(false);
-  }, []);
-
   return (
-    !isSSR && (
-      <>
-        <Head>
-          <title>API workspace | APIcally</title>
-        </Head>
-        <Layout>
-          <Typography.Title level={3}>Documentation</Typography.Title>
-          <div className="border-primary border-t-4">
-            <MdEditor
-              plugins={[
-                "header",
-                "font-bold",
-                "font-italic",
-                "list-unordered",
-                "block-quote",
-                "link",
-                "image",
-                "block-code-inline",
-                "block-code-block",
-                "mode-toggle",
-              ]}
-              style={{ height: 510 }}
-              renderHTML={(text) => <ReactMarkdown source={text} />}
-              onChange={handleEditorChange}
-              defaultValue={defaultMD}
-            />
-          </div>
+    <>
+      <Head>
+        <title>API workspace | APIcally</title>
+      </Head>
 
-          <div className="mt-8">
-            <div className="flex items-center justify-between w-full mb-4">
-              <Typography.Title level={3} className="!m-0">
-                Define inputs
-              </Typography.Title>
-
-              <Button label="Add input" onClick={openAddInputDialog} />
-            </div>
-
-            {isAddInputDialogOpen && (
-              <DefineInput
-                form={form}
-                dataSource={dataSource}
-                setDataSource={setDataSource}
-                isOpen={isAddInputDialogOpen}
-                onCancel={closeAddInputDialog}
-                onOk={form.submit}
-              />
-            )}
-
-            {renderTable}
-          </div>
-
-          <Button
-            label="Submit"
-            onClick={() => {
-              setIsLoading(true);
-              setTimeout(() => {
-                notification.success({
-                  message: "Algorithm successfully submitted!",
-                });
-                push(ROUTES.PROFILE);
-              }, 1000);
-              window.localStorage.removeItem(CREATE_API_NAME_KEY);
-            }}
-            className="mt-8"
-            isLoading={isLoading}
+      <Layout>
+        <Typography.Title level={3}>Documentation</Typography.Title>
+        <div className="border-primary border-t-4">
+          <MdEditor
+            plugins={[
+              "header",
+              "font-bold",
+              "font-italic",
+              "list-unordered",
+              "block-quote",
+              "link",
+              "image",
+              "block-code-inline",
+              "block-code-block",
+              "mode-toggle",
+            ]}
+            style={{ height: 510 }}
+            renderHTML={(text) => <ReactMarkdown source={text} />}
+            onChange={handleEditorChange}
+            defaultValue={defaultMD}
           />
-        </Layout>
-      </>
-    )
+        </div>
+
+        <div className="mt-8">
+          <div className="flex items-center justify-between w-full mb-4">
+            <Typography.Title level={3} className="!m-0">
+              Define inputs
+            </Typography.Title>
+
+            <Button label="Add input" onClick={openAddInputDialog} />
+          </div>
+
+          {isAddInputDialogOpen && (
+            <DefineInput
+              form={form}
+              dataSource={dataSource}
+              setDataSource={setDataSource}
+              isOpen={isAddInputDialogOpen}
+              onCancel={closeAddInputDialog}
+              onOk={form.submit}
+            />
+          )}
+
+          {renderTable}
+        </div>
+
+        <Button
+          label="Submit"
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => {
+              notification.success({
+                message: "Algorithm successfully submitted!",
+              });
+              push(ROUTES.PROFILE);
+            }, 1000);
+            window.localStorage.removeItem(CREATE_API_NAME_KEY);
+          }}
+          className="mt-8"
+          isLoading={isLoading}
+        />
+      </Layout>
+    </>
   );
 };
 

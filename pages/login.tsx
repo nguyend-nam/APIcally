@@ -11,13 +11,13 @@ import Head from "next/head";
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../context/auth";
 import Link from "next/link";
 import { ROUTES } from "../constants/routes";
+import { useIsSSR } from "../hooks/useIsSSR";
 
 const LoginPage = () => {
   const isMobile = useIsMobile();
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSSR, setIsSSR] = useState<boolean>(true);
-  useEffect(() => setIsSSR(false), []);
+  const isSSR = useIsSSR();
 
   const { login, isAuthenticated } = useAuthContext();
 
@@ -32,7 +32,6 @@ const LoginPage = () => {
   }, [push, isAuthenticated]);
 
   const onSubmit = async (values: { username: string; password: string }) => {
-    console.log(values);
     try {
       setIsLoading(true);
       setTimeout(() => login(values.username, values.password), 1000);
@@ -50,6 +49,7 @@ const LoginPage = () => {
         <Head>
           <title>Login | APIcally</title>
         </Head>
+
         <div
           className="flex justify-center items-center min-h-screen bg-slate-100 p-4 sm:p-0"
           style={{

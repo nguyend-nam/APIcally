@@ -3,11 +3,9 @@ import {
   ArrowUpOutlined,
   DownOutlined,
   LineOutlined,
-  SearchOutlined,
   UpOutlined,
 } from "@ant-design/icons";
 import {
-  Form,
   Typography,
   Divider,
   Checkbox,
@@ -23,7 +21,6 @@ import { ReactNode, useState, useMemo, useEffect } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
-import { ROUTES } from "../../constants/routes";
 import { apiTags, apiTagTypes } from "../../constants/tagTypes";
 import { ApiRepo } from "../../components/page/home/ApiRepo";
 import { FULL_PRICE_FILTER } from "../../constants/filter";
@@ -69,8 +66,7 @@ const sorters = {
 };
 
 const ExplorePage = () => {
-  const { query, push } = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const { query } = useRouter();
   const isMobile = useIsMobile();
 
   const [apiRepos, setApiRepos] = useState<apiRepoType[]>(apiReposData);
@@ -243,83 +239,34 @@ const ExplorePage = () => {
       ));
   }, [apiRepos, isLoading, sortCriteria, sortDirection]);
 
-  useEffect(() => {
-    if (query.query !== undefined && typeof query.query === "string") {
-      setSearchQuery(query.query);
-    }
-  }, [query]);
-
-  const [isSSR, setIsSSR] = useState<boolean>(true);
-
-  useEffect(() => {
-    setIsSSR(false);
-  }, []);
-
   return (
-    !isSSR && (
-      <>
-        <Head>
-          <title>Explore | APIcally</title>
-        </Head>
+    <>
+      <Head>
+        <title>Explore | APIcally</title>
+      </Head>
 
-        <Layout
-          extraLeft={
-            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
-              <Form className="flex items-center">
-                <Input
-                  borderRadius="bottomLeft"
-                  type="text"
-                  id="home-search-input"
-                  placeholder="Search or jump to..."
-                  className="!font-normal !placeholder:font-normal h-8"
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button
-                  borderRadius="right"
-                  label={<SearchOutlined />}
-                  className="h-8 flex justify-center items-center !p-2"
-                  onClick={() => {
-                    if (searchQuery) {
-                      if (
-                        query.status !== undefined &&
-                        query.status === "subscribed"
-                      ) {
-                        push(
-                          ROUTES.EXPLORE(searchQuery, {
-                            status: "subscribed",
-                          })
-                        );
-                      } else {
-                        push(ROUTES.EXPLORE(searchQuery));
-                      }
-                    }
-                  }}
-                />
-              </Form>
-            </div>
-          }
-          contentClassName="!pt-0 !px-0"
-        >
-          <div className="flex flex-col md:flex-row">
-            <div className="bg-white h-full max-h-[calc(100vh-64px)] overflow-auto sticky top-auto md:top-16 w-full md:w-[290px] shrink-0">
-              {isFilterOpen ? (
-                <div>
-                  <Typography.Title
-                    level={4}
-                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
-                    onClick={() => setIsTagFilterOpen(!isTagFilterOpen)}
-                  >
-                    Category
-                    {isTagFilterOpen ? (
-                      <UpOutlined className="text-[10px]" />
-                    ) : (
-                      <DownOutlined className="text-[10px]" />
-                    )}
-                  </Typography.Title>
-                  <Divider className="!my-0" />
-
+      <Layout hasSearch contentClassName="!pt-0 !px-0">
+        <div className="flex flex-col md:flex-row">
+          <div className="bg-white h-full max-h-[calc(100vh-64px)] overflow-auto sticky top-auto md:top-16 w-full md:w-[290px] shrink-0">
+            {isFilterOpen ? (
+              <div>
+                <Typography.Title
+                  level={4}
+                  className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                  onClick={() => setIsTagFilterOpen(!isTagFilterOpen)}
+                >
+                  Category
                   {isTagFilterOpen ? (
-                    <div className="px-4 my-4 mb-6 max-h-[160px] overflow-auto">
+                    <UpOutlined className="text-[10px]" />
+                  ) : (
+                    <DownOutlined className="text-[10px]" />
+                  )}
+                </Typography.Title>
+                <Divider className="!my-0" />
+
+                {isTagFilterOpen ? (
+                  <div className="bg-gray-50 mb-6">
+                    <div className="px-4 py-4 md:max-h-[170px] overflow-auto">
                       <Checkbox.Group
                         className="p-4 !flex flex-wrap !gap-1.5"
                         value={tagFilter}
@@ -332,134 +279,134 @@ const ExplorePage = () => {
                         ))}
                       </Checkbox.Group>
                     </div>
-                  ) : null}
-
-                  <Typography.Title
-                    level={4}
-                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
-                    onClick={() => setIsPriceFilterOpen(!isPriceFilterOpen)}
-                  >
-                    <span>
-                      Price range{" "}
-                      <span className="font-normal text-sm text-slate-500">
-                        (vnd)
-                      </span>
-                    </span>
-                    {isPriceFilterOpen ? (
-                      <UpOutlined className="text-[10px]" />
-                    ) : (
-                      <DownOutlined className="text-[10px]" />
-                    )}
-                  </Typography.Title>
-                  <Divider className="!my-0" />
-
-                  {isPriceFilterOpen ? (
-                    <>
-                      <div className="px-4 my-4">
-                        <Slider
-                          range
-                          value={priceFilter}
-                          max={1000000}
-                          onChange={setPriceFilter}
-                          trackStyle={[{ backgroundColor: "#2D31FA" }]}
-                        />
-                      </div>
-                      <div className="flex px-4 mb-8 gap-4 items-center">
-                        <Input
-                          type="number"
-                          max={1000000}
-                          value={priceFilter[0]}
-                          className="!text-sm py-2"
-                          onChange={(e) => {
-                            const newRangeValue: [number, number] = [
-                              Number(e.target?.value || 0),
-                              priceFilter[1],
-                            ];
-                            setPriceFilter(newRangeValue);
-                          }}
-                        />
-                        <div className="flex items-center text-slate-400">
-                          <LineOutlined />
-                        </div>
-                        <Input
-                          type="number"
-                          max={1000000}
-                          value={priceFilter[1]}
-                          className="!text-sm py-2"
-                          onChange={(e) => {
-                            const newRangeValue: [number, number] = [
-                              priceFilter[0],
-                              Number(e.target?.value || 0),
-                            ];
-                            setPriceFilter(newRangeValue);
-                          }}
-                        />
-                      </div>
-                    </>
-                  ) : null}
-
-                  <Typography.Title
-                    level={4}
-                    className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
-                    onClick={() => setSubscribedFilter(!subscribedFilter)}
-                  >
-                    Subscribed
-                    <AntInput
-                      type="checkbox"
-                      className="!w-min"
-                      checked={subscribedFilter}
-                    />
-                  </Typography.Title>
-                  <Divider className="!my-0" />
-
-                  <div className="p-4 flex flex-row md:flex-col gap-4">
-                    <Button
-                      appearance="outline"
-                      label="Reset"
-                      className="w-full !text-base"
-                      onClick={onFilterReset}
-                    />
-                    <Button
-                      label="Apply"
-                      className="w-full !text-base"
-                      onClick={onFilterApply}
-                      isLoading={isLoading}
-                    />
                   </div>
-                </div>
-              ) : null}
+                ) : null}
 
-              {isMobile ? (
-                <div className={`p-4 ${isFilterOpen ? "pt-0" : ""}`}>
+                <Typography.Title
+                  level={4}
+                  className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                  onClick={() => setIsPriceFilterOpen(!isPriceFilterOpen)}
+                >
+                  <span>
+                    Price range{" "}
+                    <span className="font-normal text-sm text-slate-500">
+                      (vnd)
+                    </span>
+                  </span>
+                  {isPriceFilterOpen ? (
+                    <UpOutlined className="text-[10px]" />
+                  ) : (
+                    <DownOutlined className="text-[10px]" />
+                  )}
+                </Typography.Title>
+                <Divider className="!my-0" />
+
+                {isPriceFilterOpen ? (
+                  <>
+                    <div className="px-4 my-4">
+                      <Slider
+                        range
+                        value={priceFilter}
+                        max={1000000}
+                        onChange={setPriceFilter}
+                        trackStyle={[{ backgroundColor: "#2D31FA" }]}
+                      />
+                    </div>
+                    <div className="flex px-4 mb-8 gap-4 items-center">
+                      <Input
+                        type="number"
+                        max={1000000}
+                        value={priceFilter[0]}
+                        className="!text-sm py-2"
+                        onChange={(e) => {
+                          const newRangeValue: [number, number] = [
+                            Number(e.target?.value || 0),
+                            priceFilter[1],
+                          ];
+                          setPriceFilter(newRangeValue);
+                        }}
+                      />
+                      <div className="flex items-center text-slate-400">
+                        <LineOutlined />
+                      </div>
+                      <Input
+                        type="number"
+                        max={1000000}
+                        value={priceFilter[1]}
+                        className="!text-sm py-2"
+                        onChange={(e) => {
+                          const newRangeValue: [number, number] = [
+                            priceFilter[0],
+                            Number(e.target?.value || 0),
+                          ];
+                          setPriceFilter(newRangeValue);
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : null}
+
+                <Typography.Title
+                  level={4}
+                  className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                  onClick={() => setSubscribedFilter(!subscribedFilter)}
+                >
+                  Subscribed
+                  <AntInput
+                    type="checkbox"
+                    className="!w-min"
+                    checked={subscribedFilter}
+                  />
+                </Typography.Title>
+                <Divider className="!my-0" />
+
+                <div className="p-4 flex flex-row md:flex-col gap-4">
                   <Button
-                    label={isFilterOpen ? "Close filter" : "Open filter"}
+                    appearance="outline"
+                    label="Reset"
                     className="w-full !text-base"
-                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                    onClick={onFilterReset}
+                  />
+                  <Button
+                    label="Apply"
+                    className="w-full !text-base"
+                    onClick={onFilterApply}
+                    isLoading={isLoading}
                   />
                 </div>
-              ) : null}
-            </div>
-
-            <div className="p-4 md:p-8 pb-0 w-full">
-              {query.query && apiRepos.length ? (
-                <div>
-                  Showing {apiRepos.length} results for &quot;
-                  {query.query}
-                  &quot;
-                </div>
-              ) : (
-                <div>Showing {apiRepos.length} results</div>
-              )}
-
-              <div className="flex flex-col items-center gap-6 mt-2 md:mt-4 w-full">
-                {sortsRenderer}
-                {apiListRenderer}
               </div>
+            ) : null}
+
+            {isMobile ? (
+              <div className={`p-4 ${isFilterOpen ? "pt-0" : ""}`}>
+                <Button
+                  label={isFilterOpen ? "Close filter" : "Open filter"}
+                  className="w-full !text-base"
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                />
+              </div>
+            ) : null}
+          </div>
+
+          <div className="p-4 md:p-8 pb-0 w-full">
+            {query.query && apiRepos.length ? (
+              <div>
+                Showing {apiRepos.length} results for &quot;
+                {query.query}
+                &quot;
+              </div>
+            ) : (
+              <div>Showing {apiRepos.length} results</div>
+            )}
+
+            <div className="flex flex-col items-center gap-6 mt-2 md:mt-4 w-full">
+              {sortsRenderer}
+              {apiListRenderer}
             </div>
           </div>
-        </Layout>
-      </>
-    )
+        </div>
+      </Layout>
+    </>
   );
 };
 
