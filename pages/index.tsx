@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Logo } from "../components/Logo";
@@ -12,6 +11,8 @@ import Head from "next/head";
 import { useAuthContext } from "../context/auth";
 import { Parallax } from "react-scroll-parallax";
 import { ROUTES } from "../constants/routes";
+import { useIsSSR } from "../hooks/useIsSSR";
+import { WithChildren } from "../types/common";
 
 const supplier = [
   { href: "https://nextjs.org/", img: "img/nextjs-logo.png", height: 25 },
@@ -46,7 +47,7 @@ const steps = [
     img: "img/how-to-second.png",
   },
   {
-    title: "Utilize, serve and so on",
+    title: "Subscribe, utilize and so on",
     description:
       "Developers can grant access to anyone who subscribes to the API. As a non-tech user, you can subscribe to utilize the resource.",
     img: "img/how-to-third.png",
@@ -55,29 +56,39 @@ const steps = [
 
 const types = [
   {
-    name: "JSON",
-    img: "img/json.png",
+    name: "Create a centralize API storing platform",
+    img: "img/centralize-art.png",
     nameClassName:
-      "!mt-2 md:!mt-4 text-center text-lg md:text-xl font-medium text-primary",
+      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
   {
-    name: "Images",
-    img: "img/image.png",
+    name: "Optimize resources usage cost",
+    img: "img/stonk-art.png",
     nameClassName:
-      "!mt-2 md:!mt-4 text-center text-lg md:text-xl font-medium text-primary",
+      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
   {
-    name: "Other types might be added in future enhancement",
-    img: "img/not-known-yet.png",
+    name: "Share your APIs and benefit others",
+    img: "img/launcher-art.png",
     nameClassName:
-      "!mt-2 md:!mt-4 text-center text-base md:text-lg font-normal text-slate-600 max-w-xs",
+      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
 ];
 
+const SectionTitle = (props: WithChildren & { className?: string }) => {
+  const { children, className } = props;
+  return (
+    <Text
+      className={`capitalize text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16 ${className}`}
+    >
+      {children}
+    </Text>
+  );
+};
+
 const Home = () => {
-  const [isSSR, setIsSSR] = useState<boolean>(true);
-  useEffect(() => setIsSSR(false), []);
   const { push } = useRouter();
+  const isSSR = useIsSSR();
   const isMobile = useIsMobile();
   const { isAuthenticated } = useAuthContext();
 
@@ -87,6 +98,7 @@ const Home = () => {
         <Head>
           <title>APIcally</title>
         </Head>
+
         <div
           className="flex justify-center items-center min-h-screen bg-slate-100 p-4 md:p-0"
           style={{
@@ -162,40 +174,9 @@ const Home = () => {
             </div>
 
             <div className="p-4 pb-16 pt-32">
-              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
-                How APIcally works
-              </Text>
-              <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
-                {steps.map((s) => (
-                  <Card
-                    key={s.title}
-                    className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full md:max-w-[30%] overflow-hidden bg-slate-50"
-                    hasShadow={false}
-                  >
-                    <div className="max-w-full overflow-hidden flex justify-center">
-                      <Image
-                        height={isMobile ? 200 : 250}
-                        width={375}
-                        className="object-cover"
-                        preview={false}
-                        src={s.img}
-                      />
-                    </div>
-                    <Text className="text-center text-lg md:text-xl font-medium text-slate-600">
-                      {s.title}
-                    </Text>
-                    <div className="text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
-                      {s.description}
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-4 pb-16 pt-16">
-              <Text className="text-2xl md:text-4xl font-medium text-primary text-center mb-12 md:mb-16">
-                How the delivery goes
-              </Text>
+              <SectionTitle className="!text-primary !text-center">
+                Welcome all types of user
+              </SectionTitle>
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
                   <Image
@@ -246,21 +227,47 @@ const Home = () => {
               </div>
             </div>
 
+            <div className="p-4 pb-16 pt-16">
+              <SectionTitle>How APIcally works</SectionTitle>
+              <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
+                {steps.map((s) => (
+                  <Card
+                    key={s.title}
+                    className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full md:max-w-[30%] overflow-hidden bg-slate-50"
+                    hasShadow={false}
+                  >
+                    <div className="max-w-full overflow-hidden flex justify-center">
+                      <Image
+                        height={isMobile ? 200 : 250}
+                        width={375}
+                        className="object-cover"
+                        preview={false}
+                        src={s.img}
+                      />
+                    </div>
+                    <Text className="text-center text-lg md:text-xl font-medium text-slate-600">
+                      {s.title}
+                    </Text>
+                    <div className="text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
+                      {s.description}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
             <div className="p-16 px-4">
-              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
-                What can APIcally &quot;digests&quot;?
-              </Text>
-              <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-4">
+              <SectionTitle>Benefits</SectionTitle>
+              <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-8 md:gap-6">
                 {types.map((t) => (
                   <Card
                     key={t.name}
-                    className="last-of-type:mb-0 flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
+                    className="flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
                     hasShadow={false}
                   >
                     <div className="max-w-fit overflow-hidden flex justify-center">
                       <Image
-                        height={isMobile ? 80 : 100}
-                        width={isMobile ? 240 : 300}
+                        height={isMobile ? 240 : 280}
                         className="object-cover rounded-lg rounded-tl-none"
                         preview={false}
                         src={t.img}
@@ -273,9 +280,7 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4">
-              <Text className="text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16">
-                Made with...
-              </Text>
+              <SectionTitle>Made with...</SectionTitle>
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (
                   <Link key={s.href} href={s.href}>

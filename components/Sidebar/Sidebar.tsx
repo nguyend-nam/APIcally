@@ -11,7 +11,7 @@ import {
 import { Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, Dispatch, SetStateAction, useState } from "react";
 import { ROUTES } from "../../constants/routes";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
@@ -43,9 +43,11 @@ const sidebarRoutes = [
 export const Sidebar = ({
   className,
   style,
+  setIsMenuOpen,
 }: {
   className?: string;
   style?: CSSProperties;
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { pathname, push } = useRouter();
   const { sidebarStatus: isExpanded, setSidebarStatus } =
@@ -120,7 +122,10 @@ export const Sidebar = ({
               style={{ transition: "0.2s" }}
               borderRadius="none"
               onClick={() => {
-                pathname === `${route.route}` ? null : push(route.route);
+                if (pathname !== `${route.route}`) {
+                  setIsMenuOpen(false);
+                  push(route.route);
+                }
               }}
             />
           ) : (
@@ -148,7 +153,10 @@ export const Sidebar = ({
                   style={{ transition: "0.2s" }}
                   borderRadius="none"
                   onClick={() => {
-                    pathname === `${route.route}` ? null : push(route.route);
+                    if (pathname !== `${route.route}`) {
+                      setIsMenuOpen(false);
+                      push(route.route);
+                    }
                   }}
                 />
 
@@ -207,6 +215,16 @@ export const Sidebar = ({
           setSidebarStatus(!isExpanded);
           setIsWorkspaceOpen(false);
         }}
+      />
+      <Button
+        label={
+          <ToTopOutlined
+            className={`text-2xl -rotate-90`}
+            style={{ transition: "transform 0.3s" }}
+          />
+        }
+        className="!p-4 w-full md:hidden block"
+        onClick={() => setIsMenuOpen(false)}
       />
     </div>
   );

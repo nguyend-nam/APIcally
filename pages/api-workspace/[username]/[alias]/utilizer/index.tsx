@@ -12,9 +12,7 @@ import { Input } from "../../../../../components/Input";
 import { ColumnsType } from "antd/lib/table";
 import { useIsMobile } from "../../../../../hooks/useIsMobile";
 import { Button } from "../../../../../components/Button";
-import { CaretRightOutlined, SearchOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
-import { ROUTES } from "../../../../../constants/routes";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -27,7 +25,7 @@ const defineInputType = (type: keyof typeof variableTypes) => {
 };
 
 const UtilizerPage = () => {
-  const { query, push } = useRouter();
+  const { query } = useRouter();
   const isMobile = useIsMobile();
 
   const currentAPI = apiReposData.find(
@@ -150,127 +148,83 @@ const UtilizerPage = () => {
     },
   ];
 
-  const [isSSR, setIsSSR] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  useEffect(() => {
-    setIsSSR(false);
-  }, []);
-
   return (
-    !isSSR && (
-      <>
-        <Head>
-          <title>API workspace | APIcally</title>
-        </Head>
-        <Layout
-          extraLeft={
-            <div className="mr-0 md:mr-4 mb-4 md:mb-0">
-              <Form className="flex items-center">
-                <Input
-                  borderRadius="bottomLeft"
-                  type="text"
-                  id="home-search-input"
-                  placeholder="Search or jump to..."
-                  className="!font-normal !placeholder:font-normal h-8"
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button
-                  borderRadius="right"
-                  label={<SearchOutlined />}
-                  className="h-8 flex justify-center items-center !p-2"
-                  onClick={() => {
-                    if (searchQuery) {
-                      if (
-                        query.status !== undefined &&
-                        query.status === "subscribed"
-                      ) {
-                        push(
-                          ROUTES.EXPLORE(searchQuery, {
-                            status: "subscribed",
-                          })
-                        );
-                      } else {
-                        push(ROUTES.EXPLORE(searchQuery));
-                      }
-                    }
-                  }}
-                />
-              </Form>
-            </div>
-          }
-        >
-          {currentAPI === undefined ? (
-            <Typography.Title level={3}>API not found</Typography.Title>
-          ) : (
-            <>
-              <Typography.Title level={2}>
-                <span className="font-normal text-2xl md:text-3xl">
-                  {currentAPI?.author}/
-                </span>
-                <span className="text-primary text-2xl md:text-3xl">
-                  {currentAPI?.name}
-                </span>
-              </Typography.Title>
+    <>
+      <Head>
+        <title>API workspace | APIcally</title>
+      </Head>
 
-              <Row className="my-8" gutter={[16, 16]}>
-                <Col span={24} lg={{ span: 12 }}>
-                  <Card className="p-4" shadowSize="md">
-                    <Typography.Title level={3} className="!m-0 !mb-4">
-                      Provide inputs
+      <Layout hasSearch>
+        {currentAPI === undefined ? (
+          <Typography.Title level={3}>API not found</Typography.Title>
+        ) : (
+          <>
+            <Typography.Title level={2}>
+              <span className="font-normal text-2xl md:text-3xl">
+                {currentAPI?.author}/
+              </span>
+              <span className="text-primary text-2xl md:text-3xl">
+                {currentAPI?.name}
+              </span>
+            </Typography.Title>
+
+            <Row className="my-8" gutter={[16, 16]}>
+              <Col span={24} lg={{ span: 12 }}>
+                <Card className="p-4" shadowSize="md">
+                  <Typography.Title level={3} className="!m-0 !mb-4">
+                    Provide inputs
+                  </Typography.Title>
+                  <Card hasShadow={false}>
+                    <Table
+                      rowKey="name"
+                      columns={columns}
+                      dataSource={dataSource}
+                      scroll={{ x: "max-content" }}
+                      pagination={{ hideOnSinglePage: true }}
+                    />
+                  </Card>
+                </Card>
+              </Col>
+              <Col span={24} lg={{ span: 12 }}>
+                <Card
+                  className="p-4 min-h-[200px] flex flex-col"
+                  shadowSize="md"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <Typography.Title level={3} className="!m-0">
+                      Output
                     </Typography.Title>
-                    <Card hasShadow={false}>
-                      <Table
-                        rowKey="name"
-                        columns={columns}
-                        dataSource={dataSource}
-                        scroll={{ x: "max-content" }}
-                        pagination={{ hideOnSinglePage: true }}
-                      />
-                    </Card>
-                  </Card>
-                </Col>
-                <Col span={24} lg={{ span: 12 }}>
+                    <Button
+                      label={
+                        <CaretRightOutlined className="text-lg absolute top-1.5 left-1.5" />
+                      }
+                      className="w-[30px] h-[30px] relative block !m-0"
+                    />
+                  </div>
                   <Card
-                    className="p-4 min-h-[200px] flex flex-col"
-                    shadowSize="md"
+                    hasShadow={false}
+                    className="grow !bg-slate-700 p-4 !h-full"
                   >
-                    <div className="flex justify-between items-center mb-4">
-                      <Typography.Title level={3} className="!m-0">
-                        Output
-                      </Typography.Title>
-                      <Button
-                        label={
-                          <CaretRightOutlined className="text-lg absolute top-1.5 left-1.5" />
-                        }
-                        className="w-[30px] h-[30px] relative block !m-0"
-                      />
-                    </div>
-                    <Card
-                      hasShadow={false}
-                      className="grow !bg-slate-700 p-4 !h-full"
-                    >
-                      <code className="text-white">&#123;output&#125;</code>
-                    </Card>
+                    <code className="text-white">&#123;output&#125;</code>
                   </Card>
-                </Col>
-              </Row>
+                </Card>
+              </Col>
+            </Row>
 
-              <Typography.Title level={3}>Documentation</Typography.Title>
-              <div className="border-primary border-t-4">
-                <MdEditor
-                  readOnly
-                  view={{ menu: false, md: false, html: true }}
-                  style={{ height: 510 }}
-                  renderHTML={(text) => <ReactMarkdown source={text} />}
-                  defaultValue={defaultMD}
-                />
-              </div>
-            </>
-          )}
-        </Layout>
-      </>
-    )
+            <Typography.Title level={3}>Documentation</Typography.Title>
+            <div className="border-primary border-t-4">
+              <MdEditor
+                readOnly
+                view={{ menu: false, md: false, html: true }}
+                style={{ height: 510 }}
+                renderHTML={(text) => <ReactMarkdown source={text} />}
+                defaultValue={defaultMD}
+              />
+            </div>
+          </>
+        )}
+      </Layout>
+    </>
   );
 };
 
