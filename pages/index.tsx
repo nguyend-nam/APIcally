@@ -54,24 +54,18 @@ const steps = [
   },
 ];
 
-const types = [
+const benefits = [
   {
-    name: "Create a centralize API storing platform",
+    name: "Create a centralized API storing platform",
     img: "img/centralize-art.png",
-    nameClassName:
-      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
   {
-    name: "Optimize resources usage cost",
+    name: "Optimize resources usage and cost",
     img: "img/stonk-art.png",
-    nameClassName:
-      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
   {
     name: "Share your APIs and benefit others",
     img: "img/launcher-art.png",
-    nameClassName:
-      "!mt-2 md:!mt-4 text-center text-lg md:text-xl text-primary max-w-xs",
   },
 ];
 
@@ -79,7 +73,7 @@ const SectionTitle = (props: WithChildren & { className?: string }) => {
   const { children, className } = props;
   return (
     <Text
-      className={`capitalize text-2xl md:text-4xl font-medium text-slate-700 text-center mb-12 md:mb-16 ${className}`}
+      className={`capitalize text-3xl md:text-[40px] font-semibold text-slate-700 text-center mb-12 md:mb-16 ${className}`}
     >
       {children}
     </Text>
@@ -173,7 +167,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="p-4 pb-16 pt-32">
+            <div className="p-4 pb-16 pt-32 mt-0 md:mt-4">
               <SectionTitle className="!text-primary !text-center">
                 Welcome all types of user
               </SectionTitle>
@@ -227,19 +221,19 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="p-4 pb-16 pt-16">
+            <div className="p-4 pb-16 pt-16 mt-0 md:mt-4">
               <SectionTitle>How APIcally works</SectionTitle>
               <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
                 {steps.map((s) => (
                   <Card
                     key={s.title}
-                    className="p-4 mx-0 md:mx-2 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 max-w-full md:max-w-[30%] overflow-hidden bg-slate-50"
+                    className="pb-4 mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 w-full md:max-w-[28%] overflow-hidden shadow"
                     hasShadow={false}
                   >
-                    <div className="max-w-full overflow-hidden flex justify-center">
+                    <div className="w-full overflow-hidden">
                       <Image
                         height={isMobile ? 200 : 250}
-                        width={375}
+                        width="100%"
                         className="object-cover"
                         preview={false}
                         src={s.img}
@@ -248,7 +242,7 @@ const Home = () => {
                     <Text className="text-center text-lg md:text-xl font-medium text-slate-600">
                       {s.title}
                     </Text>
-                    <div className="text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
+                    <div className="px-4 text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
                       {s.description}
                     </div>
                   </Card>
@@ -256,30 +250,32 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="p-16 px-4">
-              <SectionTitle>Benefits</SectionTitle>
+            <div className="p-16 px-4 pt-16 mt-0 md:mt-4 bg-indigo-500">
+              <SectionTitle className="text-white">Benefits</SectionTitle>
               <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-8 md:gap-6">
-                {types.map((t) => (
+                {benefits.map((b) => (
                   <Card
-                    key={t.name}
-                    className="flex flex-col items-center space-y-4 col-span-6 lg:col-span-2"
+                    key={b.name}
+                    className="flex flex-col items-center space-y-4 col-span-6 lg:col-span-2 bg-indigo-500"
                     hasShadow={false}
                   >
-                    <div className="max-w-fit overflow-hidden flex justify-center">
+                    <div className="border border-slate-200 aspect-square w-[260px] max-w-full rounded-full flex justify-center">
                       <Image
-                        height={isMobile ? 240 : 280}
-                        className="object-cover rounded-lg rounded-tl-none"
+                        height={240}
+                        className="object-cover rounded-lg rounded-tl-none select-none"
                         preview={false}
-                        src={t.img}
+                        src={b.img}
                       />
                     </div>
-                    <Text className={t.nameClassName}>{t.name}</Text>
+                    <Text className="!mt-2 md:!mt-4 font-medium text-center text-lg md:text-xl text-white max-w-xs w-full">
+                      {b.name}
+                    </Text>
                   </Card>
                 ))}
               </div>
             </div>
 
-            <div className="p-16 px-4">
+            <div className="p-16 px-4 pt-16 md:pt-20">
               <SectionTitle>Made with...</SectionTitle>
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (
