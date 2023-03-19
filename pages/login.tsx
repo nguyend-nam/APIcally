@@ -32,7 +32,6 @@ const LoginPage = () => {
   }, [push, isAuthenticated]);
 
   const onSubmit = async (values: { username: string; password: string }) => {
-    console.log(values);
     try {
       setIsLoading(true);
       setTimeout(() => login(values.username, values.password), 1000);

@@ -37,7 +37,6 @@ const APICreatePage = () => {
     try {
       setIsLoading(true);
       const data = await client.createProject(ownerId, payload);
-      console.log(data);
 
       if (data) {
         if (data.code === 200) {
@@ -46,7 +45,6 @@ const APICreatePage = () => {
         }
       }
     } catch (error: any) {
-      console.log(error);
       notification.error({ message: error.message || "Could not create API" });
     } finally {
       setIsLoading(false);

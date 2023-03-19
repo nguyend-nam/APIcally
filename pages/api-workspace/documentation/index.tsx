@@ -51,7 +51,7 @@ const DocumentationPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleEditorChange = ({ text }: { text: string }) => {
-    console.log(text);
+    console.log(text); // TODO: update content for API project update
   };
 
   const {
@@ -95,8 +95,6 @@ const DocumentationPage = () => {
 
       if (data && data.code !== 200) {
         push(ROUTES.API_WORKSPACE_CREATE);
-      } else {
-        console.log(data);
       }
     }
   }, [push, query, isReady, data, error]);
@@ -158,7 +156,6 @@ const DocumentationPage = () => {
   ];
 
   const renderTable = useMemo(() => {
-    console.log();
     return (
       <Card className="p-4" shadowSize="sm">
         <Table

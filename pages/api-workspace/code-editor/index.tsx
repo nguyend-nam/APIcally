@@ -52,8 +52,6 @@ const CodeEditorPage = () => {
 
       if (data && data.code !== 200) {
         push(ROUTES.API_WORKSPACE_CREATE);
-      } else {
-        console.log(data);
       }
     }
   }, [push, query, isReady, data, error]);
@@ -69,7 +67,6 @@ const CodeEditorPage = () => {
         filesData.append("", newFile, mainFile.fileName);
 
         const data = await client.uploadProjectFiles(ownerId, alias, filesData);
-        console.log(data);
 
         // const requestOptions = {
         //   method: "POST",
@@ -95,7 +92,6 @@ const CodeEditorPage = () => {
         }
       }
     } catch (error: any) {
-      console.log(error);
       notification.error({
         message: error.message || "Could not upload files",
       });
