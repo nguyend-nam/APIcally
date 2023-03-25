@@ -49,7 +49,7 @@ const CodeEditorPageInner = () => {
       if (error?.message === "Project not found") {
         notification.error({
           message:
-            "You don't have access to that project or it has been deleted or does not exist",
+            "You don't have access to that project, or it has been deleted or does not exist",
         });
         push(ROUTES.API_WORKSPACE_CREATE);
       }
