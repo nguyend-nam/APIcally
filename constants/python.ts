@@ -10,6 +10,19 @@ export const multipleStates = {
   array: "Array",
 };
 
+export const modelFileExtensions = [
+  "gz",
+  "tgz",
+  "tf",
+  "pb",
+  "pth",
+  "pt",
+  "h5",
+  "hdf5",
+  "onnx",
+  "pkl",
+];
+
 export const pythonInitCode = `"""Required import-----------------------------------------"""
 #Required modules, do not edit!
 import sys

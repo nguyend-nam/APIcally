@@ -59,10 +59,10 @@ const LoginPage = () => {
             backgroundSize: "cover",
           }}
         >
-          <Card className="flex flex-col sm:flex-row h-[510px] sm:h-[450px] w-[670px] bg-white">
+          <Card className="flex flex-col sm:flex-row h-[480px] sm:h-[450px] w-[670px] bg-white">
             <Card
               borderRadius={isMobile ? "topRight" : "bottomLeft"}
-              className="bg-primary text-white overflow-hidden w-full sm:w-1/2 relative"
+              className="bg-primary text-white overflow-hidden w-full sm:w-1/2 relative min-h-[136px]"
               hasShadow={!isMobile}
             >
               <Image

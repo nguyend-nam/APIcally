@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { CodeEditor } from "../../../components/CodeEditor";
 import { FileHeader, FileManagement } from "../../../components/FileExplorer";
-import { fileObj, useFileListContext } from "../../../context";
+import {
+  FileListProvider,
+  fileObj,
+  useFileListContext,
+} from "../../../context";
 import FormData from "form-data";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
@@ -13,7 +17,7 @@ import { client, GET_PATHS } from "../../../libs/api";
 import { notification } from "antd";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 
-const CodeEditorPage = () => {
+const CodeEditorPageInner = () => {
   const { fileList } = useFileListContext() as { fileList: fileObj[] };
   const filesData = useMemo(() => new FormData(), []);
 
@@ -45,7 +49,7 @@ const CodeEditorPage = () => {
       if (error?.message === "Project not found") {
         notification.error({
           message:
-            "You don't have access to that project or it has been deleted",
+            "You don't have access to that project, or it has been deleted or does not exist",
         });
         push(ROUTES.API_WORKSPACE_CREATE);
       }
@@ -157,6 +161,14 @@ const CodeEditorPage = () => {
         </div>
       </Layout>
     </>
+  );
+};
+
+const CodeEditorPage = () => {
+  return (
+    <FileListProvider>
+      <CodeEditorPageInner />
+    </FileListProvider>
   );
 };
 

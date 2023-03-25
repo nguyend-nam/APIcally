@@ -5,6 +5,7 @@ import { Alert } from "../Alert";
 import { Dropdown, notification, Upload } from "antd";
 import { PlusCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button } from "../Button";
+import { modelFileExtensions } from "../../constants/python";
 
 export const FileManagement = ({
   currentFile,
@@ -31,31 +32,13 @@ export const FileManagement = ({
       setIsUploadingFile(true);
       const content = await file.text();
 
-      if (file.name.length > 3) {
-        const fileExtension = file.name.slice(-3);
-        if (fileExtension !== ".py") {
-          notification.error({
-            message: (
-              <span className="">
-                Please upload{" "}
-                <code className="bg-slate-100 py-0.5 px-1 rounded-sm text-sm">
-                  .py
-                </code>{" "}
-                only
-              </span>
-            ),
-          });
-          return;
-        }
+      addFile({
+        fileName: file.name,
+        codeContent: content,
+        language: "",
+      });
 
-        addFile({
-          fileName: file.name,
-          codeContent: content,
-          language: "python",
-        });
-
-        notification.success({ message: `${file.name} uploaded successfully` });
-      }
+      notification.success({ message: `${file.name} uploaded successfully` });
     } catch (error: any) {
       notification.error({
         message: error?.message || "Could not upload file",
@@ -68,7 +51,7 @@ export const FileManagement = ({
   return (
     <div className={`z-30 h-screen overflow-auto ${className}`}>
       <div className="p-4 flex justify-start flex-wrap gap-2 bg-indigo-300 sticky top-0 z-30">
-        <Button
+        {/* <Button
           className="!text-sm"
           onClick={() => setIsAddingFile(true)}
           label={
@@ -78,11 +61,11 @@ export const FileManagement = ({
             </span>
           }
           disabled={isUploadingFile}
-        />
+        /> */}
 
         <Upload
           name="upload-file"
-          accept=".py"
+          accept={modelFileExtensions.map((e) => `.${e}`).join(",")}
           maxCount={1}
           itemRender={() => null}
           customRequest={(options) => {
@@ -99,12 +82,10 @@ export const FileManagement = ({
             className="!bg-white !text-primary !text-sm border-dashed !border-indigo-500"
             appearance="outline"
             label={
-              <>
-                Upload{" "}
-                <code className="bg-slate-100 py-0.5 px-1 rounded-sm text-xs">
-                  .py
-                </code>
-              </>
+              <span className="flex items-center gap-1">
+                <PlusCircleOutlined className="text-sm" />
+                Upload model
+              </span>
             }
             disabled={isUploadingFile}
           />
@@ -119,7 +100,13 @@ export const FileManagement = ({
             <div
               role="button"
               onClick={() => {
-                setCurrentFile(index);
+                const fileNameParts = file.fileName.split(".");
+                const fileNameExtension =
+                  fileNameParts[fileNameParts.length - 1];
+
+                if (fileNameExtension === "py") {
+                  setCurrentFile(index);
+                }
               }}
               className={`p-2 rounded-md w-full ${
                 currentFile === index ? "bg-blue-100" : "bg-slate-100"

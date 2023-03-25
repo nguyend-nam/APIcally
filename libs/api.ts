@@ -15,6 +15,7 @@ export interface GetAllProjectsParams {
 // keys for SWR
 export const GET_PATHS = {
   CREATE_PROJECTS: (ownerId: string) => `/${ownerId}/post/project`,
+  GET_PROJECTS_BY_OWNER: (ownerId: string) => `/${ownerId}/get/projects`,
   GET_PROJECT_BY_ALIAS: (ownerId: string, alias: string) =>
     `/${ownerId}/get/project/${alias}`,
   UPLOAD_PROJECT_FILES: (ownerId: string) => `/${ownerId}/post/project/upload`,
