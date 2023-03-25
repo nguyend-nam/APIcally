@@ -6,16 +6,11 @@ import { WithChildren } from "../types/common";
 export interface fileObj {
   fileName: string;
   codeContent: string;
-  language: "python";
+  language: string;
 }
 
 const defaultValue: fileObj[] = [
   { fileName: "main.py", codeContent: pythonInitCode, language: "python" },
-  {
-    fileName: "test.py",
-    codeContent: "# test.py file\nabc = 100\nprint(abc)",
-    language: "python",
-  },
 ];
 
 const [Provider, useFileListContext] = createContext<any>();
