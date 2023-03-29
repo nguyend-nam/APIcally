@@ -1,4 +1,13 @@
-import { notification, Table, Tag, Tooltip, Typography } from "antd";
+import {
+  Col,
+  notification,
+  Row,
+  Slider,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import dynamic from "next/dynamic";
 import ReactMarkdown from "react-markdown";
 import "react-markdown-editor-lite/lib/index.css";
@@ -19,6 +28,9 @@ import { CREATE_API_NAME_KEY } from "../new";
 import { checkInvalidFileNameFormat } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
+import { Input } from "../../../components/Input";
+import { FULL_PRICE_FILTER } from "../../../constants/filter";
+import { Alert } from "../../../components/Alert";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -49,6 +61,7 @@ export type dataSourceType = {
 const DocumentationPage = () => {
   const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [priceFilter, setPriceFilter] = useState<number>(0);
 
   const handleEditorChange = ({ text }: { text: string }) => {
     console.log(text); // TODO: update content for API project update
@@ -163,6 +176,7 @@ const DocumentationPage = () => {
           columns={columns}
           dataSource={dataSource}
           scroll={{ x: "max-content" }}
+          pagination={false}
         />
       </Card>
     );
@@ -175,7 +189,9 @@ const DocumentationPage = () => {
       </Head>
 
       <Layout>
-        <Typography.Title level={3}>Documentation</Typography.Title>
+        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+          Documentation
+        </Typography.Title>
         <div className="border-primary border-t-4">
           <MdEditor
             plugins={[
@@ -197,28 +213,73 @@ const DocumentationPage = () => {
           />
         </div>
 
-        <div className="mt-8">
-          <div className="flex items-center justify-between w-full mb-4">
-            <Typography.Title level={3} className="!m-0">
-              Define inputs
-            </Typography.Title>
+        <Row className="mt-8" gutter={[24, 28]}>
+          <Col span={24} lg={{ span: 8 }}>
+            <div className="w-full mb-4 md:h-[36px]">
+              <Typography.Title
+                level={3}
+                className="!m-0 !text-xl md:!text-2xl"
+              >
+                Define price
+              </Typography.Title>
+            </div>
+            <Card className="p-4" shadowSize="sm">
+              <div className="my-4">
+                <Slider
+                  value={priceFilter}
+                  max={FULL_PRICE_FILTER[1]}
+                  onChange={setPriceFilter}
+                />
+              </div>
 
-            <Button label="Add input" onClick={openAddInputDialog} />
-          </div>
+              <div className="flex mb-4 gap-2 items-center">
+                <Input
+                  type="number"
+                  max={300}
+                  value={priceFilter}
+                  className="!text-base max-w-[100px]"
+                  onChange={(e) => {
+                    const newRangeValue = Number(e.target?.value || 0);
+                    setPriceFilter(newRangeValue);
+                  }}
+                />
+                <span className="text-base">$</span>
+              </div>
 
-          {isAddInputDialogOpen && (
-            <DefineInput
-              form={form}
-              dataSource={dataSource}
-              setDataSource={setDataSource}
-              isOpen={isAddInputDialogOpen}
-              onCancel={closeAddInputDialog}
-              onOk={form.submit}
-            />
-          )}
+              <Alert
+                type="info"
+                message="Please provide the price in USD, input 0 to let other users subscribe for free. At the moment we only allow the maximum price of $300."
+                className="mt-1"
+              />
+            </Card>
+          </Col>
 
-          {renderTable}
-        </div>
+          <Col span={24} lg={{ span: 16 }}>
+            <div className="flex items-center justify-between w-full mb-4">
+              <Typography.Title
+                level={3}
+                className="!m-0 !text-xl md:!text-2xl"
+              >
+                Define inputs
+              </Typography.Title>
+
+              <Button label="Add input" onClick={openAddInputDialog} />
+            </div>
+
+            {isAddInputDialogOpen && (
+              <DefineInput
+                form={form}
+                dataSource={dataSource}
+                setDataSource={setDataSource}
+                isOpen={isAddInputDialogOpen}
+                onCancel={closeAddInputDialog}
+                onOk={form.submit}
+              />
+            )}
+
+            {renderTable}
+          </Col>
+        </Row>
 
         <Button
           label="Submit"

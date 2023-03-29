@@ -180,7 +180,7 @@ const UtilizerPage = () => {
                       columns={columns}
                       dataSource={dataSource}
                       scroll={{ x: "max-content" }}
-                      pagination={{ hideOnSinglePage: true }}
+                      pagination={false}
                     />
                   </Card>
                 </Card>

@@ -29,7 +29,7 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 30,
       starGazers: 15,
-      price: 500000,
+      price: 21.29,
     },
     tags: ["sport"],
   },
@@ -77,7 +77,7 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 60,
       starGazers: 30,
-      price: 900000,
+      price: 38.31,
     },
     tags: ["e-commerce", "technology"],
   },
@@ -108,7 +108,7 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 90,
       starGazers: 30,
-      price: 750000,
+      price: 31.93,
     },
     tags: ["entertainment"],
   },
@@ -156,7 +156,7 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 140,
       starGazers: 70,
-      price: 100000,
+      price: 4.26,
     },
     tags: ["social-network"],
   },
@@ -188,7 +188,7 @@ export const apiReposData: apiRepoType[] = [
     statistics: {
       subscribes: 210,
       starGazers: 90,
-      price: 800000,
+      price: 34.06,
     },
     tags: ["weather", "healthcare", "environment"],
   },
@@ -231,7 +231,7 @@ export const apiReposInCart: {
         statistics: {
           subscribes: 210,
           starGazers: 90,
-          price: 800000,
+          price: 34.06,
         },
         tags: ["weather", "healthcare", "environment"],
       },
@@ -253,7 +253,7 @@ export const apiReposInCart: {
         statistics: {
           subscribes: 30,
           starGazers: 15,
-          price: 500000,
+          price: 21.29,
         },
         tags: ["sport"],
       },

@@ -1,6 +1,5 @@
-import { Col, Empty, Row } from "antd";
+import { Col, Row } from "antd";
 import { useRouter } from "next/router";
-import { Button } from "../../components/Button";
 import { Card } from "../../components/Card";
 import { Layout } from "../../components/Layout";
 import { Text } from "../../components/Text";
@@ -11,12 +10,14 @@ import { Input } from "../../components/Input";
 import Head from "next/head";
 import { ROUTES } from "../../constants/routes";
 import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedApiRepoList";
+import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
 
 const HomePage = () => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
   const [searchQuerySubscribed, setSearchQuerySubscribed] =
     useState<string>("");
+  const [searchQueryCreated, setSearchQueryCreated] = useState<string>("");
 
   return (
     <>
@@ -31,19 +32,16 @@ const HomePage = () => {
               <Text as="h2" className="text-lg">
                 Recently created
               </Text>
-              <Empty
-                description={
-                  <>
-                    <Text as="div" className="text-base">
-                      You haven&rsquo;t created any APIs yet
-                    </Text>
-                    <Button
-                      label="Create now"
-                      className="m-3"
-                      onClick={() => push(ROUTES.API_WORKSPACE_CREATE)}
-                    />
-                  </>
-                }
+              <Input
+                type="text"
+                id="home-owned-search-input"
+                placeholder="Search created APIs..."
+                className="!font-normal !placeholder:font-normal mb-4"
+                onChange={(e) => setSearchQueryCreated(e.target.value)}
+              />
+              <OwnedApiRepoList
+                searchQuery={searchQueryCreated}
+                className="!h-max !max-h-[350px]"
               />
             </Card>
           </Col>
@@ -54,7 +52,7 @@ const HomePage = () => {
               </Text>
               <Input
                 type="text"
-                id="home-search-input"
+                id="home-subscribed-search-input"
                 placeholder="Search subscribed APIs..."
                 className="!font-normal !placeholder:font-normal mb-4"
                 onChange={(e) => setSearchQuerySubscribed(e.target.value)}
