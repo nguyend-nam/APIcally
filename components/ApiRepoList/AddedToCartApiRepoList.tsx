@@ -76,7 +76,7 @@ export const AddedToCartApiRepoList = ({
   }
 
   return (
-    <div className={`h-[450px] overflow-auto space-y-4 p-0 pb-2 ${className}`}>
+    <div className={`h-[450px] overflow-auto space-y-4 pb-2 ${className}`}>
       {apiReposInCart.map((r) => (
         <ApiCheckboxGroup
           key={r.username}

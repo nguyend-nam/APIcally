@@ -48,7 +48,7 @@ export const ApiCheckboxGroup = (props: Props) => {
               key={a.id}
               value={a.id}
               checked={checkedList.includes(a.id!)}
-              className="cart !mt-4 !pl-3 !pr-2 !items-start"
+              className="cart md:!mt-4 !mt-3 md:!pl-3 md:!pr-2 !pl-2 !pr-1 !items-start"
             >
               <ApiRepo
                 data={a}
@@ -64,7 +64,7 @@ export const ApiCheckboxGroup = (props: Props) => {
   }, [apis, checkedList, onChange]);
 
   return (
-    <div className="border-b border-x border-slate-100 pb-4 rounded-r-md rounded-b-md">
+    <div className="border-b border-x border-slate-100 pb-3 md:pb-4 rounded-r-md rounded-b-md">
       <Checkbox
         indeterminate={indeterminate}
         onChange={onCheckAllChange}
