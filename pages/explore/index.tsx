@@ -273,7 +273,11 @@ const ExplorePage = () => {
                         onChange={(val) => setTagFilter(val as apiTagTypes[])}
                       >
                         {Object.keys(apiTags).map((t) => (
-                          <Checkbox key={t} value={t} className="!ml-0">
+                          <Checkbox
+                            key={t}
+                            value={t}
+                            className="!ml-0 filter-tag"
+                          >
                             {apiTags[t as apiTagTypes]}
                           </Checkbox>
                         ))}

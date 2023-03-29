@@ -19,12 +19,18 @@ export const ApiRepo = ({
   data,
   className,
   hasShadow = true,
-  showSummary = true,
+  showPrice = true,
+  showDescription = true,
+  showOwner = true,
+  isLinkActive = true,
 }: {
   data: apiRepoType;
   className?: string;
   hasShadow?: boolean;
-  showSummary?: boolean;
+  showPrice?: boolean;
+  showDescription?: boolean;
+  showOwner?: boolean;
+  isLinkActive?: boolean;
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
@@ -43,7 +49,7 @@ export const ApiRepo = ({
           <a
             className="!text-primary inline items-center"
             onClick={() => {
-              if (data?.username && data?.alias) {
+              if (data?.username && data?.alias && isLinkActive) {
                 push(
                   ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias)
                 );
@@ -87,32 +93,34 @@ export const ApiRepo = ({
 
       <TagsArray tags={data.tags || []} visibleTagsCount={2} />
 
-      <div className="!mt-2 h-6 relative flex items-center">
-        <a className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600">
-          {data.author}
-        </a>
-        <Divider className="!my-2" />
-      </div>
+      {showOwner ? (
+        <div className="!mt-2 h-6 relative flex items-center">
+          <a className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600">
+            {data.author}
+          </a>
+          <Divider className="!my-2" />
+        </div>
+      ) : null}
 
-      {showSummary ? (
-        <>
-          <Typography.Paragraph className="!text-slate-500 !m-0 !my-2">
-            <p>{truncate(data.description || "", 100)}</p>
-          </Typography.Paragraph>
+      {showDescription ? (
+        <Typography.Paragraph className="!text-slate-500 !m-0 !my-2">
+          <p>{truncate(data.description || "", 100)}</p>
+        </Typography.Paragraph>
+      ) : null}
 
-          <div
-            className={`relative !text-base md:!text-lg font-semibold rounded-l -ml-5 pr-7 md:pr-8 pl-5 py-1 bg-gradient-to-r w-max text-white ${
-              data.statistics?.price
-                ? "from-indigo-500 to-sky-400"
-                : "from-amber-500 to-yellow-400"
-            }`}
-          >
-            {data.statistics?.price
-              ? formatCurrency(data.statistics?.price)
-              : "Free"}
-            <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
-          </div>
-        </>
+      {showPrice ? (
+        <div
+          className={`relative !text-base md:!text-lg font-semibold rounded-l -ml-5 pr-7 md:pr-8 pl-5 py-1 bg-gradient-to-r w-max text-white ${
+            data.statistics?.price
+              ? "from-indigo-500 to-sky-400"
+              : "from-amber-500 to-yellow-400"
+          }`}
+        >
+          {data.statistics?.price
+            ? formatCurrency(data.statistics?.price)
+            : "Free"}
+          <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
+        </div>
       ) : null}
     </Card>
   );

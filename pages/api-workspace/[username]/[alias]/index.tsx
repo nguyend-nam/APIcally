@@ -1,10 +1,11 @@
 import {
   Col,
-  Form,
-  Modal,
-  Radio,
+  // Form,
+  // Modal,
+  notification,
+  // Radio,
   Row,
-  Select,
+  // Select,
   Spin,
   Tooltip,
   Typography,
@@ -21,9 +22,9 @@ import { defaultMD } from "../../documentation";
 import { Card } from "../../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useDisclosure } from "@dwarvesf/react-hooks";
-import { Input } from "../../../../components/Input";
-import { Text } from "../../../../components/Text";
+// import { useDisclosure } from "@dwarvesf/react-hooks";
+// import { Input } from "../../../../components/Input";
+// import { Text } from "../../../../components/Text";
 import { ROUTES } from "../../../../constants/routes";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
@@ -34,16 +35,25 @@ const APIDetailPage = () => {
   const { query, push } = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const currentAPI = apiReposData.find(
     (a) => a.alias === query.alias && a.username === query.username
   );
 
-  const {
-    isOpen: isSubscribeDialogOpen,
-    onOpen: openSubscribeDialog,
-    onClose: closeSubscribeDialog,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isSubscribeDialogOpen,
+  //   onOpen: openSubscribeDialog,
+  //   onClose: closeSubscribeDialog,
+  // } = useDisclosure();
+
+  const onAddToCart = () => {
+    setIsAddingToCart(true);
+    setTimeout(() => {
+      notification.success({ message: "API added to cart!" });
+      setIsAddingToCart(false);
+    }, 1000);
+  };
 
   return (
     <>
@@ -130,7 +140,11 @@ const APIDetailPage = () => {
                       />
                     </div>
                     <div className="mt-4">
-                      <Button label="Subscribe" onClick={openSubscribeDialog} />
+                      <Button
+                        label="Add to cart"
+                        isLoading={isAddingToCart}
+                        onClick={onAddToCart}
+                      />
                     </div>
                   </Card>
                 </Col>
@@ -150,7 +164,7 @@ const APIDetailPage = () => {
           </>
         )}
       </Layout>
-      {isSubscribeDialogOpen && (
+      {/* {isSubscribeDialogOpen && (
         <Modal
           open={isSubscribeDialogOpen}
           onCancel={closeSubscribeDialog}
@@ -292,7 +306,7 @@ const APIDetailPage = () => {
             </Radio>
           </Radio.Group>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

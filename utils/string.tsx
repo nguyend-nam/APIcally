@@ -1,3 +1,5 @@
+import { apiRepoType } from "../pages/explore";
+
 export const formatFileName = (fileName: string) => {
   const arr = fileName.split(".");
   if (arr[arr.length - 1] === "py" && arr.length !== 1) return fileName;
@@ -30,4 +32,30 @@ export function capitalizeFirstLetter(value = "") {
 export const snakeCaseToNormalString = (snakeCase: string) => {
   const result = snakeCase.replace("-", " ");
   return result.charAt(0).toUpperCase() + result.slice(1);
+};
+
+export const renderSubscribeListConfirmation = (apiList: apiRepoType[]) => {
+  if (apiList.length === 0) return;
+  if (apiList.length === 1) {
+    return (
+      <>
+        Are you sure you want to subscribe to <b>{apiList[0].name}</b>.
+      </>
+    );
+  }
+
+  const nameList = apiList.map((a) => a.name);
+
+  return (
+    <>
+      Are you sure you want to subscribe to{" "}
+      {nameList.slice(0, apiList.length - 1).map((n, i) => (
+        <>
+          <b key={n}>{n}</b>
+          {i < nameList.length - 2 ? ", " : ""}
+        </>
+      ))}{" "}
+      and <b>{apiList[apiList.length - 1].name}</b>.
+    </>
+  );
 };

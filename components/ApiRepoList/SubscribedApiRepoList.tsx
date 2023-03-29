@@ -55,7 +55,8 @@ export const SubscribedApiRepoList = ({
             data={a}
             hasShadow={false}
             className="border border-slate-200"
-            showSummary={showSummary}
+            showPrice={showSummary}
+            showDescription={showSummary}
           />
         ))}
     </div>
