@@ -130,7 +130,7 @@ export const apiReposData: apiRepoType[] = [
   },
   {
     id: "9",
-    subscribeStatus: true,
+    subscribeStatus: false,
     name: "Tasty",
     alias: "tasty",
     author: "Api Dojo",
@@ -175,5 +175,110 @@ export const apiReposData: apiRepoType[] = [
       price: 0,
     },
     tags: ["technology"],
+  },
+  {
+    id: "12",
+    subscribeStatus: false,
+    name: "AirVisual",
+    alias: "airvisual1",
+    author: "Api Dojo",
+    username: "api-dojo",
+    description:
+      "Query for Air Pollution Data, Weather information, Health Recommendations, etc… as on the official application",
+    statistics: {
+      subscribes: 210,
+      starGazers: 90,
+      price: 800000,
+    },
+    tags: ["weather", "healthcare", "environment"],
+  },
+];
+
+export const apiReposInCart: {
+  username: string;
+  author: string;
+  apis: apiRepoType[];
+}[] = [
+  {
+    username: "api-dojo",
+    author: "Api Dojo",
+    apis: [
+      {
+        id: "9",
+        subscribeStatus: false,
+        name: "Tasty",
+        alias: "tasty",
+        author: "Api Dojo",
+        username: "api-dojo",
+        description:
+          "API to query data about recipe, plan, ingredients, etc… as on official site",
+        statistics: {
+          subscribes: 200,
+          starGazers: 120,
+          price: 0,
+        },
+        tags: ["cooking"],
+      },
+      {
+        id: "12",
+        subscribeStatus: false,
+        name: "AirVisual",
+        alias: "airvisual1",
+        author: "Api Dojo",
+        username: "api-dojo",
+        description:
+          "Query for Air Pollution Data, Weather information, Health Recommendations, etc… as on the official application",
+        statistics: {
+          subscribes: 210,
+          starGazers: 90,
+          price: 800000,
+        },
+        tags: ["weather", "healthcare", "environment"],
+      },
+    ],
+  },
+  {
+    username: "api-sports",
+    author: "API Sports",
+    apis: [
+      {
+        id: "2",
+        subscribeStatus: false,
+        name: "API Football Beta",
+        alias: "api-football-beta",
+        author: "API Sports",
+        username: "api-sports",
+        description:
+          "Beta Program for api-football. Here you can test the next version of the API.",
+        statistics: {
+          subscribes: 30,
+          starGazers: 15,
+          price: 500000,
+        },
+        tags: ["sport"],
+      },
+    ],
+  },
+  {
+    username: "mfdev",
+    author: "mfdev",
+    apis: [
+      {
+        id: "4",
+        subscribeStatus: false,
+        name: "Word Bank World Development Indicators",
+        alias: "word-bank-world-development-indicators",
+        author: "mfdev",
+        username: "mfdev",
+        description:
+          "An API for retrieving world development indicators, that provides high-quality and internationally comparable statistics about global development for the past 60 years. The data contains 1400 indicators for 217 economies and more than 40 country groups. This API also provides a charts API that allows you to visualize data and compare different economies in different charts.",
+        statistics: {
+          subscribes: 200,
+          starGazers: 80,
+          price: 0,
+        },
+        tags: ["bank", "economics"],
+      },
+    ],
   },
 ];

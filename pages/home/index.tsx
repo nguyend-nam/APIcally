@@ -136,7 +136,7 @@ const HomePage = () => {
                   preview={false}
                   src="img/utilize-art.png"
                 />
-                <Text className="pt-4 text-lg mb-0">Utilize and serve</Text>
+                <Text className="pt-4 text-lg mb-0">Subscribe and utilize</Text>
               </div>
             </Card>
           </Col>
