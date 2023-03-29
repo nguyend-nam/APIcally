@@ -27,7 +27,7 @@ export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
 
   if (displayedApiRepos.length === 0) {
     return (
-      <div className="h-full flex flex-col justify-center">
+      <div className={`h-[350px] flex flex-col justify-center ${className}`}>
         <Empty
           description={
             <Text as="div" className="text-base">

@@ -26,13 +26,15 @@ export const SubscribedApiRepoList = ({
               (a.description && a.description.includes(searchQuery)) ||
               (a.username && a.username.includes(searchQuery))
           )
-          .filter((a) => a.subscribeStatus)
-      : apiReposData.filter((a) => a.subscribeStatus);
+          .filter((a) => a.subscribeStatus && a.username !== "nguyend-nam")
+      : apiReposData.filter(
+          (a) => a.subscribeStatus && a.username !== "nguyend-nam"
+        );
   }, [searchQuery]);
 
   if (displayedApiRepos.length === 0) {
     return (
-      <div className="h-full flex flex-col justify-center">
+      <div className={`h-[350px] flex flex-col justify-center ${className}`}>
         <Empty
           description={
             <Text as="div" className="text-base">

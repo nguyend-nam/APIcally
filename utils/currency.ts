@@ -3,5 +3,5 @@ export function formatCurrency(
   locale?: string,
   options?: Intl.NumberFormatOptions
 ) {
-  return `${Intl.NumberFormat(locale, options).format(number)}đ`;
+  return `$${Intl.NumberFormat(locale, options).format(number)}`;
 }
