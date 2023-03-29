@@ -90,9 +90,9 @@ const UserPage = () => {
               {tabContentList[activeTabKey]}
             </AntCard>
 
-            <Card shadowSize="sm" className="p-6 mt-5">
+            <Card shadowSize="sm" className="p-4 md:p-6 mt-5">
               <div className="flex items-center justify-between mb-4">
-                <Text as="h2" className="text-lg">
+                <Text as="h2" className="text-lg !m-0">
                   APIs in cart
                 </Text>
                 <Button
