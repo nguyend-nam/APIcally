@@ -23,6 +23,7 @@ export const ApiRepo = ({
   showDescription = true,
   showOwner = true,
   isLinkActive = true,
+  isDescriptionTruncated = true,
 }: {
   data: apiRepoType;
   className?: string;
@@ -31,6 +32,7 @@ export const ApiRepo = ({
   showDescription?: boolean;
   showOwner?: boolean;
   isLinkActive?: boolean;
+  isDescriptionTruncated?: boolean;
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
@@ -104,7 +106,11 @@ export const ApiRepo = ({
 
       {showDescription ? (
         <Typography.Paragraph className="!text-slate-500 !m-0 !my-2">
-          <p>{truncate(data.description || "", 100)}</p>
+          <p>
+            {isDescriptionTruncated
+              ? truncate(data.description || "", 100)
+              : data.description}
+          </p>
         </Typography.Paragraph>
       ) : null}
 

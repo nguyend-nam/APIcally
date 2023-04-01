@@ -54,13 +54,19 @@ const APICreatePage = () => {
 
       try {
         setIsLoading(true);
-        const data = await client.createProject("tan", transformedValues);
+        const data = await client.createProject(
+          "nguyend-nam",
+          transformedValues
+        );
 
         if (data) {
           if (data.code === 200) {
             notification.success({ message: "API created successfully" });
             push(
-              ROUTES.API_WORKSPACE_CODE_EDITOR("tan", transformedValues.alias)
+              ROUTES.API_WORKSPACE_CODE_EDITOR(
+                "nguyend-nam",
+                transformedValues.alias
+              )
             );
           }
         }
@@ -100,7 +106,7 @@ const APICreatePage = () => {
                   <div className="flex items-center gap-2">
                     <Avatar
                       icon={<UserOutlined size={64} />}
-                      className="shrink-0"
+                      className="shrink-0 !bg-slate-300"
                     />
                     <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
                       <Tooltip title="nguyend-nam" placement="bottom">
