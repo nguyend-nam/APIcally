@@ -1,7 +1,4 @@
-import {
-  checkPythonVarNameFormat,
-  checkInvalidFileNameFormat,
-} from "../string";
+import { checkPythonVarNameFormat, isFileNameFormatInvalid } from "../string";
 
 test.each([
   ["my Variable", false],
@@ -23,6 +20,6 @@ test.each([
   ["myFile", false],
   ["myFile1", false],
   ["my-file", false],
-])("checkInvalidFileNameFormat(%s)", (input, expected) => {
-  expect(checkInvalidFileNameFormat(input)).toBe(expected);
+])("isFileNameFormatInvalid(%s)", (input, expected) => {
+  expect(isFileNameFormatInvalid(input)).toBe(expected);
 });

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { fileObj, useFileListContext } from "../../context";
-import { checkInvalidFileNameFormat, formatFileName } from "../../utils";
+import { isFileNameFormatInvalid, formatFileName } from "../../utils";
 import { Alert } from "../Alert";
 import { Dropdown, notification, Upload } from "antd";
 import { PlusCircleOutlined, MoreOutlined } from "@ant-design/icons";
@@ -79,7 +79,7 @@ export const FileManagement = ({
           }}
         >
           <Button
-            className="!bg-white !text-primary !text-sm border-dashed !border-indigo-500"
+            className="!bg-white !ring-0 !border !text-primary !text-sm border-dashed !border-indigo-500"
             appearance="outline"
             label={
               <span className="flex items-center gap-1">
@@ -166,7 +166,7 @@ export const FileManagement = ({
                 }}
                 disabled={
                   checkExistingFileName(formatFileName(newFileName)) ||
-                  checkInvalidFileNameFormat(newFileName)
+                  isFileNameFormatInvalid(newFileName)
                 }
               >
                 OK

@@ -33,9 +33,9 @@ const getButtonStyle = (prop: string) => {
     case "primary":
       return "bg-primary text-white hover:bg-primary/90";
     case "outline":
-      return "bg-none border border-primary text-primary";
+      return "bg-none ring-inset ring-primary ring-1 text-primary";
     case "link":
-      return "border-none bg-none text-primary";
+      return "bg-none text-primary";
   }
 };
 

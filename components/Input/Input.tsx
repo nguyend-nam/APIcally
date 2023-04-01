@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
@@ -56,17 +58,36 @@ export const Input = (props: InputProps) => {
     borderRadius = "primary",
     className,
     value,
+    max,
+    min,
     ...rest
   } = props;
 
+  const [internalValue, setInternalValue] = useState(value);
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
+  useEffect(() => {
+    if (typeof internalValue === "number") {
+      if (max !== undefined && internalValue > Number(max)) {
+        setInternalValue(max);
+      }
+      if (min !== undefined && internalValue < Number(min)) {
+        setInternalValue(min);
+      }
+    }
+  }, [internalValue, max, min]);
+
   return (
-    <div className={`${fullWidth && "w-full"}`}>
+    <div className={`${fullWidth ? "w-full" : ""}`}>
       <input
         type={type}
         className={`bg-slate-100 border-none text-lg px-2 py-1 outline-none w-full ${getBorderRadius(
           borderRadius
         )} ${className}`}
-        value={value}
+        value={internalValue}
         onFocus={onFocus}
         onBlur={onBlur}
         {...rest}
