@@ -8,12 +8,14 @@ interface Props {
   searchQuery?: string;
   className?: string;
   showSummary?: boolean;
+  showOwnedAPIs?: boolean;
 }
 
 export const SubscribedApiRepoList = ({
   searchQuery,
   className,
   showSummary = true,
+  showOwnedAPIs = false,
 }: Props) => {
   const displayedApiRepos = useMemo(() => {
     return searchQuery
@@ -26,10 +28,8 @@ export const SubscribedApiRepoList = ({
               (a.description && a.description.includes(searchQuery)) ||
               (a.username && a.username.includes(searchQuery))
           )
-          .filter((a) => a.subscribeStatus && a.username !== "nguyend-nam")
-      : apiReposData.filter(
-          (a) => a.subscribeStatus && a.username !== "nguyend-nam"
-        );
+          .filter((a) => a.subscribeStatus)
+      : apiReposData.filter((a) => a.subscribeStatus);
   }, [searchQuery]);
 
   if (displayedApiRepos.length === 0) {
@@ -49,18 +49,29 @@ export const SubscribedApiRepoList = ({
 
   return (
     <div className={`h-[350px] overflow-auto space-y-4 p-1 pb-2 ${className}`}>
-      {displayedApiRepos
-        .filter((a) => a.subscribeStatus)
-        .map((a) => (
-          <ApiRepo
-            key={a.id}
-            data={a}
-            hasShadow={false}
-            className="border border-slate-200"
-            showPrice={showSummary}
-            showDescription={showSummary}
-          />
-        ))}
+      {showOwnedAPIs
+        ? displayedApiRepos.map((a) => (
+            <ApiRepo
+              key={a.id}
+              data={a}
+              hasShadow={false}
+              className="border border-slate-200"
+              showPrice={showSummary}
+              showDescription={showSummary}
+            />
+          ))
+        : displayedApiRepos
+            .filter((a) => a.username !== "nguyend-nam")
+            .map((a) => (
+              <ApiRepo
+                key={a.id}
+                data={a}
+                hasShadow={false}
+                className="border border-slate-200"
+                showPrice={showSummary}
+                showDescription={showSummary}
+              />
+            ))}
     </div>
   );
 };

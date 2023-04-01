@@ -114,6 +114,7 @@ const CodeEditorPage = () => {
           <SubscribedApiRepoList
             searchQuery={searchQuerySubscribed}
             showSummary={false}
+            showOwnedAPIs
           />
         </Modal>
       )}
