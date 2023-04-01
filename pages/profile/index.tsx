@@ -98,11 +98,11 @@ const UserPage = () => {
             </AntCard>
 
             <Card shadowSize="sm" className="p-4 md:p-6 mt-5">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-2">
                 <Text as="h2" className="text-lg !m-0">
                   APIs in cart
                 </Text>
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <Button
                     label="Subscribe"
                     disabled={selectedApiInCart.length === 0}
