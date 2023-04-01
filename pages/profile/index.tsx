@@ -63,8 +63,18 @@ const UserPage = () => {
   ];
 
   const tabContentList: Record<tabTypes, any> = {
-    owned: <OwnedApiRepoList searchQuery={searchQuerySubscribed} />,
-    subscribed: <SubscribedApiRepoList searchQuery={searchQuerySubscribed} />,
+    owned: (
+      <OwnedApiRepoList
+        searchQuery={searchQuerySubscribed}
+        className="!h-max !max-h-[350px]"
+      />
+    ),
+    subscribed: (
+      <SubscribedApiRepoList
+        searchQuery={searchQuerySubscribed}
+        className="!h-max !max-h-[350px]"
+      />
+    ),
   };
 
   return (

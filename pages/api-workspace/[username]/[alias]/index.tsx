@@ -91,7 +91,11 @@ const APIDetailPage = () => {
 
             <Row className="my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
-                <ApiRepo data={currentAPI} isLinkActive={false} />
+                <ApiRepo
+                  data={currentAPI}
+                  isLinkActive={false}
+                  isDescriptionTruncated={false}
+                />
               </Col>
               {currentAPI.subscribeStatus ? (
                 <Col span={24} md={{ span: 8 }}>

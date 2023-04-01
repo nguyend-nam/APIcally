@@ -24,8 +24,8 @@ const CodeEditorPageInner = () => {
   const { push, query, isReady } = useRouter();
 
   const { data, error } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECT_BY_ALIAS("tan", query.alias as string)],
-    () => client.getProjectByAlias("tan", query.alias as string)
+    [GET_PATHS.GET_PROJECT_BY_ALIAS("nguyend-nam", query.alias as string)],
+    () => client.getProjectByAlias("nguyend-nam", query.alias as string)
   );
 
   useEffect(() => {
