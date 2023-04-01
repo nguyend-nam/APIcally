@@ -10,6 +10,8 @@ export interface GetAllProjectsParams {
   description: string;
   documentation: string;
   input: string;
+  subscribeCost: number;
+  costPerRequest: number;
 }
 
 // keys for SWR

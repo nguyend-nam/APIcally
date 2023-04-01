@@ -17,15 +17,16 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "../../../../components/Button";
 import { Layout } from "../../../../components/Layout";
 import { ApiRepo } from "../../../../components/page/home/ApiRepo";
-import { apiReposData } from "../../../../constants/mockData";
+import { apiReposData, apiReposInCart } from "../../../../constants/mockData";
 import { defaultMD } from "../../documentation";
 import { Card } from "../../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
 // import { Text } from "../../../../components/Text";
 import { ROUTES } from "../../../../constants/routes";
+import { apiRepoType } from "../../../explore";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -40,6 +41,19 @@ const APIDetailPage = () => {
   const currentAPI = apiReposData.find(
     (a) => a.alias === query.alias && a.username === query.username
   );
+
+  const allAddedToCartApisRepos = useMemo(() => {
+    let arr: apiRepoType[] = [];
+    apiReposInCart.forEach((r) => {
+      arr = [...arr, ...r.apis];
+    });
+
+    return arr;
+  }, []);
+
+  const allAddedToCartApisId = useMemo(() => {
+    return allAddedToCartApisRepos.map((a) => a.id);
+  }, [allAddedToCartApisRepos]);
 
   // const {
   //   isOpen: isSubscribeDialogOpen,
@@ -141,9 +155,19 @@ const APIDetailPage = () => {
                     </div>
                     <div className="mt-4">
                       <Button
-                        label="Add to cart"
+                        label={
+                          allAddedToCartApisId.includes(currentAPI.id)
+                            ? "API added to cart"
+                            : "Add to cart"
+                        }
                         isLoading={isAddingToCart}
-                        onClick={onAddToCart}
+                        onClick={() => {
+                          if (allAddedToCartApisId.includes(currentAPI.id)) {
+                            push(ROUTES.PROFILE);
+                          } else {
+                            onAddToCart();
+                          }
+                        }}
                       />
                     </div>
                   </Card>

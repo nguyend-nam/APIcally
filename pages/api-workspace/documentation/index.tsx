@@ -1,13 +1,4 @@
-import {
-  Col,
-  notification,
-  Row,
-  Slider,
-  Table,
-  Tag,
-  Tooltip,
-  Typography,
-} from "antd";
+import { Col, notification, Row, Table, Tag, Tooltip, Typography } from "antd";
 import dynamic from "next/dynamic";
 import ReactMarkdown from "react-markdown";
 import "react-markdown-editor-lite/lib/index.css";
@@ -25,12 +16,9 @@ import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
 import { CREATE_API_NAME_KEY } from "../new";
-import { checkInvalidFileNameFormat } from "../../../utils";
+import { isAPINameFormatInvalid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
-import { Input } from "../../../components/Input";
-import { FULL_PRICE_FILTER } from "../../../constants/filter";
-import { Alert } from "../../../components/Alert";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -61,7 +49,6 @@ export type dataSourceType = {
 const DocumentationPage = () => {
   const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [priceFilter, setPriceFilter] = useState<number>(0);
 
   const handleEditorChange = ({ text }: { text: string }) => {
     console.log(text); // TODO: update content for API project update
@@ -91,10 +78,7 @@ const DocumentationPage = () => {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 
-      if (
-        checkInvalidFileNameFormat(query.alias as string) ||
-        query.alias!.includes(".")
-      ) {
+      if (isAPINameFormatInvalid(query.alias as string)) {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 
@@ -213,48 +197,8 @@ const DocumentationPage = () => {
           />
         </div>
 
-        <Row className="mt-8" gutter={[24, 28]}>
-          <Col span={24} lg={{ span: 8 }}>
-            <div className="w-full mb-4 md:h-[36px]">
-              <Typography.Title
-                level={3}
-                className="!m-0 !text-xl md:!text-2xl"
-              >
-                Define price
-              </Typography.Title>
-            </div>
-            <Card className="p-4" shadowSize="sm">
-              <div className="my-4">
-                <Slider
-                  value={priceFilter}
-                  max={FULL_PRICE_FILTER[1]}
-                  onChange={setPriceFilter}
-                />
-              </div>
-
-              <div className="flex mb-4 gap-2 items-center">
-                <Input
-                  type="number"
-                  max={300}
-                  value={priceFilter}
-                  className="!text-base max-w-[100px]"
-                  onChange={(e) => {
-                    const newRangeValue = Number(e.target?.value || 0);
-                    setPriceFilter(newRangeValue);
-                  }}
-                />
-                <span className="text-base">$</span>
-              </div>
-
-              <Alert
-                type="info"
-                message="Please provide the price in USD, input 0 to let other users subscribe for free. At the moment we only allow the maximum price of $300."
-                className="mt-1"
-              />
-            </Card>
-          </Col>
-
-          <Col span={24} lg={{ span: 16 }}>
+        <Row className="mt-8">
+          <Col span={24}>
             <div className="flex items-center justify-between w-full mb-4">
               <Typography.Title
                 level={3}

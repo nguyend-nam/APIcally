@@ -25,11 +25,18 @@ const UserPage = () => {
   const [selectedApiInCart, setSelectedApiInCart] = useState<apiRepoType[]>([]);
   const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
     useState(false);
+  const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
 
   const {
     isOpen: isSubscribeApisConfirmDialogOpen,
     onOpen: openSubscribeApisConfirmDialog,
     onClose: closeSubscribeApisConfirmDialog,
+  } = useDisclosure();
+
+  const {
+    isOpen: isRemoveApisConfirmDialogOpen,
+    onOpen: openRemoveApisConfirmDialog,
+    onClose: closeRemoveApisConfirmDialog,
   } = useDisclosure();
 
   const onTabChange = (key: string) => {
@@ -95,11 +102,19 @@ const UserPage = () => {
                 <Text as="h2" className="text-lg !m-0">
                   APIs in cart
                 </Text>
-                <Button
-                  label="Subscribe"
-                  disabled={selectedApiInCart.length === 0}
-                  onClick={openSubscribeApisConfirmDialog}
-                />
+                <div className="flex items-center justify-between gap-4">
+                  <Button
+                    label="Subscribe"
+                    disabled={selectedApiInCart.length === 0}
+                    onClick={openSubscribeApisConfirmDialog}
+                  />
+                  <Button
+                    appearance="outline"
+                    label="Remove from cart"
+                    disabled={selectedApiInCart.length === 0}
+                    onClick={openRemoveApisConfirmDialog}
+                  />
+                </div>
               </div>
               <AddedToCartApiRepoList
                 setSelectedApiInCart={setSelectedApiInCart}
@@ -109,36 +124,73 @@ const UserPage = () => {
         </Row>
       </Layout>
 
-      <Modal
-        open={isSubscribeApisConfirmDialogOpen}
-        onCancel={closeSubscribeApisConfirmDialog}
-        footer={[
-          <Button
-            key="cancel"
-            appearance="outline"
-            label="Cancel"
-            onClick={closeSubscribeApisConfirmDialog}
-            className="mr-2"
-          />,
-          <Button
-            key="subscribe"
-            label="Subscribe"
-            isLoading={isConfirmSubscribeLoading}
-            onClick={() => {
-              setIsConfirmSubscribeLoading(true);
-              setTimeout(() => {
-                closeSubscribeApisConfirmDialog();
-                setIsConfirmSubscribeLoading(false);
-              }, 1000);
-            }}
-          />,
-        ]}
-        centered
-      >
-        <Text className="text-lg pr-4">
-          {renderSubscribeListConfirmation(selectedApiInCart)}
-        </Text>
-      </Modal>
+      {/* Subscribe modal */}
+      {isSubscribeApisConfirmDialogOpen ? (
+        <Modal
+          open={isSubscribeApisConfirmDialogOpen}
+          onCancel={closeSubscribeApisConfirmDialog}
+          footer={[
+            <Button
+              key="cancel"
+              appearance="outline"
+              label="Cancel"
+              onClick={closeSubscribeApisConfirmDialog}
+              className="mr-2"
+            />,
+            <Button
+              key="subscribe"
+              label="Subscribe"
+              isLoading={isConfirmSubscribeLoading}
+              onClick={() => {
+                setIsConfirmSubscribeLoading(true);
+                setTimeout(() => {
+                  closeSubscribeApisConfirmDialog();
+                  setIsConfirmSubscribeLoading(false);
+                }, 1000);
+              }}
+            />,
+          ]}
+          centered
+        >
+          <Text className="text-lg pr-4">
+            {renderSubscribeListConfirmation(selectedApiInCart, "subscribe")}
+          </Text>
+        </Modal>
+      ) : null}
+
+      {/* Remove modal */}
+      {isRemoveApisConfirmDialogOpen ? (
+        <Modal
+          open={isRemoveApisConfirmDialogOpen}
+          onCancel={closeRemoveApisConfirmDialog}
+          footer={[
+            <Button
+              key="cancel"
+              appearance="outline"
+              label="Cancel"
+              onClick={closeRemoveApisConfirmDialog}
+              className="mr-2"
+            />,
+            <Button
+              key="remove"
+              label="Remove"
+              isLoading={isConfirmRemoveLoading}
+              onClick={() => {
+                setIsConfirmRemoveLoading(true);
+                setTimeout(() => {
+                  closeRemoveApisConfirmDialog();
+                  setIsConfirmRemoveLoading(false);
+                }, 1000);
+              }}
+            />,
+          ]}
+          centered
+        >
+          <Text className="text-lg pr-4">
+            {renderSubscribeListConfirmation(selectedApiInCart, "remove")}
+          </Text>
+        </Modal>
+      ) : null}
     </>
   );
 };

@@ -1,1 +1,1 @@
-export const FULL_PRICE_FILTER: [number, number] = [0, 300];
+export const FULL_PRICE_FILTER: [number, number] = [0, 100];

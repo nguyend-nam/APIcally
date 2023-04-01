@@ -7,6 +7,7 @@ import {
   Form,
   Tooltip,
   notification,
+  Slider,
 } from "antd";
 import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "../../../components/Button";
@@ -17,37 +18,59 @@ import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { Input } from "../../../components/Input";
 import TextArea from "antd/lib/input/TextArea";
-import { checkInvalidFileNameFormat } from "../../../utils";
+import { isAPINameFormatInvalid } from "../../../utils";
 import { ROUTES } from "../../../constants/routes";
 import { UserOutlined } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
 import { client, GetAllProjectsParams } from "../../../libs/api";
+import { Alert } from "../../../components/Alert";
+import { FULL_PRICE_FILTER } from "../../../constants/filter";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
 const APICreatePage = () => {
   const { push } = useRouter();
-  const [apiName, setApiName] = useState<string>("");
-  const [apiDescription, setApiDescription] = useState<string>("");
-  const [apiDisplayName, setApiDisplayName] = useState<string>("");
-
+  const [subscribeFee, setSubscribeFee] = useState<number>(0);
+  const [requestFee, setRequestFee] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onSubmit = async (ownerId: string, payload: GetAllProjectsParams) => {
-    try {
-      setIsLoading(true);
-      const data = await client.createProject(ownerId, payload);
+  const onSubmit = async (values: GetAllProjectsParams) => {
+    if (isAPINameFormatInvalid(values.name)) {
+      notification.error({
+        message: "API name should not contain special characters",
+      });
+    } else {
+      const transformedValues: GetAllProjectsParams = {
+        ...values,
+        description:
+          !values.description || values.description === ""
+            ? "-"
+            : values.description,
+        documentation: "-",
+        input: "-",
+        subscribeCost: subscribeFee,
+        costPerRequest: requestFee,
+      };
 
-      if (data) {
-        if (data.code === 200) {
-          notification.success({ message: "API created successfully" });
-          push(ROUTES.API_WORKSPACE_CODE_EDITOR(ownerId, payload.alias));
+      try {
+        setIsLoading(true);
+        const data = await client.createProject("tan", transformedValues);
+
+        if (data) {
+          if (data.code === 200) {
+            notification.success({ message: "API created successfully" });
+            push(
+              ROUTES.API_WORKSPACE_CODE_EDITOR("tan", transformedValues.alias)
+            );
+          }
         }
+      } catch (error: any) {
+        notification.error({
+          message: error.message || "Could not create API",
+        });
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error: any) {
-      notification.error({ message: error.message || "Could not create API" });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -64,11 +87,16 @@ const APICreatePage = () => {
           </Typography.Title>
 
           <Divider className="!my-4" />
-          <Form>
-            <Row gutter={[16, 16]} className="mb-4">
-              <Col span={24} md={{ span: 8 }}>
+          <Form onFinish={(values: GetAllProjectsParams) => onSubmit(values)}>
+            <Row gutter={[24, 0]} className="mb-6">
+              <Col span={24} md={{ span: 8 }} className="mb-6">
                 <div>
-                  <Typography.Title level={5}>Owner</Typography.Title>
+                  <Typography.Title
+                    level={5}
+                    className="!text-lg !font-medium !mb-0"
+                  >
+                    Owner
+                  </Typography.Title>
                   <div className="flex items-center gap-2">
                     <Avatar
                       icon={<UserOutlined size={64} />}
@@ -88,74 +116,151 @@ const APICreatePage = () => {
               </Col>
 
               <Col span={24} md={{ span: 16 }}>
-                <Typography.Title
-                  level={5}
-                  className='after:content-["*"] after:ml-1 after:text-red-500'
+                <label
+                  className='after:content-["*"] after:ml-1 after:text-red-500 !text-lg font-medium'
+                  htmlFor="api-name-input"
                 >
                   API alias
-                </Typography.Title>
-                <Input
-                  type="text"
-                  id="api-name-input"
-                  placeholder="Enter API alias..."
-                  className="!text-base"
-                  onChange={(v) => setApiName(v.target.value)}
-                />
-                <div className="text-sm mt-1 text-slate-400">
-                  API name should not contain special characters
+                </label>
+                <Form.Item
+                  name="alias"
+                  rules={[{ required: true, message: "Required" }]}
+                >
+                  <Input
+                    type="text"
+                    id="api-name-input"
+                    placeholder="Enter API alias..."
+                    className="!text-base"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <label
+                  className='after:content-["*"] after:ml-1 after:text-red-500 !text-lg font-medium'
+                  htmlFor="api-display-name-input"
+                >
+                  API name
+                </label>
+                <Form.Item
+                  name="name"
+                  rules={[{ required: true, message: "Required" }]}
+                >
+                  <Input
+                    type="text"
+                    id="api-display-name-input"
+                    placeholder="Enter API display name..."
+                    className="!text-base"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <label
+                  className="!text-lg font-medium"
+                  htmlFor="api-description-input"
+                >
+                  Description
+                </label>
+                <Form.Item name="description">
+                  <TextArea
+                    id="api-description-input"
+                    placeholder="Enter API description..."
+                    rows={2}
+                    className="!text-base placeholder:!text-gray-400 !bg-slate-100 !border-none !px-2 !py-1 !outline-none !w-full !rounded-r-md !rounded-bl-md"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24} md={{ span: 12 }} className="mb-6">
+                <label
+                  className="!m-0 !text-lg font-medium"
+                  htmlFor="api-price-input"
+                >
+                  Subscribe fee (per day)
+                </label>
+                <div className="mb-4">
+                  <Slider
+                    value={subscribeFee}
+                    max={FULL_PRICE_FILTER[1]}
+                    onChange={setSubscribeFee}
+                  />
+                </div>
+
+                <div className="flex gap-2 items-center w-full">
+                  <Input
+                    id="api-price-input"
+                    type="number"
+                    min={0}
+                    max={FULL_PRICE_FILTER[1]}
+                    value={subscribeFee}
+                    className="!text-base"
+                    fullWidth
+                    onChange={(e) => {
+                      const newRangeValue = Number(e.target?.value || 0);
+                      setSubscribeFee(newRangeValue);
+                    }}
+                  />
+                  <span className="text-base">$</span>
+                </div>
+              </Col>
+
+              <Col span={24} md={{ span: 12 }} className="mb-6">
+                <label
+                  className="!m-0 !text-lg font-medium"
+                  htmlFor="api-request-price-input"
+                >
+                  Execute fee (per request)
+                </label>
+                <div className="mb-4">
+                  <Slider
+                    value={requestFee}
+                    min={1}
+                    max={10}
+                    onChange={setRequestFee}
+                  />
+                </div>
+
+                <div className="flex gap-2 items-center w-full">
+                  <Input
+                    id="api-request-price-input"
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={requestFee}
+                    className="!text-base"
+                    fullWidth
+                    onChange={(e) => {
+                      const newValue = Number(e.target?.value || 0);
+                      setRequestFee(newValue);
+                    }}
+                  />
+                  <span className="text-base">$</span>
                 </div>
               </Col>
 
               <Col span={24}>
-                <Typography.Title
-                  level={5}
-                  className='after:content-["*"] after:ml-1 after:text-red-500'
-                >
-                  API name
-                </Typography.Title>
-                <Input
-                  type="text"
-                  id="api-display-name-input"
-                  placeholder="Enter API display name..."
-                  className="!text-base"
-                  onChange={(v) => setApiDisplayName(v.target.value)}
+                <Alert
+                  type="info"
+                  message={
+                    <>
+                      Please provide the daily subscribe fee and execute fee in{" "}
+                      <b>USD</b>, input 0 to let other users subscribe for free.
+                      At the moment we only allow the maximum subscribe fee of{" "}
+                      <b>${FULL_PRICE_FILTER[1]}</b>.
+                    </>
+                  }
                 />
-              </Col>
 
-              <Col span={24}>
-                <Typography.Title level={5}>Description</Typography.Title>
-                <TextArea
-                  id="api-description-input"
-                  placeholder="Enter API description..."
-                  rows={2}
-                  className="!text-base placeholder:!text-gray-400 !bg-slate-100 !border-none !px-2 !py-1 !outline-none !w-full !rounded-r-md !rounded-bl-md"
-                  onChange={(v) => setApiDescription(v.target.value)}
+                <Alert
+                  type="alert"
+                  message="Subscribe fee cannot be edited at the moment. Please consider carefully."
+                  className="mt-4"
                 />
               </Col>
             </Row>
 
-            <Button
-              disabled={
-                !apiName ||
-                checkInvalidFileNameFormat(apiName) ||
-                apiName.includes(".") ||
-                !apiDisplayName
-              }
-              isLoading={isLoading}
-              label="Create"
-              onClick={() => {
-                onSubmit("tan", {
-                  name: apiDisplayName,
-                  alias: apiName,
-                  description:
-                    !apiDescription || apiDescription === ""
-                      ? "-"
-                      : apiDescription,
-                  documentation: "-",
-                  input: "-",
-                });
-              }}
-            />
+            <Button isLoading={isLoading} label="Create" type="submit" />
           </Form>
         </Card>
       </Layout>

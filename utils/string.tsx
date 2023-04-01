@@ -7,12 +7,16 @@ export const formatFileName = (fileName: string) => {
   return `${fileName}.py`;
 };
 
-export const checkInvalidFileNameFormat = (fileName: string) => {
+export const isFileNameFormatInvalid = (fileName: string) => {
   return (
     fileName === "" ||
     /[ `!@#$%^&*()+=[\]{};':"\\|,<>/?~]/.test(fileName) ||
     !/[a-zA-Z]/.test(fileName)
   );
+};
+
+export const isAPINameFormatInvalid = (apiName: string) => {
+  return isFileNameFormatInvalid(apiName as string) || apiName.includes(".");
 };
 
 export const checkPythonVarNameFormat = (varName: string) => {
@@ -34,12 +38,17 @@ export const snakeCaseToNormalString = (snakeCase: string) => {
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
-export const renderSubscribeListConfirmation = (apiList: apiRepoType[]) => {
+export const renderSubscribeListConfirmation = (
+  apiList: apiRepoType[],
+  func: "subscribe" | "remove"
+) => {
   if (apiList.length === 0) return;
   if (apiList.length === 1) {
     return (
       <>
-        Are you sure you want to subscribe to <b>{apiList[0].name}</b>.
+        Are you sure you want to{" "}
+        {func === "subscribe" ? "subscribe to" : "remove"}{" "}
+        <b>{apiList[0].name}</b>.
       </>
     );
   }
@@ -48,7 +57,8 @@ export const renderSubscribeListConfirmation = (apiList: apiRepoType[]) => {
 
   return (
     <>
-      Are you sure you want to subscribe to{" "}
+      Are you sure you want to{" "}
+      {func === "subscribe" ? "subscribe to" : "remove"}{" "}
       {nameList.slice(0, apiList.length - 1).map((n, i) => (
         <>
           <b key={n}>{n}</b>
