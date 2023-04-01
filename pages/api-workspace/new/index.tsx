@@ -35,7 +35,7 @@ const APICreatePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (values: GetAllProjectsParams) => {
-    if (isAPINameFormatInvalid(values.name)) {
+    if (isAPINameFormatInvalid(values.alias)) {
       notification.error({
         message: "API name should not contain special characters",
       });
