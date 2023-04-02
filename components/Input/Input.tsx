@@ -51,15 +51,12 @@ export const Input = (props: InputProps) => {
   const {
     fullWidth = false,
     disabled = false,
-    // invalid = false,
     onFocus,
     onBlur,
     type,
     borderRadius = "primary",
     className,
     value,
-    max,
-    min,
     ...rest
   } = props;
 
@@ -68,17 +65,6 @@ export const Input = (props: InputProps) => {
   useEffect(() => {
     setInternalValue(value);
   }, [value]);
-
-  useEffect(() => {
-    if (typeof internalValue === "number") {
-      if (max !== undefined && internalValue > Number(max)) {
-        setInternalValue(max);
-      }
-      if (min !== undefined && internalValue < Number(min)) {
-        setInternalValue(min);
-      }
-    }
-  }, [internalValue, max, min]);
 
   return (
     <div className={`${fullWidth ? "w-full" : ""}`}>

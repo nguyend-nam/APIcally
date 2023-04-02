@@ -16,7 +16,7 @@ import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
 import { CREATE_API_NAME_KEY } from "../new";
-import { isAPINameFormatInvalid } from "../../../utils";
+import { isAPINameFormatValid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
 
@@ -78,7 +78,7 @@ const DocumentationPage = () => {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 
-      if (isAPINameFormatInvalid(query.alias as string)) {
+      if (!isAPINameFormatValid(query.alias as string)) {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 

@@ -311,6 +311,7 @@ const ExplorePage = () => {
                       <Slider
                         range
                         value={priceFilter}
+                        min={FULL_PRICE_FILTER[0]}
                         max={FULL_PRICE_FILTER[1]}
                         onChange={setPriceFilter}
                         trackStyle={[{ backgroundColor: "#2D31FA" }]}
@@ -318,7 +319,10 @@ const ExplorePage = () => {
                     </div>
                     <div className="flex px-4 mb-8 gap-4 items-center">
                       <Input
+                        step={0.05}
+                        fullWidth
                         type="number"
+                        min={FULL_PRICE_FILTER[0]}
                         max={FULL_PRICE_FILTER[1]}
                         value={priceFilter[0]}
                         className="!text-sm py-2"
@@ -334,8 +338,11 @@ const ExplorePage = () => {
                         <LineOutlined />
                       </div>
                       <Input
+                        step={0.05}
+                        fullWidth
                         type="number"
                         max={FULL_PRICE_FILTER[1]}
+                        min={FULL_PRICE_FILTER[0]}
                         value={priceFilter[1]}
                         className="!text-sm py-2"
                         onChange={(e) => {

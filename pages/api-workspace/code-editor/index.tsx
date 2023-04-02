@@ -12,7 +12,7 @@ import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { ROUTES } from "../../../constants/routes";
-import { isAPINameFormatInvalid } from "../../../utils";
+import { isAPINameFormatValid } from "../../../utils";
 import { client, GET_PATHS } from "../../../libs/api";
 import { notification } from "antd";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
@@ -39,7 +39,7 @@ const CodeEditorPageInner = () => {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 
-      if (isAPINameFormatInvalid(query.alias as string)) {
+      if (!isAPINameFormatValid(query.alias as string)) {
         push(ROUTES.API_WORKSPACE_CREATE);
       }
 

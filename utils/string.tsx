@@ -15,8 +15,8 @@ export const isFileNameFormatInvalid = (fileName: string) => {
   );
 };
 
-export const isAPINameFormatInvalid = (apiName: string) => {
-  return isFileNameFormatInvalid(apiName as string) || apiName.includes(".");
+export const isAPINameFormatValid = (apiName: string) => {
+  return /^[a-zA-Z0-9.]*$/.test(apiName);
 };
 
 export const checkPythonVarNameFormat = (varName: string) => {

@@ -18,24 +18,29 @@ import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { Input } from "../../../components/Input";
 import TextArea from "antd/lib/input/TextArea";
-import { isAPINameFormatInvalid } from "../../../utils";
+import { isAPINameFormatValid } from "../../../utils";
 import { ROUTES } from "../../../constants/routes";
 import { UserOutlined } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
 import { client, GetAllProjectsParams } from "../../../libs/api";
 import { Alert } from "../../../components/Alert";
-import { FULL_PRICE_FILTER } from "../../../constants/filter";
+import {
+  FULL_PRICE_FILTER,
+  REQUEST_PRICE_RANGE,
+} from "../../../constants/filter";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
 const APICreatePage = () => {
   const { push } = useRouter();
-  const [subscribeFee, setSubscribeFee] = useState<number>(0);
-  const [requestFee, setRequestFee] = useState<number>(1);
+  const [subscribeFee, setSubscribeFee] = useState<number>(
+    FULL_PRICE_FILTER[0]
+  );
+  const [requestFee, setRequestFee] = useState<number>(REQUEST_PRICE_RANGE[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (values: GetAllProjectsParams) => {
-    if (isAPINameFormatInvalid(values.alias)) {
+    if (!isAPINameFormatValid(values.alias)) {
       notification.error({
         message: "API name should not contain special characters",
       });
@@ -51,6 +56,8 @@ const APICreatePage = () => {
         subscribeCost: subscribeFee,
         costPerRequest: requestFee,
       };
+
+      console.log(transformedValues);
 
       try {
         setIsLoading(true);
@@ -189,7 +196,9 @@ const APICreatePage = () => {
                   <Slider
                     value={subscribeFee}
                     max={FULL_PRICE_FILTER[1]}
+                    min={FULL_PRICE_FILTER[0]}
                     onChange={setSubscribeFee}
+                    step={0.05}
                   />
                 </div>
 
@@ -197,7 +206,8 @@ const APICreatePage = () => {
                   <Input
                     id="api-price-input"
                     type="number"
-                    min={0}
+                    step={0.05}
+                    min={FULL_PRICE_FILTER[0]}
                     max={FULL_PRICE_FILTER[1]}
                     value={subscribeFee}
                     className="!text-base"
@@ -221,9 +231,10 @@ const APICreatePage = () => {
                 <div className="mb-4">
                   <Slider
                     value={requestFee}
-                    min={1}
-                    max={10}
+                    min={REQUEST_PRICE_RANGE[0]}
+                    max={REQUEST_PRICE_RANGE[1]}
                     onChange={setRequestFee}
+                    step={0.05}
                   />
                 </div>
 
@@ -231,8 +242,9 @@ const APICreatePage = () => {
                   <Input
                     id="api-request-price-input"
                     type="number"
-                    min={1}
-                    max={10}
+                    step={0.05}
+                    min={REQUEST_PRICE_RANGE[0]}
+                    max={REQUEST_PRICE_RANGE[1]}
                     value={requestFee}
                     className="!text-base"
                     fullWidth
