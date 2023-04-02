@@ -16,16 +16,18 @@ import { isAPINameFormatValid } from "../../../utils";
 import { client, GET_PATHS } from "../../../libs/api";
 import { notification } from "antd";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
+import { useAuthContext } from "../../../context/auth";
 
 const CodeEditorPageInner = () => {
   const { fileList } = useFileListContext() as { fileList: fileObj[] };
   const filesData = useMemo(() => new FormData(), []);
+  const { user } = useAuthContext();
 
   const { push, query, isReady } = useRouter();
 
   const { data, error } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECT_BY_ALIAS("nguyend-nam", query.alias as string)],
-    () => client.getProjectByAlias("nguyend-nam", query.alias as string)
+    [GET_PATHS.GET_PROJECT_BY_ALIAS(user?.name || "-", query.alias as string)],
+    () => client.getProjectByAlias(query.alias as string)
   );
 
   useEffect(() => {
@@ -57,17 +59,18 @@ const CodeEditorPageInner = () => {
     }
   }, [push, query, isReady, data, error]);
 
-  const onSubmit = async (ownerId: string, alias: string) => {
+  const onSubmit = async (alias: string) => {
     try {
       setIsLoading(true);
 
       const mainFile = fileList.find((file) => file.fileName === "main.py");
+      console.log(filesData);
 
       if (mainFile) {
-        const newFile = new File([mainFile.codeContent], mainFile.fileName);
+        const newFile = new Blob([mainFile.codeContent]);
         filesData.append("", newFile, mainFile.fileName);
 
-        const data = await client.uploadProjectFiles(ownerId, alias, filesData);
+        const data = await client.uploadProjectFiles(alias, filesData);
 
         // const requestOptions = {
         //   method: "POST",
@@ -75,10 +78,7 @@ const CodeEditorPageInner = () => {
         //   redirect: "follow",
         // };
 
-        // fetch(
-        //   `http://localhost:5000/v1/${ownerId}/${alias}/upload`,
-        //   requestOptions
-        // )
+        // fetch(`http://localhost:5000/v1/${alias}/upload`, requestOptions)
         //   .then((response) => response.text())
         //   .then((result) => console.log(result))
         //   .catch((error) => console.log("error", error));
@@ -149,7 +149,7 @@ const CodeEditorPageInner = () => {
               <Button
                 label="Submit algorithm"
                 onClick={() => {
-                  onSubmit(query.username as string, query.alias as string);
+                  onSubmit(query.alias as string);
                 }}
                 isLoading={isLoading}
               />

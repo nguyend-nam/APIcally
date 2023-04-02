@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Row, Typography } from "antd";
 import { useRouter } from "next/router";
 import { Card } from "../../components/Card";
 import { Layout } from "../../components/Layout";
@@ -11,6 +11,8 @@ import Head from "next/head";
 import { ROUTES } from "../../constants/routes";
 import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedApiRepoList";
 import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
+import { CategoryCollection } from "../../components/CategoryCollection";
+import { TopSubscribedAPIs } from "../../components/TopSubscribedAPIs";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -26,6 +28,23 @@ const HomePage = () => {
       </Head>
 
       <Layout hasSearch>
+        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+          Categories
+        </Typography.Title>
+        <div className="mb-6">
+          <CategoryCollection />
+        </div>
+
+        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+          Top Subscribed APIs
+        </Typography.Title>
+        <div className="mb-6">
+          <TopSubscribedAPIs />
+        </div>
+
+        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+          Personal
+        </Typography.Title>
         <Row gutter={[20, 20]}>
           <Col span={24} md={{ span: 12 }}>
             <Card shadowSize="sm" className="p-4">

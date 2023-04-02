@@ -33,7 +33,8 @@ import json
 """import----------------------------------------------------"""
 #USER MODULES BEGIN Import
 #TODO
-
+from symspellpy import SymSpell, Verbosity
+import pkg_resources
 #USER MODULES END Import
 
 """Get request----------------------------------------------"""
@@ -48,7 +49,19 @@ The variable 'request' contains the body of the request from clients
 """Code------------------------------------------------------"""
 #USER CODE BEGIN 1
 #TODO
+sym_spell = SymSpell()
+dictionary_path = pkg_resources.resource_filename(
+    "symspellpy", "frequency_dictionary_en_82_765.txt"
+)
+sym_spell.load_dictionary(dictionary_path, 0, 1)
+input_term=request['term']
+suggestions = sym_spell.lookup(input_term, Verbosity.CLOSEST,
+                               max_edit_distance=2, include_unknown=True)
 
+res = []
+for suggestion in suggestions:
+	res.append(suggestion.term)
+	
 #USER CODE END 1
 
 """def--------------------------------------------------------"""
@@ -67,7 +80,7 @@ The variable 'request' contains the body of the request from clients
 #JSON OR JSON ARRAY RESULT BEGIN 1
 #do not modify the variable name!
 result = {
-    "data": "Hello world"
+    "data": res
     #TODO
 }
 #JSON OR JSON ARRAY RESULT END 1
@@ -80,5 +93,4 @@ result = {
 
 """DO NOT REMOVE-----------------------------------------"""
 #REQUIRED CODE, DO NOT MODIFY!
-print(json.dumps(result))
-sys.stdout.flush()`;
+print(result)`;

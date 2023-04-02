@@ -6,6 +6,7 @@ import { Dropdown, notification, Upload } from "antd";
 import { PlusCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button } from "../Button";
 import { modelFileExtensions } from "../../constants/python";
+import cx from "classnames";
 
 export const FileManagement = ({
   currentFile,
@@ -49,7 +50,7 @@ export const FileManagement = ({
   };
 
   return (
-    <div className={`z-30 h-screen overflow-auto ${className}`}>
+    <div className={cx("z-30 h-screen overflow-auto", className)}>
       <div className="p-4 flex justify-start flex-wrap gap-2 bg-indigo-300 sticky top-0 z-30">
         {/* <Button
           className="!text-sm"

@@ -64,7 +64,7 @@ const DocumentationPage = () => {
 
   const { data, error } = useFetchWithCache(
     [GET_PATHS.GET_PROJECT_BY_ALIAS("nguyend-nam", query.alias as string)],
-    () => client.getProjectByAlias("nguyend-nam", query.alias as string)
+    () => client.getProjectByAlias(query.alias as string)
   );
 
   useEffect(() => {

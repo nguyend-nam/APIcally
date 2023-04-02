@@ -125,6 +125,18 @@ const ExplorePage = () => {
   };
 
   useEffect(() => {
+    if (query.category) {
+      if (typeof query.category === "string") {
+        setAppliedTagFilter([query.category] as apiTagTypes[]);
+        setTagFilter([query.category] as apiTagTypes[]);
+      } else {
+        setAppliedTagFilter(query.category as apiTagTypes[]);
+        setTagFilter(query.category as apiTagTypes[]);
+      }
+    }
+  }, [query.category]);
+
+  useEffect(() => {
     if (
       appliedTagFilter.length === 0 &&
       appliedPriceFilter[0] === FULL_PRICE_FILTER[0] &&

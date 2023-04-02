@@ -1,5 +1,6 @@
 import { Spin } from "antd";
 import { ReactNode } from "react";
+import cx from "classnames";
 
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
@@ -71,11 +72,15 @@ export const Button = (props: ButtonProps) => {
   } = props;
   return (
     <button
-      className={`text-base md:text-lg p-2.5 py-1 transition-all duration-150 ${getButtonStyle(
-        appearance
-      )} ${getBorderRadius(borderRadius)} ${className} ${
-        disabled || isLoading ? "opacity-50" : ""
-      }`}
+      className={cx(
+        "text-base md:text-lg p-2.5 py-1 transition-all duration-150",
+        getButtonStyle(appearance),
+        getBorderRadius(borderRadius),
+        className,
+        {
+          "opacity-50": disabled || isLoading,
+        }
+      )}
       disabled={disabled || isLoading}
       style={style}
       {...rest}

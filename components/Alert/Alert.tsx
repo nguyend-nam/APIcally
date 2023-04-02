@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import cx from "classnames";
 
 const getBorderColor = (type: "alert" | "info" | "success" | "warning") => {
   switch (type) {
@@ -38,9 +39,12 @@ export const Alert = ({
 }) => {
   return (
     <div
-      className={`text-gray-600 font-light text-base border p-1.5 rounded-b-md rounded-r-md ${getBorderColor(
-        type
-      )} ${getBgColor(type)} ${className}`}
+      className={cx(
+        "text-gray-600 font-light text-base border p-1.5 rounded-b-md rounded-r-md",
+        getBorderColor(type),
+        getBgColor(type),
+        className
+      )}
     >
       {message}
     </div>

@@ -17,6 +17,7 @@ import { ROUTES } from "../../constants/routes";
 import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
 import { Logo } from "../Logo";
+import cx from "classnames";
 
 const sidebarRoutes = [
   {
@@ -83,7 +84,10 @@ export const Sidebar = ({
 
   return (
     <div
-      className={`flex flex-col bg-primary w-max h-screen items-center ${className}`}
+      className={cx(
+        "flex flex-col bg-primary w-max h-screen items-center",
+        className
+      )}
       style={style}
     >
       <div className="h-32 w-full flex justify-center relative items-center">

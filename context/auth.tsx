@@ -1,10 +1,25 @@
 import { createContext } from "@dwarvesf/react-utils";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 // import { client } from "../libs/api";
 import { WithChildren } from "../types/common";
+// import jwtDecode from "jwt-decode";
 import { encodeData } from "../utils/crypto";
 
-const [Provider, useAuthContext] = createContext<any>();
+interface UserInfo {
+  aud: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  name: string;
+  sub: string;
+  typ: string;
+}
+const [Provider, useAuthContext] = createContext<{
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+  user?: UserInfo;
+}>();
 
 export const APICALLY_KEY = "apically-token";
 export const LOGIN_REDIRECTION_KEY = "apically-redirection-key";
@@ -18,23 +33,34 @@ const AuthProvider = ({ children }: WithChildren) => {
     return value;
   });
 
+  // const [user, setUser] = useState<UserInfo>();
+
   const isAuthenticated = useMemo(() => Boolean(authToken), [authToken]);
 
-  const login = useCallback(async (username: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     try {
-      // const { token } = await client.login(username, password);
-      const token = encodeData({ username, password });
+      // const { access_token } = await client.login(email, password);
+      const access_token = encodeData({ email, password });
 
-      if (token) {
-        window.localStorage.setItem(APICALLY_KEY, token);
-        setAuthToken(token);
-        // client.setAuthToken(token);
+      if (access_token) {
+        window.localStorage.setItem(APICALLY_KEY, access_token);
+        // setUser(jwtDecode(access_token));
+        setAuthToken(access_token);
+        // client.setAuthToken(access_token);
       }
     } catch (error) {
       console.error(error);
       throw error;
     }
   }, []);
+
+  useEffect(() => {
+    if (authToken) {
+      // setUser(jwtDecode(authToken));
+      setAuthToken(authToken);
+      // client.setAuthToken(authToken);
+    }
+  }, [authToken]);
 
   const logout = useCallback(() => {
     setAuthToken(undefined);
@@ -48,6 +74,7 @@ const AuthProvider = ({ children }: WithChildren) => {
         isAuthenticated,
         login,
         logout,
+        // user,
       }}
     >
       {children}

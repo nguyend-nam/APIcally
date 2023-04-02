@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { WithChildren } from "../../types/common";
+import cx from "classnames";
 
 export const getBorderRadius = (prop: string) => {
   switch (prop) {
@@ -69,9 +70,14 @@ export const Card = ({
   return (
     <div
       style={style}
-      className={`bg-white ${getBorderRadius(borderRadius)} ${
-        hasShadow && shadowClassName
-      } ${className}`}
+      className={cx(
+        "bg-white",
+        getBorderRadius(borderRadius),
+        {
+          [shadowClassName]: hasShadow,
+        },
+        className
+      )}
     >
       {children}
     </div>

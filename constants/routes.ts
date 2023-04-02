@@ -27,4 +27,5 @@ export const ROUTES = {
   API_WORKSPACE_DOCUMENTATION: (username: string, alias: string) =>
     `/api-workspace/documentation?username=${username}&alias=${alias}`,
   PROFILE: "/profile",
+  CART: "/profile/cart",
 };

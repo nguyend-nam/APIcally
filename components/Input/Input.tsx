@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import cx from "classnames";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -70,9 +71,11 @@ export const Input = (props: InputProps) => {
     <div className={`${fullWidth ? "w-full" : ""}`}>
       <input
         type={type}
-        className={`bg-slate-100 border-none text-lg px-2 py-1 outline-none w-full ${getBorderRadius(
-          borderRadius
-        )} ${className}`}
+        className={cx(
+          "bg-slate-100 border-none text-lg px-2 py-1 outline-none w-full",
+          getBorderRadius(borderRadius),
+          className
+        )}
         value={internalValue}
         onFocus={onFocus}
         onBlur={onBlur}

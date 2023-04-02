@@ -2,6 +2,7 @@ import {
   ExportOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ import { ReactNode } from "react";
 import { Avatar, Dropdown } from "antd";
 import { useAuthContext } from "../../context/auth";
 import { ROUTES } from "../../constants/routes";
+import cx from "classnames";
 
 export const Topbar = ({
   className,
@@ -28,13 +30,22 @@ export const Topbar = ({
 
   return (
     <div
-      className={`p-8 py-4 gap-2 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md ${className}`}
+      className={cx(
+        "p-8 py-4 gap-2 w-full flex justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md",
+        className
+      )}
     >
       <div className="flex flex-col md:flex-row items-start text-xl md:text-2xl">
         {extraLeft}
         {formatPathname(pathname)}
       </div>
       <div className="flex gap-4">
+        <Button
+          label={<ShoppingCartOutlined className="text-xl" />}
+          appearance="link"
+          className="flex items-center"
+          onClick={() => push(ROUTES.CART)}
+        />
         <Dropdown
           overlay={
             <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
