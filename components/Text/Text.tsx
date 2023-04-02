@@ -1,4 +1,5 @@
 import { createElement, HTMLAttributes } from "react";
+import cx from "classnames";
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {
   as?:
@@ -38,7 +39,7 @@ export const Text = (props: TextProps) => {
   const classNames = [getColor(textColor)];
 
   return createElement(as, {
-    className: `${classNames} ${className}`,
+    className: cx(classNames, className),
     ...rest,
   });
 };

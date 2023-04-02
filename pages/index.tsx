@@ -13,6 +13,7 @@ import { Parallax } from "react-scroll-parallax";
 import { ROUTES } from "../constants/routes";
 import { useIsSSR } from "../hooks/useIsSSR";
 import { WithChildren } from "../types/common";
+import cx from "classnames";
 
 const supplier = [
   { href: "https://nextjs.org/", img: "img/nextjs-logo.png", height: 25 },
@@ -73,7 +74,10 @@ const SectionTitle = (props: WithChildren & { className?: string }) => {
   const { children, className } = props;
   return (
     <Text
-      className={`capitalize text-3xl md:text-[40px] font-semibold text-slate-700 text-center mb-12 md:mb-16 ${className}`}
+      className={cx(
+        "capitalize text-3xl md:text-[40px] font-semibold text-slate-700 text-center mb-12 md:mb-16",
+        className
+      )}
     >
       {children}
     </Text>

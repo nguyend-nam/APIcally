@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
 import { Button } from "../Button";
 import { useIsSSR } from "../../hooks/useIsSSR";
+import cx from "classnames";
 
 export const Layout = ({
   children,
@@ -60,7 +61,7 @@ export const Layout = ({
   }, []);
 
   return isAuthenticated && !isSSR ? (
-    <div className={`relative md:flex ${className}`}>
+    <div className={cx("relative md:flex", className)}>
       <Sidebar
         className={`top-0 min-w-max w-screen md:w-max fixed md:sticky z-50 md:z-0 ${
           isMenuOpen ? "ml-0" : "-ml-[125%]"

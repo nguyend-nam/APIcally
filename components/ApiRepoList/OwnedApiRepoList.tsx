@@ -3,6 +3,7 @@ import { apiReposData } from "../../constants/mockData";
 import { Text } from "../Text";
 import { ApiRepo } from "../page/home/ApiRepo";
 import { useMemo } from "react";
+import cx from "classnames";
 
 interface Props {
   searchQuery?: string;
@@ -27,7 +28,7 @@ export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
 
   if (displayedApiRepos.length === 0) {
     return (
-      <div className={`h-[350px] flex flex-col justify-center ${className}`}>
+      <div className={cx("h-[350px] flex flex-col justify-center", className)}>
         <Empty
           description={
             <Text as="div" className="text-base">
@@ -41,7 +42,9 @@ export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
   }
 
   return (
-    <div className={`h-[350px] overflow-auto space-y-4 p-1 pb-2 ${className}`}>
+    <div
+      className={cx("h-[350px] overflow-auto space-y-4 p-1 pb-2", className)}
+    >
       {displayedApiRepos
         .filter((a) => a.subscribeStatus)
         .map((a) => (

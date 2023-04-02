@@ -28,6 +28,7 @@ import {
   FULL_PRICE_FILTER,
   REQUEST_PRICE_RANGE,
 } from "../../../constants/filter";
+import { useAuthContext } from "../../../context/auth";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
@@ -36,6 +37,7 @@ const APICreatePage = () => {
   const [subscribeFee, setSubscribeFee] = useState<number>(
     FULL_PRICE_FILTER[0]
   );
+  const { user } = useAuthContext();
   const [requestFee, setRequestFee] = useState<number>(REQUEST_PRICE_RANGE[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -61,17 +63,14 @@ const APICreatePage = () => {
 
       try {
         setIsLoading(true);
-        const data = await client.createProject(
-          "nguyend-nam",
-          transformedValues
-        );
+        const data = await client.createProject(transformedValues);
 
         if (data) {
           if (data.code === 200) {
             notification.success({ message: "API created successfully" });
             push(
               ROUTES.API_WORKSPACE_CODE_EDITOR(
-                "nguyend-nam",
+                user?.name || "-",
                 transformedValues.alias
               )
             );
@@ -116,12 +115,12 @@ const APICreatePage = () => {
                       className="shrink-0 !bg-slate-300"
                     />
                     <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
-                      <Tooltip title="nguyend-nam" placement="bottom">
-                        {truncate("nguyend-nam", 10)}
+                      <Tooltip title={user?.name} placement="bottom">
+                        {user?.name ? truncate(user?.name, 10) : "-"}
                       </Tooltip>
                     </div>
                     <div className="text-base !text-slate-500 block md:hidden mr-0 py-1 px-1.5 rounded-md bg-slate-100 w-screen overflow-auto whitespace-nowrap">
-                      nguyend-nam
+                      {user?.name || "-"}
                     </div>
                     <div className="hidden md:block">/</div>
                   </div>

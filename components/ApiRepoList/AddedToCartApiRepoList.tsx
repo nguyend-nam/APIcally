@@ -7,6 +7,7 @@ import { ROUTES } from "../../constants/routes";
 import { useRouter } from "next/router";
 import { apiRepoType } from "../../pages/explore";
 import { ApiCheckboxGroup } from "../ApiCheckboxGroup";
+import cx from "classnames";
 
 interface Props {
   className?: string;
@@ -76,7 +77,7 @@ export const AddedToCartApiRepoList = ({
   }
 
   return (
-    <div className={`h-[450px] overflow-auto space-y-4 pb-2 ${className}`}>
+    <div className={cx("h-[600px] overflow-auto space-y-4 pb-2", className)}>
       {apiReposInCart.map((r) => (
         <ApiCheckboxGroup
           key={r.username}

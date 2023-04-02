@@ -14,6 +14,11 @@ export interface GetAllProjectsParams {
   costPerRequest: number;
 }
 
+export interface AuthResponse {
+  access_token: string;
+  refesh_token: string;
+}
+
 // keys for SWR
 export const GET_PATHS = {
   CREATE_PROJECTS: (ownerId: string) => `/${ownerId}/post/project`,
@@ -43,48 +48,48 @@ class Client {
     this.privateHeaders = { ...this.headers };
   }
 
-  public login(username: string, password: string) {
+  public login(email: string, password: string) {
     return fetcher<any>(`${BASE_API_URL}/authenticate`, {
       method: "POST",
       headers: {
         ...this.headers,
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
   }
 
-  public createProject(ownerId: string, params: GetAllProjectsParams) {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}/${ownerId}`, {
+  public createProject(params: GetAllProjectsParams) {
+    return fetcher<any>(`${PYTHON_BASE_API_URL}`, {
       method: "POST",
       headers: {
-        ...this.headers,
+        ...this.privateHeaders,
       },
       body: JSON.stringify(params),
+      mode: "no-cors",
     });
   }
 
-  public getProjects(ownerId: string) {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}/${ownerId}`, {
+  public getProjects() {
+    return fetcher<any>(`${PYTHON_BASE_API_URL}/`, {
       headers: {
-        ...this.headers,
+        ...this.privateHeaders,
       },
     });
   }
 
-  public getProjectByAlias(ownerId: string, alias: string) {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}/${ownerId}/${alias}`, {
+  public getProjectByAlias(alias: string) {
+    return fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}`, {
       headers: {
-        ...this.headers,
+        ...this.privateHeaders,
       },
     });
   }
 
-  public uploadProjectFiles(ownerId: string, alias: string, files: FormData) {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}/${ownerId}/${alias}/upload`, {
+  public async uploadProjectFiles(alias: string, files: FormData) {
+    console.log(this.privateHeaders);
+    return await fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}/upload`, {
       method: "POST",
-      headers: {
-        ...this.headers,
-      },
+      headers: this.privateHeaders,
       // @ts-ignore
       body: files,
       redirect: "follow",

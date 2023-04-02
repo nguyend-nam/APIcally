@@ -14,7 +14,8 @@ import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
 import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
 export const GeneralInfo = () => {
-  const { logout } = useAuthContext();
+  const { logout, user } = useAuthContext();
+  console.log(user);
 
   return (
     <Card className="relative overflow-hidden" shadowSize="sm">
@@ -26,9 +27,11 @@ export const GeneralInfo = () => {
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">
-          Nam Nguyen Dinh
+          {user?.sub || "Dinh Nam Nguyen"}
         </Typography.Title>
-        <Typography.Text className="text-base">nguyend-nam</Typography.Text>
+        <Typography.Text className="text-base">
+          {user?.name || "nguyend-nam"}
+        </Typography.Text>
         <Typography.Paragraph className="mt-4 !text-slate-500">
           They say &quot;garbage can&quot;, not &quot;garbage cannot&quot;
         </Typography.Paragraph>

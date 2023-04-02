@@ -14,6 +14,7 @@ import { formatCurrency } from "../../../../utils/currency";
 import { Card } from "../../../Card";
 import { TagsArray } from "../../../TagsArray";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
+import cx from "classnames";
 
 export const ApiRepo = ({
   data,
@@ -24,6 +25,7 @@ export const ApiRepo = ({
   showOwner = true,
   isLinkActive = true,
   isDescriptionTruncated = true,
+  isStatsAlignRight = true,
 }: {
   data: apiRepoType;
   className?: string;
@@ -33,6 +35,7 @@ export const ApiRepo = ({
   showOwner?: boolean;
   isLinkActive?: boolean;
   isDescriptionTruncated?: boolean;
+  isStatsAlignRight?: boolean;
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
@@ -40,10 +43,15 @@ export const ApiRepo = ({
   return (
     <Card
       shadowSize="sm"
-      className={`bg-white p-4 ${className}`}
+      className={cx("bg-white p-4", className)}
       hasShadow={hasShadow}
     >
-      <div className="flex justify-between !mb-2 gap-2 flex-col md:flex-row">
+      <div
+        className={cx(
+          "flex justify-between !mb-2 gap-2 flex-col md:flex-row",
+          isStatsAlignRight ? "" : "md:!flex-col"
+        )}
+      >
         <Typography.Title
           level={4}
           className="!m-0 flex items-center !text-lg md:!text-xl"
@@ -71,7 +79,7 @@ export const ApiRepo = ({
         <div className="flex gap-4">
           {data.statistics?.subscribes ? (
             <Tooltip
-              placement={isMobile ? "right" : "left"}
+              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
               title="Subscribers"
               className="flex flex-col items-center w-6 h-max"
             >
@@ -82,7 +90,7 @@ export const ApiRepo = ({
 
           {data.statistics?.starGazers ? (
             <Tooltip
-              placement={isMobile ? "right" : "left"}
+              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
               title="Stars"
               className="flex flex-col items-center w-6 h-max"
             >

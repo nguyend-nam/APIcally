@@ -1,4 +1,4 @@
-import { Card as AntCard, Col, Modal, Row } from "antd";
+import { Card as AntCard, Col, Row } from "antd";
 import Head from "next/head";
 import { useState } from "react";
 import { Input } from "../../components/Input";
@@ -7,13 +7,7 @@ import { GeneralInfo } from "../../components/page/profile/GeneralInfo";
 import { Text } from "../../components/Text";
 import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedApiRepoList";
 import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
-import { Card } from "../../components/Card";
 import { useIsMobile } from "../../hooks/useIsMobile";
-import { AddedToCartApiRepoList } from "../../components/ApiRepoList/AddedToCartApiRepoList";
-import { Button } from "../../components/Button";
-import { apiRepoType } from "../explore";
-import { useDisclosure } from "@dwarvesf/react-hooks";
-import { renderSubscribeListConfirmation } from "../../utils";
 
 export type tabTypes = "owned" | "subscribed";
 
@@ -22,22 +16,6 @@ const UserPage = () => {
     useState<string>("");
   const [activeTabKey, setActiveTabKey] = useState<tabTypes>("owned");
   const isMobile = useIsMobile();
-  const [selectedApiInCart, setSelectedApiInCart] = useState<apiRepoType[]>([]);
-  const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
-    useState(false);
-  const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
-
-  const {
-    isOpen: isSubscribeApisConfirmDialogOpen,
-    onOpen: openSubscribeApisConfirmDialog,
-    onClose: closeSubscribeApisConfirmDialog,
-  } = useDisclosure();
-
-  const {
-    isOpen: isRemoveApisConfirmDialogOpen,
-    onOpen: openRemoveApisConfirmDialog,
-    onClose: closeRemoveApisConfirmDialog,
-  } = useDisclosure();
 
   const onTabChange = (key: string) => {
     setActiveTabKey(key as tabTypes);
@@ -83,7 +61,7 @@ const UserPage = () => {
         <title>Profile | APIcally</title>
       </Head>
 
-      <Layout hasSearch>
+      <Layout>
         <Row gutter={[20, 20]}>
           <Col span={24} xl={{ span: 8 }}>
             <GeneralInfo />
@@ -106,101 +84,9 @@ const UserPage = () => {
               />
               {tabContentList[activeTabKey]}
             </AntCard>
-
-            <Card shadowSize="sm" className="p-4 md:p-6 mt-5">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-2">
-                <Text as="h2" className="text-lg !m-0">
-                  APIs in cart
-                </Text>
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <Button
-                    label="Subscribe"
-                    disabled={selectedApiInCart.length === 0}
-                    onClick={openSubscribeApisConfirmDialog}
-                  />
-                  <Button
-                    appearance="outline"
-                    label="Remove from cart"
-                    disabled={selectedApiInCart.length === 0}
-                    onClick={openRemoveApisConfirmDialog}
-                  />
-                </div>
-              </div>
-              <AddedToCartApiRepoList
-                setSelectedApiInCart={setSelectedApiInCart}
-              />
-            </Card>
           </Col>
         </Row>
       </Layout>
-
-      {/* Subscribe modal */}
-      {isSubscribeApisConfirmDialogOpen ? (
-        <Modal
-          open={isSubscribeApisConfirmDialogOpen}
-          onCancel={closeSubscribeApisConfirmDialog}
-          footer={[
-            <Button
-              key="cancel"
-              appearance="outline"
-              label="Cancel"
-              onClick={closeSubscribeApisConfirmDialog}
-              className="mr-2"
-            />,
-            <Button
-              key="subscribe"
-              label="Subscribe"
-              isLoading={isConfirmSubscribeLoading}
-              onClick={() => {
-                setIsConfirmSubscribeLoading(true);
-                setTimeout(() => {
-                  closeSubscribeApisConfirmDialog();
-                  setIsConfirmSubscribeLoading(false);
-                }, 1000);
-              }}
-            />,
-          ]}
-          centered
-        >
-          <Text className="text-lg pr-4">
-            {renderSubscribeListConfirmation(selectedApiInCart, "subscribe")}
-          </Text>
-        </Modal>
-      ) : null}
-
-      {/* Remove modal */}
-      {isRemoveApisConfirmDialogOpen ? (
-        <Modal
-          open={isRemoveApisConfirmDialogOpen}
-          onCancel={closeRemoveApisConfirmDialog}
-          footer={[
-            <Button
-              key="cancel"
-              appearance="outline"
-              label="Cancel"
-              onClick={closeRemoveApisConfirmDialog}
-              className="mr-2"
-            />,
-            <Button
-              key="remove"
-              label="Remove"
-              isLoading={isConfirmRemoveLoading}
-              onClick={() => {
-                setIsConfirmRemoveLoading(true);
-                setTimeout(() => {
-                  closeRemoveApisConfirmDialog();
-                  setIsConfirmRemoveLoading(false);
-                }, 1000);
-              }}
-            />,
-          ]}
-          centered
-        >
-          <Text className="text-lg pr-4">
-            {renderSubscribeListConfirmation(selectedApiInCart, "remove")}
-          </Text>
-        </Modal>
-      ) : null}
     </>
   );
 };
