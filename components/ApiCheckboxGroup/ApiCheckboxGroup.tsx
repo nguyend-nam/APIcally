@@ -64,12 +64,12 @@ export const ApiCheckboxGroup = (props: Props) => {
   }, [apis, checkedList, onChange]);
 
   return (
-    <div className="border-b border-x border-slate-100 pb-3 md:pb-4 rounded-r-md rounded-b-md">
+    <div className="border-b border-x border-slate-200 pb-3 md:pb-4 rounded-r-md rounded-b-md">
       <Checkbox
         indeterminate={indeterminate}
         onChange={onCheckAllChange}
         checked={checkedList.length === options.length}
-        className="bg-slate-100 !p-2 md:!p-3 !w-full !text-slate-700 font-medium !text-lg sticky top-0 z-20 rounded-tr-md !items-baseline checkall"
+        className="bg-slate-200 !p-2 md:!p-3 !w-full !text-slate-700 font-medium !text-lg sticky top-0 z-20 rounded-tr-md !items-baseline checkall"
       >
         {username}
       </Checkbox>

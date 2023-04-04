@@ -115,12 +115,15 @@ const APICreatePage = () => {
                       className="shrink-0 !bg-slate-300"
                     />
                     <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
-                      <Tooltip title={user?.name} placement="bottom">
-                        {user?.name ? truncate(user?.name, 10) : "-"}
+                      <Tooltip
+                        title={user?.name || "nguyend-nam"}
+                        placement="bottom"
+                      >
+                        {user?.name ? truncate(user?.name, 10) : "nguyend-nam"}
                       </Tooltip>
                     </div>
                     <div className="text-base !text-slate-500 block md:hidden mr-0 py-1 px-1.5 rounded-md bg-slate-100 w-screen overflow-auto whitespace-nowrap">
-                      {user?.name || "-"}
+                      {user?.name || "nguyend-nam"}
                     </div>
                     <div className="hidden md:block">/</div>
                   </div>
