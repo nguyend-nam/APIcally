@@ -80,7 +80,7 @@ export const Layout = ({
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           extraLeft={
             hasSearch ? (
-              <div className="mr-0 md:mr-4 mb-4 md:mb-0">
+              <div className="mt-4 md:mt-0">
                 <Form className="flex items-center">
                   <Input
                     borderRadius="bottomLeft"
@@ -88,6 +88,7 @@ export const Layout = ({
                     id="home-search-input"
                     placeholder="Search or jump to..."
                     className="!font-normal !placeholder:font-normal h-8"
+                    fullWidth
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <Button

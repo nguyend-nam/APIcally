@@ -57,6 +57,7 @@ const CartPage = () => {
           <AddedToCartApiRepoList setSelectedApiInCart={setSelectedApiInCart} />
         </Card>
       </Layout>
+
       {/* Subscribe modal */}
       {isSubscribeApisConfirmDialogOpen ? (
         <Modal

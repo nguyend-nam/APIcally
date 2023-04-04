@@ -35,12 +35,23 @@ const HomePage = () => {
           <CategoryCollection />
         </div>
 
-        <Typography.Title level={3} className="!text-xl md:!text-2xl">
-          Top Subscribed APIs
-        </Typography.Title>
-        <div className="mb-6">
+        <Card
+          hasShadow={false}
+          borderRadius="none"
+          className="mb-6 p-4 md:p-8 relative -mx-4 md:-mx-8"
+        >
+          <div
+            className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right"
+            style={{ backgroundImage: `url(/img/top-apis-bg.png)` }}
+          />
+          <Typography.Title
+            level={3}
+            className="!text-xl md:!text-2xl relative !text-white"
+          >
+            Top Subscribed APIs
+          </Typography.Title>
           <TopSubscribedAPIs />
-        </div>
+        </Card>
 
         <Typography.Title level={3} className="!text-xl md:!text-2xl">
           Personal

@@ -173,7 +173,10 @@ const DocumentationPage = () => {
       </Head>
 
       <Layout>
-        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+        <Typography.Title
+          level={3}
+          className="!text-xl md:!text-2xl capitalize"
+        >
           Documentation
         </Typography.Title>
         <div className="border-primary border-t-4">
@@ -202,7 +205,7 @@ const DocumentationPage = () => {
             <div className="flex items-center justify-between w-full mb-4">
               <Typography.Title
                 level={3}
-                className="!m-0 !text-xl md:!text-2xl"
+                className="!m-0 !text-xl md:!text-2xl capitalize"
               >
                 Define inputs
               </Typography.Title>
