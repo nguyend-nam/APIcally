@@ -15,7 +15,7 @@ export type apiTagTypes =
 
 export const apiTags: Record<apiTagTypes, string> = {
   ai: "AI",
-  bank: "Bank",
+  bank: "Banking",
   cooking: "Cooking",
   "e-commerce": "E-commerce",
   economics: "Economics",

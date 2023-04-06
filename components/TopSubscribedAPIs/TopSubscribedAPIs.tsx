@@ -5,26 +5,37 @@ import { ApiRepo } from "../page/home/ApiRepo";
 import cx from "classnames";
 
 export const rankColor = [
-  { bg: "bg-[#FFD93D]" },
-  { bg: "bg-[#C9EEFF]" },
-  { bg: "bg-[#F94A29]", text: "text-[#F5F5F5]" },
-  { bg: "bg-[#F8F8F8]" },
-  { bg: "bg-[#F8F8F8]" },
+  { bg: "bg-[#FFD93D]", border: "border-[#FFD93D]" },
+  { bg: "bg-[#C9EEFF]", border: "border-[#C9EEFF]" },
+  { bg: "bg-[#F94A29]", border: "border-[#F94A29]", text: "text-[#F5F5F5]" },
+  { bg: "bg-[#F8F8F8]", border: "border-[#F8F8F8]" },
+  { bg: "bg-[#F8F8F8]", border: "border-[#F8F8F8]" },
 ];
 
 const RankRender = ({ rank }: { rank: number }) => {
   return (
-    <Card
-      borderRadius="bottom"
-      className={cx(
-        "p-1 px-2 text-3xl font-semibold text-slate-700 absolute top-0 !ml-[255px] md:!ml-[315px]",
-        rankColor[rank - 1]?.bg,
-        rankColor[rank - 1]?.text
-      )}
-      shadowSize="sm"
-    >
-      {rank}
-    </Card>
+    <>
+      <Card
+        borderRadius="none"
+        className={cx(
+          "pt-2 text-center text-2xl !h-10 !w-10 font-semibold absolute top-0 !ml-[250px] md:!ml-[310px] border-x-2 border-primary border-double",
+          rankColor[rank - 1]?.bg,
+          {
+            [rankColor[rank - 1].text!]: rankColor[rank - 1]?.text,
+            "text-indigo-900": !rankColor[rank - 1]?.text,
+          }
+        )}
+        hasShadow={false}
+      >
+        {rank}
+      </Card>
+      <div
+        className={cx(
+          "border-[20px] border-b-transparent border-x-transparent absolute !top-10 !ml-[250px] md:!ml-[310px]",
+          rankColor[rank - 1]?.border
+        )}
+      />
+    </>
   );
 };
 
@@ -37,7 +48,7 @@ export const TopSubscribedAPIs = () => {
           .slice(0, 5)
           .map((d, i) => (
             <div
-              className={cx("relative p-2 flex", rankColor[i]?.bg)}
+              className={cx("relative p-1 flex", rankColor[i]?.bg)}
               key={d.id}
             >
               <RankRender rank={i + 1} />

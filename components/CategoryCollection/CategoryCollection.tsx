@@ -28,7 +28,7 @@ export const CategoryCollection = () => {
         className="!ml-0 !min-w-[160px] md:!min-w-[200px] filter-tag !bg-white !text-slate-600 !p-4 hover:shadow"
         label={
           <div className="flex flex-col gap-2 items-center">
-            <div className="h-12 w-full flex justify-center items-center">
+            <div className="h-16 w-16 p-0 rounded-full flex justify-center items-center bg-indigo-50/50 border-2 border-indigo-50">
               <img src={`/img/category/${t.img}.png`} className="h-full" />
             </div>
             {apiTags[t.key as apiTagTypes]}

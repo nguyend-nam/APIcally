@@ -28,9 +28,12 @@ const HomePage = () => {
       </Head>
 
       <Layout hasSearch>
-        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+        <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
           Categories
         </Typography.Title>
+        <div className="mb-4">
+          From AI to e-commerce, from healthcare to economics and many more...
+        </div>
         <div className="mb-6">
           <CategoryCollection />
         </div>
@@ -46,16 +49,20 @@ const HomePage = () => {
           />
           <Typography.Title
             level={3}
-            className="!text-xl md:!text-2xl relative !text-white"
+            className="!text-xl md:!text-2xl relative !text-white !mb-2"
           >
             Top Subscribed APIs
           </Typography.Title>
+          <div className="mb-4 relative text-white">
+            All time top 5 mostly subscribed APIs
+          </div>
           <TopSubscribedAPIs />
         </Card>
 
-        <Typography.Title level={3} className="!text-xl md:!text-2xl">
+        <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
           Personal
         </Typography.Title>
+        <div className="mb-4">APIs that you have created or subscribed to</div>
         <Row gutter={[20, 20]}>
           <Col span={24} md={{ span: 12 }}>
             <Card shadowSize="sm" className="p-4">
