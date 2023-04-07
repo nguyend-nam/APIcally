@@ -99,7 +99,13 @@ const APIDetailPage = () => {
               </Col>
               {currentAPI.subscribeStatus ? (
                 <Col span={24} md={{ span: 8 }}>
-                  <Card className="p-4 h-full" shadowSize="sm">
+                  <Card
+                    className="p-4 h-full bg-cover bg-right"
+                    shadowSize="sm"
+                    style={{
+                      backgroundImage: `url(/img/api-status-bg.png)`,
+                    }}
+                  >
                     <Spin spinning={isLoading}>
                       <div className="flex items-center mb-2">
                         <CheckCircleOutlined className="!text-success text-lg mr-1" />
@@ -137,8 +143,11 @@ const APIDetailPage = () => {
               ) : (
                 <Col span={24} md={{ span: 8 }}>
                   <Card
-                    className="p-4 h-full flex flex-col justify-between"
+                    className="p-4 h-full flex flex-col justify-between bg-cover bg-right"
                     shadowSize="sm"
+                    style={{
+                      backgroundImage: `url(/img/api-status-bg.png)`,
+                    }}
                   >
                     <div className="flex justify-between align-middle">
                       <Typography.Text className="text-lg !m-0 !text-gray-600">
@@ -167,7 +176,7 @@ const APIDetailPage = () => {
                         isLoading={isAddingToCart}
                         onClick={() => {
                           if (allAddedToCartApisId.includes(currentAPI.id)) {
-                            push(ROUTES.PROFILE);
+                            push(ROUTES.CART);
                           } else {
                             onAddToCart();
                           }

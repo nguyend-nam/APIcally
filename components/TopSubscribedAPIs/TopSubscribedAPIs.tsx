@@ -18,7 +18,7 @@ const RankRender = ({ rank }: { rank: number }) => {
       <Card
         borderRadius="none"
         className={cx(
-          "pt-2 text-center text-2xl !h-10 !w-10 font-semibold absolute top-0 !ml-[250px] md:!ml-[310px] border-x-2 border-primary border-double",
+          "pt-2 text-center text-2xl !h-10 !w-10 font-semibold absolute top-0 !ml-[250px] md:!ml-[310px] border-x-[3px] border-primary border-double",
           rankColor[rank - 1]?.bg,
           {
             [rankColor[rank - 1].text!]: rankColor[rank - 1]?.text,
