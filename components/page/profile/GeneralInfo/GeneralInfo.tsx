@@ -15,11 +15,13 @@ import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
 export const GeneralInfo = () => {
   const { logout, user } = useAuthContext();
-  console.log(user);
 
   return (
     <Card className="relative overflow-hidden" shadowSize="sm">
-      <div className="h-32 bg-gradient-to-r from-primary to-sky-500" />
+      <div
+        className="h-32 bg-cover bg-right"
+        style={{ backgroundImage: `url(/img/cart-checkbox-all-bg.png)` }}
+      />
       <Card className="p-4 md:p-6">
         <Avatar
           size={92}

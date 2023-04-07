@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, Typography } from "antd";
 import Head from "next/head";
 import { AddedToCartApiRepoList } from "../../components/ApiRepoList/AddedToCartApiRepoList";
 import { Button } from "../../components/Button";
@@ -35,11 +35,12 @@ const CartPage = () => {
       </Head>
 
       <Layout>
+        <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
+          Cart
+        </Typography.Title>
+        <div className="mb-4">APIs added to cart</div>
         <Card shadowSize="sm" className="p-4 md:p-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-2">
-            <Text as="h2" className="text-lg !m-0">
-              APIs in cart
-            </Text>
+          <div className="flex flex-row items-center justify-start md:justify-end mb-4 gap-2">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <Button
                 label="Subscribe"
