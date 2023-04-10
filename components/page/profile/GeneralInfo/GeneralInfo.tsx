@@ -13,7 +13,17 @@ import { Card } from "../../../Card";
 import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
 import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
-export const GeneralInfo = () => {
+interface Props {
+  username?: string;
+  fullname?: string;
+  showActions?: boolean;
+}
+
+export const GeneralInfo = ({
+  username,
+  fullname,
+  showActions = true,
+}: Props) => {
   const { logout, user } = useAuthContext();
 
   return (
@@ -29,10 +39,10 @@ export const GeneralInfo = () => {
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">
-          {user?.sub || "Dinh Nam Nguyen"}
+          {fullname || user?.sub || "Dinh Nam Nguyen"}
         </Typography.Title>
         <Typography.Text className="text-base">
-          {user?.name || "nguyend-nam"}
+          {username || user?.name || "nguyend-nam"}
         </Typography.Text>
         <Typography.Paragraph className="mt-4 !text-slate-500">
           They say &quot;garbage can&quot;, not &quot;garbage cannot&quot;
@@ -121,23 +131,27 @@ export const GeneralInfo = () => {
           </a>
         </div>
 
-        <Divider
-          className="!my-4 !mt-6 !text-slate-400 !text-sm !font-normal"
-          orientation="left"
-          orientationMargin={0}
-        >
-          Actions
-        </Divider>
+        {showActions ? (
+          <>
+            <Divider
+              className="!my-4 !mt-6 !text-slate-400 !text-sm !font-normal"
+              orientation="left"
+              orientationMargin={0}
+            >
+              Actions
+            </Divider>
 
-        <div className="flex gap-3 flex-col md:flex-row">
-          <Button label="Edit" className="w-full !text-base" />
-          <Button
-            appearance="outline"
-            label="Logout"
-            className="w-full !text-base"
-            onClick={logout}
-          />
-        </div>
+            <div className="flex gap-3 flex-col md:flex-row">
+              <Button label="Edit" className="w-full !text-base" />
+              <Button
+                appearance="outline"
+                label="Logout"
+                className="w-full !text-base"
+                onClick={logout}
+              />
+            </div>
+          </>
+        ) : null}
       </Card>
     </Card>
   );

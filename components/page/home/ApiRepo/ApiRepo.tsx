@@ -105,9 +105,14 @@ export const ApiRepo = ({
 
       {showOwner ? (
         <div className="!mt-2 h-6 relative flex items-center">
-          <a className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600">
+          <button
+            onClick={() =>
+              push(ROUTES.PROFILE_OTHER_USER(data.username as string))
+            }
+            className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600"
+          >
             {data.author}
-          </a>
+          </button>
           <Divider className="!my-2" />
         </div>
       ) : null}

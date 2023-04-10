@@ -17,11 +17,13 @@ import cx from "classnames";
 export const Topbar = ({
   className,
   onClick,
+  title,
   extraLeft,
   isMenuOpen,
 }: {
   className?: string;
   onClick?: () => void;
+  title?: string;
   extraLeft?: ReactNode;
   isMenuOpen: boolean;
 }) => {
@@ -37,7 +39,7 @@ export const Topbar = ({
     >
       <div className="flex justify-between w-full gap-2">
         <div className="flex flex-col md:flex-row items-start text-xl md:text-2xl">
-          {formatPathname(pathname)}
+          {title || formatPathname(pathname)}
         </div>
         <div className="flex gap-2 md:gap-4">
           <div className="hidden md:block">{extraLeft}</div>
