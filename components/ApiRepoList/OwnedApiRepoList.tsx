@@ -4,16 +4,31 @@ import { Text } from "../Text";
 import { ApiRepo } from "../page/home/ApiRepo";
 import { useMemo } from "react";
 import cx from "classnames";
+import { apiRepoType } from "../../pages/explore";
 
 interface Props {
   searchQuery?: string;
   className?: string;
+  apiList?: apiRepoType[];
+  username: string;
 }
 
-export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
+export const OwnedApiRepoList = ({
+  searchQuery,
+  className,
+  apiList = [],
+  username = "",
+}: Props) => {
+  const internalApiRepos = useMemo(() => {
+    if (apiList.length) {
+      return apiList;
+    }
+    return apiReposData;
+  }, [apiList]);
+
   const displayedApiRepos = useMemo(() => {
     return searchQuery
-      ? apiReposData
+      ? internalApiRepos
           .filter(
             (a) =>
               (a.alias && a.alias.includes(searchQuery)) ||
@@ -22,9 +37,9 @@ export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
               (a.description && a.description.includes(searchQuery)) ||
               (a.username && a.username.includes(searchQuery))
           )
-          .filter((a) => a.username === "nguyend-nam")
-      : apiReposData.filter((a) => a.username === "nguyend-nam");
-  }, [searchQuery]);
+          .filter((a) => a.username === username)
+      : internalApiRepos.filter((a) => a.username === username);
+  }, [internalApiRepos, searchQuery, username]);
 
   if (displayedApiRepos.length === 0) {
     return (
@@ -45,16 +60,14 @@ export const OwnedApiRepoList = ({ searchQuery, className }: Props) => {
     <div
       className={cx("h-[350px] overflow-auto space-y-4 p-1 pb-2", className)}
     >
-      {displayedApiRepos
-        .filter((a) => a.subscribeStatus)
-        .map((a) => (
-          <ApiRepo
-            key={a.id}
-            data={a}
-            hasShadow={false}
-            className="border border-slate-200"
-          />
-        ))}
+      {displayedApiRepos.map((a) => (
+        <ApiRepo
+          key={a.id}
+          data={a}
+          hasShadow={false}
+          className="border border-slate-200"
+        />
+      ))}
     </div>
   );
 };

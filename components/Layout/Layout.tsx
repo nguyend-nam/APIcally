@@ -22,11 +22,13 @@ export const Layout = ({
   children,
   className,
   contentClassName,
+  pageTitle,
   hasFooter = true,
   hasSearch = false,
 }: WithChildren & {
   className?: string;
   contentClassName?: string;
+  pageTitle?: string;
   hasFooter?: boolean;
   hasSearch?: ReactNode;
 }) => {
@@ -78,6 +80,7 @@ export const Layout = ({
         <Topbar
           className="sticky top-0 z-40 !px-4 md:!px-8"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          title={pageTitle}
           extraLeft={
             hasSearch ? (
               <div className="mt-4 md:mt-0">
