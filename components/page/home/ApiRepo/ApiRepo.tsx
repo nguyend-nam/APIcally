@@ -46,62 +46,64 @@ export const ApiRepo = ({
       className={cx("bg-white p-4", className)}
       hasShadow={hasShadow}
     >
-      <div
-        className={cx(
-          "flex justify-between !mb-2 gap-2 flex-col md:flex-row",
-          isStatsAlignRight ? "" : "md:!flex-col"
-        )}
-      >
-        <Typography.Title
-          level={4}
-          className="!m-0 flex items-center !text-lg md:!text-xl"
-        >
-          <a
-            className="!text-primary inline items-center"
-            onClick={() => {
-              if (data?.username && data?.alias && isLinkActive) {
-                push(
-                  ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias)
-                );
-              }
-            }}
-          >
-            <BookOutlined className="text-base -translate-y-1 !text-gray-400 mr-1" />
-            {data.name}
-          </a>
-          {data.subscribeStatus && (
-            <Tooltip title="Subscribed" className="ml-1">
-              <CheckCircleOutlined className="text-base !text-green-500 mr-1" />
-            </Tooltip>
+      <div>
+        <div
+          className={cx(
+            "flex justify-between !mb-2 gap-2 flex-col md:flex-row",
+            isStatsAlignRight ? "" : "md:!flex-col"
           )}
-        </Typography.Title>
-
-        <div className="flex gap-4">
-          {data.statistics?.subscribes ? (
-            <Tooltip
-              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
-              title="Subscribers"
-              className="flex flex-col items-center w-6 h-max"
+        >
+          <Typography.Title
+            level={4}
+            className="!m-0 flex items-center !text-lg md:!text-xl"
+          >
+            <a
+              className="!text-primary inline items-center"
+              onClick={() => {
+                if (data?.username && data?.alias && isLinkActive) {
+                  push(
+                    ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias)
+                  );
+                }
+              }}
             >
-              <UserAddOutlined className="text-xl !text-indigo-400" />
-              <div>{data.statistics.subscribes}</div>
-            </Tooltip>
-          ) : null}
+              <BookOutlined className="text-base -translate-y-1 !text-gray-400 mr-1" />
+              {data.name}
+            </a>
+            {data.subscribeStatus && (
+              <Tooltip title="Subscribed" className="ml-1">
+                <CheckCircleOutlined className="text-base !text-green-500 mr-1" />
+              </Tooltip>
+            )}
+          </Typography.Title>
 
-          {data.statistics?.starGazers ? (
-            <Tooltip
-              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
-              title="Stars"
-              className="flex flex-col items-center w-6 h-max"
-            >
-              <StarOutlined className="text-xl !text-amber-300" />
-              <div>{data.statistics.starGazers}</div>
-            </Tooltip>
-          ) : null}
+          <div className="flex gap-4">
+            {data.statistics?.subscribes ? (
+              <Tooltip
+                placement={isMobile || !isStatsAlignRight ? "right" : "left"}
+                title="Subscribers"
+                className="flex flex-col items-center w-6 h-max"
+              >
+                <UserAddOutlined className="text-xl !text-indigo-400" />
+                <div className="!text-xs">{data.statistics.subscribes}</div>
+              </Tooltip>
+            ) : null}
+
+            {data.statistics?.starGazers ? (
+              <Tooltip
+                placement={isMobile || !isStatsAlignRight ? "right" : "left"}
+                title="Stars"
+                className="flex flex-col items-center w-6 h-max"
+              >
+                <StarOutlined className="text-xl !text-amber-300" />
+                <div className="!text-xs">{data.statistics.starGazers}</div>
+              </Tooltip>
+            ) : null}
+          </div>
         </div>
-      </div>
 
-      <TagsArray tags={data.tags || []} visibleTagsCount={2} />
+        <TagsArray tags={data.tags || []} visibleTagsCount={2} />
+      </div>
 
       {showOwner ? (
         <div className="!mt-2 h-6 relative flex items-center">
@@ -109,7 +111,7 @@ export const ApiRepo = ({
             onClick={() =>
               push(ROUTES.PROFILE_OTHER_USER(data.username as string))
             }
-            className="!font-normal absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600"
+            className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600"
           >
             {data.author}
           </button>

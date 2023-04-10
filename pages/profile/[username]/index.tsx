@@ -72,7 +72,7 @@ const OtherUserPage = () => {
   return (
     <>
       <Head>
-        <title>Profile | APIcally</title>
+        <title>{userData?.fullname || "-"} | APIcally</title>
       </Head>
 
       <Layout pageTitle={userData?.fullname}>

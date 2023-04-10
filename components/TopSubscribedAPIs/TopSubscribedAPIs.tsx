@@ -8,8 +8,8 @@ export const rankColor = [
   { bg: "bg-[#FFD93D]", border: "border-[#FFD93D]" },
   { bg: "bg-[#C9EEFF]", border: "border-[#C9EEFF]" },
   { bg: "bg-[#F94A29]", border: "border-[#F94A29]", text: "text-[#F5F5F5]" },
-  { bg: "bg-[#F8F8F8]", border: "border-[#F8F8F8]" },
-  { bg: "bg-[#F8F8F8]", border: "border-[#F8F8F8]" },
+  { bg: "bg-[#F0F0F8]", border: "border-[#F0F0F8]" },
+  { bg: "bg-[#F0F0F8]", border: "border-[#F0F0F8]" },
 ];
 
 const RankRender = ({ rank }: { rank: number }) => {
@@ -54,7 +54,7 @@ export const TopSubscribedAPIs = () => {
               <RankRender rank={i + 1} />
               <ApiRepo
                 data={d}
-                className="!min-w-[290px] md:!min-w-[350px] bg-white"
+                className="!min-w-[290px] md:!min-w-[350px] bg-white flex flex-col justify-between"
                 isStatsAlignRight={false}
                 showDescription={false}
                 showPrice={false}
