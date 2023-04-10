@@ -47,8 +47,11 @@ export const OwnedApiRepoList = ({
         <Empty
           description={
             <Text as="div" className="text-base">
-              No subscribed APIs found with keyword &quot;
-              {searchQuery}&quot;
+              No subscribed APIs found
+              {searchQuery
+                ? `with keyword "
+              ${searchQuery}"`
+                : ""}
             </Text>
           }
         />

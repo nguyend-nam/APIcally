@@ -9,7 +9,7 @@ import { apiRepoType } from "../explore";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { renderSubscribeListConfirmation } from "../../utils";
 import { useState } from "react";
-import { MinusCircleFilled, PlusCircleFilled } from "@ant-design/icons";
+import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
 const CartPage = () => {
   const [selectedApiInCart, setSelectedApiInCart] = useState<apiRepoType[]>([]);
@@ -46,7 +46,7 @@ const CartPage = () => {
               <Button
                 label={
                   <div className="flex gap-2 items-center">
-                    <PlusCircleFilled />
+                    <PlusCircleOutlined />
                     Subscribe
                   </div>
                 }
@@ -57,7 +57,7 @@ const CartPage = () => {
                 appearance="outline"
                 label={
                   <div className="flex gap-2 items-center">
-                    <MinusCircleFilled />
+                    <MinusCircleOutlined />
                     Remove
                   </div>
                 }
