@@ -1,16 +1,16 @@
 import { Card as AntCard, Col, Row } from "antd";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
-import { Input } from "../../../components/Input";
-import { Layout } from "../../../components/Layout";
-import { GeneralInfo } from "../../../components/page/profile/GeneralInfo";
-import { Text } from "../../../components/Text";
-import { OwnedApiRepoList } from "../../../components/ApiRepoList/OwnedApiRepoList";
-import { useIsMobile } from "../../../hooks/useIsMobile";
-import { apiReposData } from "../../../constants/mockData";
+import { Input } from "../../components/Input";
+import { Layout } from "../../components/Layout";
+import { GeneralInfo } from "../../components/page/profile/GeneralInfo";
+import { Text } from "../../components/Text";
+import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
+import { useIsMobile } from "../../hooks/useIsMobile";
+import { apiReposData } from "../../constants/mockData";
 import { useRouter } from "next/router";
-import { ROUTES } from "../../../constants/routes";
-import { useAuthContext } from "../../../context/auth";
+import { ROUTES } from "../../constants/routes";
+import { useAuthContext } from "../../context/auth";
 
 export type tabTypes = "owned";
 
@@ -77,7 +77,7 @@ const OtherUserPage = () => {
         <title>{userData?.fullname || "-"} | APIcally</title>
       </Head>
 
-      <Layout pageTitle={userData?.fullname}>
+      <Layout hasSearch pageTitle={userData?.fullname}>
         <Row gutter={[20, 20]}>
           <Col span={24} xl={{ span: 8 }}>
             <GeneralInfo

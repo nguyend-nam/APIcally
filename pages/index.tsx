@@ -6,7 +6,12 @@ import { Text } from "../components/Text";
 import { Image } from "antd";
 import Link from "next/link";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { GithubOutlined } from "@ant-design/icons";
+import {
+  AimOutlined,
+  CodeOutlined,
+  FieldTimeOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
 import Head from "next/head";
 import { Parallax } from "react-scroll-parallax";
 import { ROUTES } from "../constants/routes";
@@ -83,6 +88,30 @@ const SectionTitle = (props: WithChildren & { className?: string }) => {
   );
 };
 
+const SectionTitleDivider = ({
+  color = "rgb(203 213 225)",
+  icon,
+}: {
+  color?: string;
+  icon: React.ReactElement;
+}) => {
+  return (
+    <div className="!mt-2 h-6 w-[300px] max-w-full mx-auto flex justify-center items-center">
+      <div
+        className={cx("!h-[1px] w-full !my-2")}
+        style={{ backgroundColor: color }}
+      />
+      <div className="h-[24px] flex justify-center items-center p-2">
+        {icon}
+      </div>
+      <div
+        className={cx("!h-[1px] w-full !my-2")}
+        style={{ backgroundColor: color }}
+      />
+    </div>
+  );
+};
+
 const Home = () => {
   const { push } = useRouter();
   const isSSR = useIsSSR();
@@ -128,13 +157,13 @@ const Home = () => {
                 }}
               >
                 <Card className="w-max p-5 md:p-8 backdrop-blur-md bg-white/90 max-w-full md:max-w-lg mt-6 md:mt-2">
-                  <Text className="text-lg text-slate-400 m-0 hidden md:block">
+                  <Text className="text-[17px] text-slate-500 m-0 hidden md:block">
                     Welcome to
                   </Text>
                   <Text className="text-4xl md:text-5xl tracking-[1px] font-bold text-primary m-0 mb-4 md:mb-8">
                     APIcally
                   </Text>
-                  <Text className="text-base md:text-lg text-slate-700 m-0">
+                  <Text className="text-base md:text-[17px] m-0">
                     An e-commerce platform for your APIs. Provide your
                     algorithms, let us bring them to the community.
                   </Text>
@@ -159,6 +188,9 @@ const Home = () => {
             <div className="p-4 pb-16 pt-32 mt-0 md:mt-4">
               <SectionTitle className="!text-primary !text-center">
                 Welcome all types of user
+                <SectionTitleDivider
+                  icon={<AimOutlined className="text-xl !text-slate-500" />}
+                />
               </SectionTitle>
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
                 <div className="w-full md:w-96 flex flex-col items-center gap-4">
@@ -171,7 +203,7 @@ const Home = () => {
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
                       as="h4"
-                      className="text-lg md:text-xl font-medium text-slate-600"
+                      className="text-lg md:text-xl font-medium text-slate-700"
                     >
                       As a <u>Developer</u>
                     </Text>
@@ -194,7 +226,7 @@ const Home = () => {
                   <div className="max-h-max max-w-md mt-4 lg:mt-0 text-center md:text-left">
                     <Text
                       as="h4"
-                      className="text-lg md:text-xl font-medium text-slate-600"
+                      className="text-lg md:text-xl font-medium text-slate-700"
                     >
                       As a <u>Domain-specialized user</u>
                     </Text>
@@ -211,7 +243,12 @@ const Home = () => {
             </div>
 
             <div className="p-4 pb-16 pt-16 mt-0 md:mt-4">
-              <SectionTitle>How APIcally works</SectionTitle>
+              <SectionTitle>
+                How APIcally works
+                <SectionTitleDivider
+                  icon={<CodeOutlined className="text-xl !text-slate-500" />}
+                />
+              </SectionTitle>
               <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
                 {steps.map((s) => (
                   <Card
@@ -228,7 +265,7 @@ const Home = () => {
                         src={s.img}
                       />
                     </div>
-                    <Text className="text-center text-lg md:text-xl font-medium text-slate-600">
+                    <Text className="text-center text-lg md:text-xl font-medium text-slate-700">
                       {s.title}
                     </Text>
                     <div className="px-4 text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
@@ -240,7 +277,12 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4 pt-16 mt-0 md:mt-4 bg-indigo-500">
-              <SectionTitle className="text-white">Benefits</SectionTitle>
+              <SectionTitle className="text-white">
+                Benefits
+                <SectionTitleDivider
+                  icon={<FieldTimeOutlined className="!text-white text-xl" />}
+                />
+              </SectionTitle>
               <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-8 md:gap-6">
                 {benefits.map((b) => (
                   <Card
@@ -256,7 +298,7 @@ const Home = () => {
                         src={b.img}
                       />
                     </div>
-                    <Text className="!mt-2 md:!mt-4 font-medium text-center text-lg md:text-xl text-white max-w-xs w-full">
+                    <Text className="!mt-2 md:!mt-4 text-center text-lg md:text-xl text-white max-w-xs w-full">
                       {b.name}
                     </Text>
                   </Card>

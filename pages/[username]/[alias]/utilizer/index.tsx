@@ -3,19 +3,19 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
-import { Layout } from "../../../../../components/Layout";
-import { apiReposData } from "../../../../../constants/mockData";
-import { defaultMD } from "../../../documentation";
-import { Card } from "../../../../../components/Card";
-import { multipleStates, variableTypes } from "../../../../../constants/python";
-import { Input } from "../../../../../components/Input";
+import { Layout } from "../../../../components/Layout";
+import { apiReposData } from "../../../../constants/mockData";
+import { defaultMD } from "../../../api-workspace/documentation";
+import { Card } from "../../../../components/Card";
+import { multipleStates, variableTypes } from "../../../../constants/python";
+import { Input } from "../../../../components/Input";
 import { ColumnsType } from "antd/lib/table";
-import { useIsMobile } from "../../../../../hooks/useIsMobile";
-import { Button } from "../../../../../components/Button";
+import { useIsMobile } from "../../../../hooks/useIsMobile";
+import { Button } from "../../../../components/Button";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
-import { ROUTES } from "../../../../../constants/routes";
-import { APICALLY_KEY, useAuthContext } from "../../../../../context/auth";
+import { ROUTES } from "../../../../constants/routes";
+import { APICALLY_KEY, useAuthContext } from "../../../../context/auth";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -172,11 +172,11 @@ const UtilizerPage = () => {
   return (
     <>
       <Head>
-        <title>API workspace | APIcally</title>
+        <title>{currentAPI?.author} | APIcally</title>
       </Head>
 
       {isAuthenticated ? (
-        <Layout hasSearch>
+        <Layout hasSearch pageTitle={currentAPI?.author}>
           {currentAPI === undefined ? (
             <Typography.Title level={3}>API not found</Typography.Title>
           ) : (

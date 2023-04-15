@@ -49,7 +49,7 @@ export const GeneralInfo = ({
         </Typography.Paragraph>
 
         <Divider
-          className="!my-4 !mt-6 !text-slate-400 !text-sm !font-normal"
+          className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
           orientation="left"
           orientationMargin={0}
         >
@@ -107,7 +107,7 @@ export const GeneralInfo = ({
         </Row>
 
         <Divider
-          className="!my-4 !mt-6 !text-slate-400 !text-sm !font-normal"
+          className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
           orientation="left"
           orientationMargin={0}
         >
@@ -134,7 +134,7 @@ export const GeneralInfo = ({
         {showActions ? (
           <>
             <Divider
-              className="!my-4 !mt-6 !text-slate-400 !text-sm !font-normal"
+              className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
               orientation="left"
               orientationMargin={0}
             >

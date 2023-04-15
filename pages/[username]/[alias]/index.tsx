@@ -14,19 +14,19 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
-import { Button } from "../../../../components/Button";
-import { Layout } from "../../../../components/Layout";
-import { ApiRepo } from "../../../../components/page/home/ApiRepo";
-import { apiReposData, apiReposInCart } from "../../../../constants/mockData";
-import { defaultMD } from "../../documentation";
-import { Card } from "../../../../components/Card";
+import { Button } from "../../../components/Button";
+import { Layout } from "../../../components/Layout";
+import { ApiRepo } from "../../../components/page/home/ApiRepo";
+import { apiReposData, apiReposInCart } from "../../../constants/mockData";
+import { defaultMD } from "../../api-workspace/documentation";
+import { Card } from "../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useMemo, useState } from "react";
 // import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
 // import { Text } from "../../../../components/Text";
-import { ROUTES } from "../../../../constants/routes";
-import { apiRepoType } from "../../../explore";
+import { ROUTES } from "../../../constants/routes";
+import { apiRepoType } from "../../explore";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -72,19 +72,26 @@ const APIDetailPage = () => {
   return (
     <>
       <Head>
-        <title>API workspace | APIcally</title>
+        <title>{currentAPI?.author} | APIcally</title>
       </Head>
 
-      <Layout hasSearch>
+      <Layout hasSearch pageTitle={currentAPI?.author}>
         {currentAPI === undefined ? (
           <Typography.Title level={3}>API not found</Typography.Title>
         ) : (
           <>
             <Typography.Title level={2}>
-              <span className="font-normal text-2xl md:text-3xl">
+              <button
+                onClick={() => {
+                  if (currentAPI.username) {
+                    push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
+                  }
+                }}
+                className="font-normal text-2xl no-underline !text-black"
+              >
                 {currentAPI?.author}/
-              </span>
-              <span className="text-primary text-2xl md:text-3xl">
+              </button>
+              <span className="text-primary text-2xl !font-semibold">
                 {currentAPI?.name}
               </span>
             </Typography.Title>
@@ -107,8 +114,7 @@ const APIDetailPage = () => {
                     }}
                   >
                     <Spin spinning={isLoading}>
-                      <div className="flex items-center mb-2">
-                        <CheckCircleOutlined className="!text-success text-lg mr-1" />
+                      <div className="flex justify-between !items-start">
                         <Typography.Text className="text-lg !m-0 !text-gray-600">
                           You{" "}
                           {currentAPI.username === "nguyend-nam"
@@ -116,6 +122,7 @@ const APIDetailPage = () => {
                             : "already subscribed to"}{" "}
                           this API
                         </Typography.Text>
+                        <CheckCircleOutlined className="!text-success text-lg mr-1 mt-1.5" />
                       </div>
                       <div className="flex gap-2 flex-wrap">
                         {currentAPI.username === "nguyend-nam" ? null : (
@@ -149,7 +156,7 @@ const APIDetailPage = () => {
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    <div className="flex justify-between align-middle">
+                    <div className="flex justify-between !items-start">
                       <Typography.Text className="text-lg !m-0 !text-gray-600">
                         You haven&rsquo;t subscribed to this API yet
                       </Typography.Text>
@@ -163,7 +170,7 @@ const APIDetailPage = () => {
                             <InfoCircleOutlined />
                           </Tooltip>
                         }
-                        className="h-full flex flex-col justify-center !p-0"
+                        className="mt-1.5 flex flex-col justify-center !p-0"
                       />
                     </div>
                     <div className="mt-4">

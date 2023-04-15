@@ -112,14 +112,14 @@ export const Layout = ({
         />
         <div
           className={cx(
-            `p-4 md:p-8 pb-8 w-full max-w-[1000px] m-auto`,
+            `p-4 md:p-8 pb-8 w-full max-w-[1000px] mx-auto`,
             contentClassName
           )}
         >
           <div className="fade-in">{children}</div>
           {hasFooter && (
             <div className="text-center md:text-base mt-8">
-              <Text as="span" className="text-slate-500">
+              <Text as="span" className="text-slate-600">
                 &copy; 2022 APIcally team. All rights reserved.
               </Text>
             </div>

@@ -56,14 +56,17 @@ const HomePage = () => {
             Top Subscribed APIs
           </Typography.Title>
           <div className="mb-4 relative text-white">
-            All time top 5 mostly subscribed APIs
+            Top 5 most subscribed APIs of all time
           </div>
           <TopSubscribedAPIs />
         </Card>
 
         {isAuthenticated ? (
           <>
-            <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
+            <Typography.Title
+              level={3}
+              className="!text-xl md:!text-2xl !mb-2 !font-semibold"
+            >
               Personal
             </Typography.Title>
             <div className="mb-4">

@@ -33,12 +33,12 @@ export const Topbar = ({
   return (
     <div
       className={cx(
-        "p-8 py-4 w-full flex flex-col justify-between items-start bg-white text-2xl font-medium text-slate-600 shadow-md",
+        "p-8 py-4 w-full flex flex-col justify-between items-start bg-white font-medium text-2xl !text-black shadow-md",
         className
       )}
     >
-      <div className="flex justify-between w-full gap-2">
-        <div className="flex flex-col md:flex-row items-start text-xl md:text-2xl">
+      <div className="flex justify-between w-full gap-2 items-center">
+        <div className="flex flex-col md:flex-row items-start text-lg md:text-xl">
           {title || formatPathname(pathname)}
         </div>
         <div className="flex gap-2 md:gap-4">

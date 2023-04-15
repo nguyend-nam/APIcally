@@ -69,8 +69,7 @@ export const ApiCheckboxGroup = (props: Props) => {
         indeterminate={indeterminate}
         onChange={onCheckAllChange}
         checked={checkedList.length === options.length}
-        className="bg-slate-200 !p-2 md:!p-3 !w-full !text-white font-medium !text-lg sticky top-0 z-20 rounded-tr-md !items-baseline checkall bg-cover bg-left"
-        style={{ backgroundImage: `url(/img/cart-checkbox-all-bg.png)` }}
+        className="bg-gradient-to-r from-orange-300 to-rose-300 !p-2 md:!p-3 !w-full font-medium !text-lg sticky top-0 z-20 rounded-tr-md !items-baseline checkall bg-cover bg-left"
       >
         {username}
       </Checkbox>

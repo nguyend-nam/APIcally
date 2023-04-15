@@ -146,7 +146,7 @@ const CodeEditorPageInner = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout contentClassName="!p-0" hasFooter={false}>
+        <Layout contentClassName="!p-0 !max-w-[100%]" hasFooter={false}>
           <div className="flex bg-slate-100">
             <FileManagement
               currentFile={currentFile}
