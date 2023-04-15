@@ -27,6 +27,7 @@ import { useMemo, useState } from "react";
 // import { Text } from "../../../../components/Text";
 import { ROUTES } from "../../../constants/routes";
 import { apiRepoType } from "../../explore";
+import { useAuthContext } from "../../../context/auth";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -34,9 +35,9 @@ const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
 
 const APIDetailPage = () => {
   const { query, push } = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { isAuthenticated } = useAuthContext();
 
   const currentAPI = apiReposData.find(
     (a) => a.alias === query.alias && a.username === query.username
@@ -104,7 +105,7 @@ const APIDetailPage = () => {
                   isDescriptionTruncated={false}
                 />
               </Col>
-              {currentAPI.subscribeStatus ? (
+              {isAuthenticated ? (
                 <Col span={24} md={{ span: 8 }}>
                   <Card
                     className="p-4 h-full bg-cover bg-right"
@@ -113,82 +114,105 @@ const APIDetailPage = () => {
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    <Spin spinning={isLoading}>
-                      <div className="flex justify-between !items-start">
-                        <Typography.Text className="text-lg !m-0 !text-gray-600">
-                          You{" "}
-                          {currentAPI.username === "nguyend-nam"
-                            ? "owned"
-                            : "already subscribed to"}{" "}
-                          this API
-                        </Typography.Text>
-                        <CheckCircleOutlined className="!text-success text-lg mr-1 mt-1.5" />
+                    {currentAPI.subscribeStatus ? (
+                      <Spin spinning={isLoading}>
+                        <div className="flex justify-between !items-start">
+                          <Typography.Text className="text-lg !m-0 !text-gray-600">
+                            You{" "}
+                            {currentAPI.username === "nguyend-nam"
+                              ? "owned"
+                              : "already subscribed to"}{" "}
+                            this API
+                          </Typography.Text>
+                          <CheckCircleOutlined className="!text-success text-lg mr-1 mt-[5px]" />
+                        </div>
+                        <div className="flex gap-2 flex-wrap mt-4">
+                          {currentAPI.username === "nguyend-nam" ? null : (
+                            <Button appearance="outline" label="Unsubscribe" />
+                          )}
+                          <Button
+                            label="Start using"
+                            onClick={() => {
+                              setIsLoading(!isLoading);
+                              setTimeout(() => {
+                                if (currentAPI.username && currentAPI.alias)
+                                  push(
+                                    ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
+                                      currentAPI.username,
+                                      currentAPI.alias
+                                    )
+                                  );
+                              }, 1000);
+                            }}
+                          />
+                        </div>
+                      </Spin>
+                    ) : (
+                      <div className="h-full flex flex-col justify-between">
+                        <div className="flex justify-between !items-start">
+                          <Typography.Text className="text-lg !m-0 !text-gray-600">
+                            You haven&rsquo;t subscribed to this API yet
+                          </Typography.Text>
+                          <Button
+                            appearance="link"
+                            label={
+                              <Tooltip
+                                title="You must subscribe to the API to use it"
+                                placement="left"
+                              >
+                                <InfoCircleOutlined />
+                              </Tooltip>
+                            }
+                            className="mt-1.5 flex flex-col justify-center !p-0"
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <Button
+                            label={
+                              allAddedToCartApisId.includes(currentAPI.id)
+                                ? "API added to cart"
+                                : "Add to cart"
+                            }
+                            isLoading={isAddingToCart}
+                            onClick={() => {
+                              if (
+                                allAddedToCartApisId.includes(currentAPI.id)
+                              ) {
+                                push(ROUTES.CART);
+                              } else {
+                                onAddToCart();
+                              }
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="flex gap-2 flex-wrap">
-                        {currentAPI.username === "nguyend-nam" ? null : (
-                          <Button appearance="outline" label="Unsubscribe" />
-                        )}
-                        <Button
-                          label="Start using"
-                          onClick={() => {
-                            setIsLoading(!isLoading);
-                            setTimeout(() => {
-                              if (currentAPI.username && currentAPI.alias)
-                                push(
-                                  ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
-                                    currentAPI.username,
-                                    currentAPI.alias
-                                  )
-                                );
-                            }, 1000);
-                          }}
-                        />
-                      </div>
-                    </Spin>
+                    )}
                   </Card>
                 </Col>
               ) : (
                 <Col span={24} md={{ span: 8 }}>
                   <Card
-                    className="p-4 h-full flex flex-col justify-between bg-cover bg-right"
+                    className="p-4 h-full bg-cover bg-right"
                     shadowSize="sm"
                     style={{
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    <div className="flex justify-between !items-start">
-                      <Typography.Text className="text-lg !m-0 !text-gray-600">
-                        You haven&rsquo;t subscribed to this API yet
-                      </Typography.Text>
-                      <Button
-                        appearance="link"
-                        label={
-                          <Tooltip
-                            title="You must subscribe to the API to use it"
-                            placement="left"
-                          >
-                            <InfoCircleOutlined />
-                          </Tooltip>
-                        }
-                        className="mt-1.5 flex flex-col justify-center !p-0"
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <Button
-                        label={
-                          allAddedToCartApisId.includes(currentAPI.id)
-                            ? "API added to cart"
-                            : "Add to cart"
-                        }
-                        isLoading={isAddingToCart}
-                        onClick={() => {
-                          if (allAddedToCartApisId.includes(currentAPI.id)) {
-                            push(ROUTES.CART);
-                          } else {
-                            onAddToCart();
-                          }
-                        }}
-                      />
+                    <div className="h-full flex flex-col justify-between">
+                      <div className="flex justify-between !items-start">
+                        <Typography.Text className="text-lg !m-0 !text-gray-600">
+                          Please login first to be able to subscribe to this API
+                        </Typography.Text>
+                      </div>
+                      <div className="mt-4">
+                        <Button
+                          label="Login"
+                          isLoading={isAddingToCart}
+                          onClick={() => {
+                            push(ROUTES.LOGIN);
+                          }}
+                        />
+                      </div>
                     </div>
                   </Card>
                 </Col>
