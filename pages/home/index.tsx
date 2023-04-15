@@ -13,6 +13,7 @@ import { SubscribedApiRepoList } from "../../components/ApiRepoList/SubscribedAp
 import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
 import { CategoryCollection } from "../../components/CategoryCollection";
 import { TopSubscribedAPIs } from "../../components/TopSubscribedAPIs";
+import { useAuthContext } from "../../context/auth";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -20,6 +21,7 @@ const HomePage = () => {
   const [searchQuerySubscribed, setSearchQuerySubscribed] =
     useState<string>("");
   const [searchQueryCreated, setSearchQueryCreated] = useState<string>("");
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <>
@@ -41,7 +43,7 @@ const HomePage = () => {
         <Card
           hasShadow={false}
           borderRadius="none"
-          className="mb-6 p-4 md:p-8 relative -mx-4 md:-mx-8"
+          className="mb-6 p-4 md:p-8 relative -mx-4 md:-mx-0"
         >
           <div
             className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right"
@@ -59,49 +61,55 @@ const HomePage = () => {
           <TopSubscribedAPIs />
         </Card>
 
-        <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
-          Personal
-        </Typography.Title>
-        <div className="mb-4">APIs that you have created or subscribed to</div>
-        <Row gutter={[20, 20]}>
-          <Col span={24} md={{ span: 12 }}>
-            <Card shadowSize="sm" className="p-4">
-              <Text as="h2" className="text-lg">
-                Recently created
-              </Text>
-              <Input
-                type="text"
-                id="home-owned-search-input"
-                placeholder="Search created APIs..."
-                className="!font-normal !placeholder:font-normal mb-4"
-                onChange={(e) => setSearchQueryCreated(e.target.value)}
-              />
-              <OwnedApiRepoList
-                searchQuery={searchQueryCreated}
-                className="!h-max !max-h-[350px]"
-                username="nguyend-nam"
-              />
-            </Card>
-          </Col>
-          <Col span={24} md={{ span: 12 }}>
-            <Card shadowSize="sm" className="p-4">
-              <Text as="h2" className="text-lg">
-                Subscribed APIs
-              </Text>
-              <Input
-                type="text"
-                id="home-subscribed-search-input"
-                placeholder="Search subscribed APIs..."
-                className="!font-normal !placeholder:font-normal mb-4"
-                onChange={(e) => setSearchQuerySubscribed(e.target.value)}
-              />
-              <SubscribedApiRepoList
-                searchQuery={searchQuerySubscribed}
-                showSummary={false}
-              />
-            </Card>
-          </Col>
-        </Row>
+        {isAuthenticated ? (
+          <>
+            <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
+              Personal
+            </Typography.Title>
+            <div className="mb-4">
+              APIs that you have created or subscribed to
+            </div>
+            <Row gutter={[20, 20]}>
+              <Col span={24} md={{ span: 12 }}>
+                <Card shadowSize="sm" className="p-4">
+                  <Text as="h2" className="text-lg">
+                    Recently created
+                  </Text>
+                  <Input
+                    type="text"
+                    id="home-owned-search-input"
+                    placeholder="Search created APIs..."
+                    className="!font-normal !placeholder:font-normal mb-4"
+                    onChange={(e) => setSearchQueryCreated(e.target.value)}
+                  />
+                  <OwnedApiRepoList
+                    searchQuery={searchQueryCreated}
+                    className="!h-max !max-h-[350px]"
+                    username="nguyend-nam"
+                  />
+                </Card>
+              </Col>
+              <Col span={24} md={{ span: 12 }}>
+                <Card shadowSize="sm" className="p-4">
+                  <Text as="h2" className="text-lg">
+                    Subscribed APIs
+                  </Text>
+                  <Input
+                    type="text"
+                    id="home-subscribed-search-input"
+                    placeholder="Search subscribed APIs..."
+                    className="!font-normal !placeholder:font-normal mb-4"
+                    onChange={(e) => setSearchQuerySubscribed(e.target.value)}
+                  />
+                  <SubscribedApiRepoList
+                    searchQuery={searchQuerySubscribed}
+                    showSummary={false}
+                  />
+                </Card>
+              </Col>
+            </Row>
+          </>
+        ) : null}
 
         <Text
           as="h2"

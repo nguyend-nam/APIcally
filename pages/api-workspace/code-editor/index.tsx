@@ -16,19 +16,36 @@ import { isAPINameFormatValid } from "../../../utils";
 import { client, GET_PATHS } from "../../../libs/api";
 import { notification } from "antd";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
-import { useAuthContext } from "../../../context/auth";
+import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 
 const CodeEditorPageInner = () => {
   const { fileList } = useFileListContext() as { fileList: fileObj[] };
   const filesData = useMemo(() => new FormData(), []);
-  const { user } = useAuthContext();
+  const { user, isAuthenticated, logout } = useAuthContext();
 
-  const { push, query, isReady } = useRouter();
+  const { push, query, isReady, replace } = useRouter();
 
   const { data, error } = useFetchWithCache(
     [GET_PATHS.GET_PROJECT_BY_ALIAS(user?.name || "-", query.alias as string)],
     () => client.getProjectByAlias(query.alias as string)
   );
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      replace(ROUTES.LOGIN);
+    }
+  }, [isAuthenticated, replace]);
+
+  useEffect(() => {
+    const value =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem(APICALLY_KEY)
+        : undefined;
+
+    if (!value) {
+      logout();
+    }
+  }, [logout]);
 
   useEffect(() => {
     if (isReady) {
@@ -128,35 +145,37 @@ const CodeEditorPageInner = () => {
         <title>API workspace | APIcally</title>
       </Head>
 
-      <Layout contentClassName="!p-0" hasFooter={false}>
-        <div className="flex bg-slate-100">
-          <FileManagement
-            currentFile={currentFile}
-            setCurrentFile={setCurrentFile}
-            className="sticky top-0 w-[350px] bg-white"
-          />
-          <div className="w-full">
-            <FileHeader
-              className="sticky top-0 z-30"
-              currentFileName={fileList[currentFile].fileName}
+      {isAuthenticated ? (
+        <Layout contentClassName="!p-0" hasFooter={false}>
+          <div className="flex bg-slate-100">
+            <FileManagement
+              currentFile={currentFile}
+              setCurrentFile={setCurrentFile}
+              className="sticky top-0 w-[350px] bg-white"
             />
-            <div className="p-4 grid grid-cols-12 gap-4">
-              <div className="col-span-12 min-h-[550px]">
-                {renderCodeEditor}
+            <div className="w-full">
+              <FileHeader
+                className="sticky top-0 z-30"
+                currentFileName={fileList[currentFile].fileName}
+              />
+              <div className="p-4 grid grid-cols-12 gap-4">
+                <div className="col-span-12 min-h-[550px]">
+                  {renderCodeEditor}
+                </div>
+              </div>
+              <div className="p-4 pt-0">
+                <Button
+                  label="Submit algorithm"
+                  onClick={() => {
+                    onSubmit(query.alias as string);
+                  }}
+                  isLoading={isLoading}
+                />
               </div>
             </div>
-            <div className="p-4 pt-0">
-              <Button
-                label="Submit algorithm"
-                onClick={() => {
-                  onSubmit(query.alias as string);
-                }}
-                isLoading={isLoading}
-              />
-            </div>
           </div>
-        </div>
-      </Layout>
+        </Layout>
+      ) : null}
     </>
   );
 };

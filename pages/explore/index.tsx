@@ -257,7 +257,7 @@ const ExplorePage = () => {
         <title>Explore | APIcally</title>
       </Head>
 
-      <Layout hasSearch contentClassName="!pt-0 !px-0">
+      <Layout hasSearch contentClassName="!pt-0 !px-0 max-w-[100%]">
         <div className="flex flex-col md:flex-row">
           <div className="bg-white h-full max-h-[calc(100vh-64px)] overflow-auto sticky top-auto md:top-16 w-full md:w-[290px] shrink-0">
             {isFilterOpen ? (
@@ -411,7 +411,7 @@ const ExplorePage = () => {
             ) : null}
           </div>
 
-          <div className="p-4 md:p-8 pb-0 w-full">
+          <div className="p-4 md:p-8 pb-0 w-full max-w-2xl m-auto">
             {query.query && apiRepos.length ? (
               <div>
                 Showing {apiRepos.length} results for &quot;

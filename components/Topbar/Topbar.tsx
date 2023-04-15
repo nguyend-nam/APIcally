@@ -28,7 +28,7 @@ export const Topbar = ({
   isMenuOpen: boolean;
 }) => {
   const { pathname, push } = useRouter();
-  const { logout } = useAuthContext();
+  const { logout, isAuthenticated } = useAuthContext();
 
   return (
     <div
@@ -51,30 +51,49 @@ export const Topbar = ({
           />
           <Dropdown
             overlay={
-              <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
-                <Button
-                  label={
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <UserOutlined className="!text-primary" />
-                      Profile
-                    </div>
-                  }
-                  className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
-                  borderRadius="none"
-                  onClick={() => push(ROUTES.PROFILE)}
-                />
-                <Button
-                  label={
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <ExportOutlined className="!text-primary" rotate={180} />
-                      Logout
-                    </div>
-                  }
-                  className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
-                  borderRadius="none"
-                  onClick={logout}
-                />
-              </div>
+              isAuthenticated ? (
+                <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
+                  <Button
+                    label={
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <UserOutlined className="!text-primary" />
+                        Profile
+                      </div>
+                    }
+                    className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
+                    borderRadius="none"
+                    onClick={() => push(ROUTES.PROFILE)}
+                  />
+                  <Button
+                    label={
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <ExportOutlined
+                          className="!text-primary"
+                          rotate={180}
+                        />
+                        Logout
+                      </div>
+                    }
+                    className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
+                    borderRadius="none"
+                    onClick={logout}
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col shadow-lg overflow-hidden rounded-md">
+                  <Button
+                    label={
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <UserOutlined className="!text-primary" />
+                        Login
+                      </div>
+                    }
+                    className="!text-base !p-6 !py-3 !bg-white hover:!bg-gray-50 !text-gray-600 w-full text-left"
+                    borderRadius="none"
+                    onClick={() => push(ROUTES.LOGIN)}
+                  />
+                </div>
+              )
             }
             placement="bottomRight"
             trigger={["click"]}
