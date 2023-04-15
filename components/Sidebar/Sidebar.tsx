@@ -9,7 +9,7 @@ import {
   CaretUpOutlined,
   CaretRightOutlined,
 } from "@ant-design/icons";
-import { Popover } from "antd";
+import { Popover, Tooltip } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { CSSProperties, Dispatch, SetStateAction, useState } from "react";
@@ -115,65 +115,76 @@ export const Sidebar = ({
       <div className="h-full overflow-y-auto overflow-x-hidden w-full">
         {sidebarRoutes.map((route) =>
           route.label !== "API workspace" ? (
-            <Button
-              key={route.route}
-              label={
-                <>
-                  {route.icon}
-                  <span
-                    className={`ml-4 w-[110px] text-left ${
-                      !isExpanded &&
-                      "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                    }`}
-                    style={{ transition: "0.4s" }}
-                  >
-                    {route.label}
-                  </span>
-                </>
-              }
-              className={`!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900 ${
-                pathname.includes(route.route) && "!bg-white !text-primary"
-              }`}
-              style={{ transition: "0.2s" }}
-              borderRadius="none"
-              onClick={() => {
-                if (pathname !== `${route.route}`) {
-                  setIsMenuOpen(false);
-                  push(route.route);
+            <Tooltip title={!isExpanded ? route.label : null} placement="right">
+              <Button
+                key={route.route}
+                label={
+                  <>
+                    {route.icon}
+                    <span
+                      className={cx(`ml-4 w-[110px] text-left`, {
+                        "translate-x-60 overflow-hidden -ml-[110px] opacity-0":
+                          !isExpanded,
+                      })}
+                      style={{ transition: "0.4s" }}
+                    >
+                      {route.label}
+                    </span>
+                  </>
                 }
-              }}
-            />
+                className={cx(
+                  `!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900`,
+                  {
+                    "!bg-white !text-primary": pathname.includes(route.route),
+                  }
+                )}
+                style={{ transition: "0.2s" }}
+                borderRadius="none"
+                onClick={() => {
+                  if (pathname !== `${route.route}`) {
+                    setIsMenuOpen(false);
+                    push(route.route);
+                  }
+                }}
+              />
+            </Tooltip>
           ) : (
             <div key={route.route}>
               <div className="flex relative">
-                <Button
-                  key={route.route}
-                  label={
-                    <>
-                      {route.icon}
-                      <span
-                        className={`ml-4 w-[110px] text-left ${
-                          !isExpanded &&
-                          "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
-                        }`}
-                        style={{ transition: "0.4s" }}
-                      >
-                        {route.label}
-                      </span>
-                    </>
-                  }
-                  className={`!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900 ${
-                    pathname.includes(route.route) && "!bg-white !text-primary"
-                  }`}
-                  style={{ transition: "0.2s" }}
-                  borderRadius="none"
-                  onClick={() => {
-                    if (pathname !== `${route.route}`) {
-                      setIsMenuOpen(false);
-                      push(route.route);
+                <Tooltip
+                  title={!isExpanded ? route.label : null}
+                  placement="right"
+                >
+                  <Button
+                    key={route.route}
+                    label={
+                      <>
+                        {route.icon}
+                        <span
+                          className={`ml-4 w-[110px] text-left ${
+                            !isExpanded &&
+                            "translate-x-60 overflow-hidden -ml-[110px] opacity-0"
+                          }`}
+                          style={{ transition: "0.4s" }}
+                        >
+                          {route.label}
+                        </span>
+                      </>
                     }
-                  }}
-                />
+                    className={`!text-base bg-blue-800 w-full !p-6 !py-5 flex items-center justify-start hover:bg-blue-900 ${
+                      pathname.includes(route.route) &&
+                      "!bg-white !text-primary"
+                    }`}
+                    style={{ transition: "0.2s" }}
+                    borderRadius="none"
+                    onClick={() => {
+                      if (pathname !== `${route.route}`) {
+                        setIsMenuOpen(false);
+                        push(route.route);
+                      }
+                    }}
+                  />
+                </Tooltip>
 
                 {isExpanded ? (
                   <Button

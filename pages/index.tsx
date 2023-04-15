@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
-import { useAuthContext } from "../context/auth";
 import { Parallax } from "react-scroll-parallax";
 import { ROUTES } from "../constants/routes";
 import { useIsSSR } from "../hooks/useIsSSR";
@@ -88,7 +87,6 @@ const Home = () => {
   const { push } = useRouter();
   const isSSR = useIsSSR();
   const isMobile = useIsMobile();
-  const { isAuthenticated } = useAuthContext();
 
   return (
     !isSSR && (
@@ -112,24 +110,13 @@ const Home = () => {
               className="z-50 fixed top-0 !backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-8 w-full flex items-center justify-between shadow md:shadow-slate-50/0"
             >
               <Logo size={isMobile ? "xs" : "sm"} />
-              {isAuthenticated ? (
-                <div>
-                  <Button
-                    className="text-base md:text-lg bg-white/0"
-                    label="Go to console"
-                    onClick={() => push(ROUTES.HOME)}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <Button
-                    appearance="outline"
-                    className="text-base md:text-lg !px-4"
-                    label="Login"
-                    onClick={() => push(ROUTES.LOGIN)}
-                  />
-                </div>
-              )}
+              <div>
+                <Button
+                  className="text-base md:text-lg bg-white/0"
+                  label="Get started"
+                  onClick={() => push(ROUTES.HOME)}
+                />
+              </div>
             </Card>
 
             <div className="min-h-screen bg-gradient-to-b from-white/0 via-white/5 to-white pt-[86px] pb-4 px-4 md:pt-36 md:px-36 flex flex-col justify-between md:block">
@@ -154,9 +141,7 @@ const Home = () => {
                   <Button
                     className="text-lg md:text-xl mt-2 md:mt-4"
                     label="Get started"
-                    onClick={() =>
-                      push(isAuthenticated ? ROUTES.HOME : ROUTES.LOGIN)
-                    }
+                    onClick={() => ROUTES.HOME}
                   />
                 </Card>
               </Parallax>

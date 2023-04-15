@@ -8,9 +8,9 @@ import { Text } from "../Text";
 import { Form } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import {
-  APICALLY_KEY,
+  // APICALLY_KEY,
   LOGIN_REDIRECTION_KEY,
-  useAuthContext,
+  // useAuthContext,
 } from "../../context/auth";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
@@ -35,26 +35,26 @@ export const Layout = ({
   const isSSR = useIsSSR();
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const { replace, push } = useRouter();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { push } = useRouter();
+  // const { isAuthenticated, logout } = useAuthContext();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      replace(ROUTES.LOGIN);
-    }
-  }, [isAuthenticated, replace]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     replace(ROUTES.LOGIN);
+  //   }
+  // }, [isAuthenticated, replace]);
 
-  useEffect(() => {
-    const value =
-      typeof window !== "undefined"
-        ? window.localStorage.getItem(APICALLY_KEY)
-        : undefined;
+  // useEffect(() => {
+  //   const value =
+  //     typeof window !== "undefined"
+  //       ? window.localStorage.getItem(APICALLY_KEY)
+  //       : undefined;
 
-    if (!value) {
-      logout();
-    }
-  }, [logout]);
+  //   if (!value) {
+  //     logout();
+  //   }
+  // }, [logout]);
 
   useEffect(() => {
     if (!window.location.href.includes(ROUTES.LOGIN)) {
@@ -62,7 +62,7 @@ export const Layout = ({
     }
   }, []);
 
-  return isAuthenticated && !isSSR ? (
+  return !isSSR ? (
     <div className={cx("relative md:flex", className)}>
       <Sidebar
         className={`top-0 min-w-max w-screen md:w-max fixed md:sticky z-50 md:z-0 ${
@@ -110,7 +110,12 @@ export const Layout = ({
           }
           isMenuOpen={isMenuOpen}
         />
-        <div className={`p-4 md:p-8 pb-8 w-full ${contentClassName}`}>
+        <div
+          className={cx(
+            `p-4 md:p-8 pb-8 w-full max-w-[1000px] m-auto`,
+            contentClassName
+          )}
+        >
           <div className="fade-in">{children}</div>
           {hasFooter && (
             <div className="text-center md:text-base mt-8">
