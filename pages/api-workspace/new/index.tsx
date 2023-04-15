@@ -112,9 +112,7 @@ const APICreatePage = () => {
       {isAuthenticated ? (
         <Layout>
           <Card className="max-w-xl m-auto p-4" shadowSize="md">
-            <Typography.Title level={4} className="!text-slate-600">
-              Create API
-            </Typography.Title>
+            <Typography.Title level={4}>Create API</Typography.Title>
 
             <Divider className="!my-4" />
             <Form onFinish={(values: GetAllProjectsParams) => onSubmit(values)}>

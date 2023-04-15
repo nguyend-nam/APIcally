@@ -72,7 +72,7 @@ const LoginPage = () => {
               />
               <div className="absolute top-0 z-40 w-full h-full flex flex-col items-start p-6 sm:p-8 sm:items-center justify-center">
                 {!isMobile && <Text className="text-xl">Welcome to</Text>}
-                <Link href="/">
+                <Link href={ROUTES.HOME}>
                   <a>
                     <Logo
                       size={isMobile ? "sm" : "md"}

@@ -18,15 +18,15 @@ export const ROUTES = {
   },
   API_WORKSPACE: "/api-workspace",
   API_WORKSPACE_API_DETAIL: (username: string, alias: string) =>
-    `/api-workspace/${username}/${alias}`,
+    `/${username}/${alias}`,
   API_WORKSPACE_API_DETAIL_UTILIZER: (username: string, alias: string) =>
-    `/api-workspace/${username}/${alias}/utilizer`,
+    `/${username}/${alias}/utilizer`,
   API_WORKSPACE_CREATE: "/api-workspace/new",
   API_WORKSPACE_CODE_EDITOR: (username: string, alias: string) =>
     `/api-workspace/code-editor?username=${username}&alias=${alias}`,
   API_WORKSPACE_DOCUMENTATION: (username: string, alias: string) =>
     `/api-workspace/documentation?username=${username}&alias=${alias}`,
   PROFILE: "/profile",
-  PROFILE_OTHER_USER: (alias: string) => `/profile/${alias}`,
+  PROFILE_OTHER_USER: (alias: string) => `/${alias}`,
   CART: "/profile/cart",
 };

@@ -113,7 +113,7 @@ export const FileManagement = ({
                 currentFile === index ? "bg-blue-100" : "bg-slate-100"
               }`}
             >
-              <code className="text-slate-600 text-sm">{file.fileName}</code>
+              <code className="text-slate-700 text-sm">{file.fileName}</code>
             </div>
             {file.fileName !== "main.py" ? (
               <Dropdown

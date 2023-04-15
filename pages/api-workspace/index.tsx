@@ -52,7 +52,7 @@ const CodeEditorPage = () => {
           <div className="flex flex-col items-center">
             <Typography.Title
               level={5}
-              className="text-center !text-lg !text-slate-600"
+              className="text-center !text-lg !font-normal"
             >
               Select an API to utilize or create your own
             </Typography.Title>

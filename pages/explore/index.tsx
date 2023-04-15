@@ -35,6 +35,7 @@ import {
   subscribersAscSorter,
   subscribersDescSorter,
 } from "../../utils/sort";
+import cx from "classnames";
 
 export type Statistic = {
   subscribes?: number;
@@ -401,7 +402,7 @@ const ExplorePage = () => {
             ) : null}
 
             {isMobile ? (
-              <div className={`p-4 ${isFilterOpen ? "pt-0" : ""}`}>
+              <div className={cx(`p-4`, { "pt-0": isFilterOpen })}>
                 <Button
                   label={isFilterOpen ? "Close filter" : "Open filter"}
                   className="w-full !text-base"
@@ -411,7 +412,7 @@ const ExplorePage = () => {
             ) : null}
           </div>
 
-          <div className="p-4 md:p-8 pb-0 w-full max-w-2xl m-auto">
+          <div className="p-4 md:p-8 pb-0 w-full max-w-2xl mx-auto">
             {query.query && apiRepos.length ? (
               <div>
                 Showing {apiRepos.length} results for &quot;

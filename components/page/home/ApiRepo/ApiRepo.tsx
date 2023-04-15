@@ -55,7 +55,7 @@ export const ApiRepo = ({
         >
           <Typography.Title
             level={4}
-            className="!m-0 flex items-center !text-lg md:!text-xl"
+            className="!m-0 inline items-center !text-lg md:!text-xl"
           >
             <a
               className="!text-primary inline items-center"
@@ -67,12 +67,12 @@ export const ApiRepo = ({
                 }
               }}
             >
-              <BookOutlined className="text-base -translate-y-1 !text-gray-400 mr-1" />
+              <BookOutlined className="text-base -translate-y-[5px] !text-gray-400 mr-1" />
               {data.name}
             </a>
             {data.subscribeStatus && (
               <Tooltip title="Subscribed" className="ml-1">
-                <CheckCircleOutlined className="text-base !text-green-500 mr-1" />
+                <CheckCircleOutlined className="text-base -translate-y-[5px] !text-green-500 mr-1" />
               </Tooltip>
             )}
           </Typography.Title>
@@ -111,7 +111,7 @@ export const ApiRepo = ({
             onClick={() =>
               push(ROUTES.PROFILE_OTHER_USER(data.username as string))
             }
-            className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600"
+            className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-700"
           >
             {data.author}
           </button>
@@ -134,7 +134,7 @@ export const ApiRepo = ({
           className={`relative !text-base md:!text-lg font-semibold rounded-l -ml-5 pr-7 md:pr-8 pl-5 py-1 bg-gradient-to-r w-max text-white ${
             data.statistics?.price
               ? "from-indigo-500 to-sky-400"
-              : "from-amber-500 to-yellow-400"
+              : "from-green-500 to-emerald-300"
           }`}
         >
           {data.statistics?.price

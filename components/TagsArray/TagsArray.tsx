@@ -56,7 +56,7 @@ export const TagsArray = (props: Props) => {
       >
         <Button
           appearance="link"
-          className="!text-xs py-0.5 px-1 !rounded-2xl !text-slate-500 !bg-indigo-100 !border-1.5 !border-indigo-400"
+          className="!text-xs py-0.5 px-1 !rounded-lg !text-slate-500 !bg-indigo-100 !border-1.5 !border-indigo-400"
           label={`+${hiddenTagsCount}`}
         />
       </Popover>
