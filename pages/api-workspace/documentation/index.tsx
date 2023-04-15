@@ -19,6 +19,7 @@ import { CREATE_API_NAME_KEY } from "../new";
 import { isAPINameFormatValid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
+import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -60,7 +61,25 @@ const DocumentationPage = () => {
     onClose: closeAddInputDialog,
   } = useDisclosure();
 
-  const { push, query, isReady } = useRouter();
+  const { push, query, isReady, replace } = useRouter();
+  const { isAuthenticated, logout } = useAuthContext();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      replace(ROUTES.LOGIN);
+    }
+  }, [isAuthenticated, replace]);
+
+  useEffect(() => {
+    const value =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem(APICALLY_KEY)
+        : undefined;
+
+    if (!value) {
+      logout();
+    }
+  }, [logout]);
 
   const { data, error } = useFetchWithCache(
     [GET_PATHS.GET_PROJECT_BY_ALIAS("nguyend-nam", query.alias as string)],
@@ -172,78 +191,80 @@ const DocumentationPage = () => {
         <title>API workspace | APIcally</title>
       </Head>
 
-      <Layout>
-        <Typography.Title
-          level={3}
-          className="!text-xl md:!text-2xl capitalize"
-        >
-          Documentation
-        </Typography.Title>
-        <div className="border-primary border-t-4">
-          <MdEditor
-            plugins={[
-              "header",
-              "font-bold",
-              "font-italic",
-              "list-unordered",
-              "block-quote",
-              "link",
-              "image",
-              "block-code-inline",
-              "block-code-block",
-              "mode-toggle",
-            ]}
-            style={{ height: 510 }}
-            renderHTML={(text) => <ReactMarkdown source={text} />}
-            onChange={handleEditorChange}
-            defaultValue={defaultMD}
+      {isAuthenticated ? (
+        <Layout>
+          <Typography.Title
+            level={3}
+            className="!text-xl md:!text-2xl capitalize"
+          >
+            Documentation
+          </Typography.Title>
+          <div className="border-primary border-t-4">
+            <MdEditor
+              plugins={[
+                "header",
+                "font-bold",
+                "font-italic",
+                "list-unordered",
+                "block-quote",
+                "link",
+                "image",
+                "block-code-inline",
+                "block-code-block",
+                "mode-toggle",
+              ]}
+              style={{ height: 510 }}
+              renderHTML={(text) => <ReactMarkdown source={text} />}
+              onChange={handleEditorChange}
+              defaultValue={defaultMD}
+            />
+          </div>
+
+          <Row className="mt-8">
+            <Col span={24}>
+              <div className="flex items-center justify-between w-full mb-4">
+                <Typography.Title
+                  level={3}
+                  className="!m-0 !text-xl md:!text-2xl capitalize"
+                >
+                  Define inputs
+                </Typography.Title>
+
+                <Button label="Add input" onClick={openAddInputDialog} />
+              </div>
+
+              {isAddInputDialogOpen && (
+                <DefineInput
+                  form={form}
+                  dataSource={dataSource}
+                  setDataSource={setDataSource}
+                  isOpen={isAddInputDialogOpen}
+                  onCancel={closeAddInputDialog}
+                  onOk={form.submit}
+                />
+              )}
+
+              {renderTable}
+            </Col>
+          </Row>
+
+          <Button
+            label="Submit"
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                notification.success({
+                  message: "Algorithm successfully submitted!",
+                });
+                push(ROUTES.PROFILE);
+              }, 1000);
+              window.localStorage.removeItem(CREATE_API_NAME_KEY);
+            }}
+            className="mt-8"
+            isLoading={isLoading}
           />
-        </div>
-
-        <Row className="mt-8">
-          <Col span={24}>
-            <div className="flex items-center justify-between w-full mb-4">
-              <Typography.Title
-                level={3}
-                className="!m-0 !text-xl md:!text-2xl capitalize"
-              >
-                Define inputs
-              </Typography.Title>
-
-              <Button label="Add input" onClick={openAddInputDialog} />
-            </div>
-
-            {isAddInputDialogOpen && (
-              <DefineInput
-                form={form}
-                dataSource={dataSource}
-                setDataSource={setDataSource}
-                isOpen={isAddInputDialogOpen}
-                onCancel={closeAddInputDialog}
-                onOk={form.submit}
-              />
-            )}
-
-            {renderTable}
-          </Col>
-        </Row>
-
-        <Button
-          label="Submit"
-          onClick={() => {
-            setIsLoading(true);
-            setTimeout(() => {
-              notification.success({
-                message: "Algorithm successfully submitted!",
-              });
-              push(ROUTES.PROFILE);
-            }, 1000);
-            window.localStorage.removeItem(CREATE_API_NAME_KEY);
-          }}
-          className="mt-8"
-          isLoading={isLoading}
-        />
-      </Layout>
+        </Layout>
+      ) : null}
     </>
   );
 };

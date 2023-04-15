@@ -10,6 +10,7 @@ import { useIsMobile } from "../../../hooks/useIsMobile";
 import { apiReposData } from "../../../constants/mockData";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../../constants/routes";
+import { useAuthContext } from "../../../context/auth";
 
 export type tabTypes = "owned";
 
@@ -19,12 +20,13 @@ const OtherUserPage = () => {
   const [activeTabKey, setActiveTabKey] = useState<tabTypes>("owned");
   const isMobile = useIsMobile();
   const { query, replace } = useRouter();
+  const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
-    if (query.username && query.username === "nguyend-nam") {
+    if (isAuthenticated && query.username && query.username === "nguyend-nam") {
       replace(ROUTES.PROFILE);
     }
-  }, [replace, query.username]);
+  }, [replace, query.username, isAuthenticated]);
 
   const ownedAPIsByUser = apiReposData.filter(
     (a) => a.username === query.username
