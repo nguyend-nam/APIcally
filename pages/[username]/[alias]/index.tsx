@@ -73,7 +73,9 @@ const APIDetailPage = () => {
   return (
     <>
       <Head>
-        <title>{currentAPI?.author} | APIcally</title>
+        <title>
+          {currentAPI?.author}/{currentAPI?.name} | APIcally
+        </title>
       </Head>
 
       <Layout hasSearch pageTitle={currentAPI?.author}>

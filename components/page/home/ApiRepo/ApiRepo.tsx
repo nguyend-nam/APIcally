@@ -15,6 +15,7 @@ import { Card } from "../../../Card";
 import { TagsArray } from "../../../TagsArray";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
 import cx from "classnames";
+import { useAuthContext } from "../../../../context/auth";
 
 export const ApiRepo = ({
   data,
@@ -39,6 +40,7 @@ export const ApiRepo = ({
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
+  const { isAuthenticated } = useAuthContext();
 
   return (
     <Card
@@ -70,11 +72,11 @@ export const ApiRepo = ({
               <BookOutlined className="text-base -translate-y-[5px] !text-gray-400 mr-1" />
               {data.name}
             </a>
-            {data.subscribeStatus && (
+            {data.subscribeStatus && isAuthenticated ? (
               <Tooltip title="Subscribed" className="ml-1">
                 <CheckCircleOutlined className="text-base -translate-y-[5px] !text-green-500 mr-1" />
               </Tooltip>
-            )}
+            ) : null}
           </Typography.Title>
 
           <div className="flex gap-4">

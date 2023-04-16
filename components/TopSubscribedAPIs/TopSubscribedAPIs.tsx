@@ -5,11 +5,32 @@ import { ApiRepo } from "../page/home/ApiRepo";
 import cx from "classnames";
 
 export const rankColor = [
-  { bg: "bg-[#FFD93D]", border: "border-[#FFD93D]" },
-  { bg: "bg-[#C9EEFF]", border: "border-[#C9EEFF]" },
-  { bg: "bg-[#F94A29]", border: "border-[#F94A29]", text: "text-[#F5F5F5]" },
-  { bg: "bg-[#F0F0F8]", border: "border-[#F0F0F8]" },
-  { bg: "bg-[#F0F0F8]", border: "border-[#F0F0F8]" },
+  {
+    bg: "bg-[#FFD93D]",
+    bgGradient: "bg-gradient-to-t to-[#FFD93D] from-[#DFB91D]",
+    border: "border-[#FFD93D]",
+  },
+  {
+    bg: "bg-[#C9EEFF]",
+    bgGradient: "bg-gradient-to-t to-[#C9EEFF] from-[#A9CEDF]",
+    border: "border-[#C9EEFF]",
+  },
+  {
+    bg: "bg-[#F94A29]",
+    bgGradient: "bg-gradient-to-t to-[#F94A29] from-[#D92A09]",
+    border: "border-[#F94A29]",
+    text: "text-[#F5F5F5]",
+  },
+  {
+    bg: "bg-[#F0F0F8]",
+    bgGradient: "bg-gradient-to-t to-[#F0F0F8] from-[#D0D0D8]",
+    border: "border-[#F0F0F8]",
+  },
+  {
+    bg: "bg-[#F0F0F8]",
+    bgGradient: "bg-gradient-to-t to-[#F0F0F8] from-[#D0D0D8]",
+    border: "border-[#F0F0F8]",
+  },
 ];
 
 const RankRender = ({ rank }: { rank: number }) => {
@@ -48,7 +69,7 @@ export const TopSubscribedAPIs = () => {
           .slice(0, 5)
           .map((d, i) => (
             <div
-              className={cx("relative p-1 flex", rankColor[i]?.bg)}
+              className={cx("relative p-1 flex", rankColor[i]?.bgGradient)}
               key={d.id}
             >
               <RankRender rank={i + 1} />

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useIsMobile } from "../hooks/useIsMobile";
 import {
   AimOutlined,
+  BuildOutlined,
   CodeOutlined,
   FieldTimeOutlined,
   GithubOutlined,
@@ -79,7 +80,7 @@ const SectionTitle = (props: WithChildren & { className?: string }) => {
   return (
     <Text
       className={cx(
-        "capitalize text-3xl md:text-[40px] font-semibold text-slate-700 text-center mb-12 md:mb-16",
+        "capitalize text-3xl md:text-[40px] max-w-max mx-auto font-semibold text-slate-700 text-center mb-12 md:mb-16",
         className
       )}
     >
@@ -96,7 +97,7 @@ const SectionTitleDivider = ({
   icon: React.ReactElement;
 }) => {
   return (
-    <div className="!mt-2 h-6 w-[300px] max-w-full mx-auto flex justify-center items-center">
+    <div className="!mt-2 h-6 max-w-full mx-auto flex justify-center items-center">
       <div
         className={cx("!h-[1px] w-full !my-2")}
         style={{ backgroundColor: color }}
@@ -189,7 +190,7 @@ const Home = () => {
               <SectionTitle className="!text-primary !text-center">
                 Welcome all types of user
                 <SectionTitleDivider
-                  icon={<AimOutlined className="text-xl !text-slate-500" />}
+                  icon={<AimOutlined className="text-lg !text-slate-500" />}
                 />
               </SectionTitle>
               <div className="flex items-center md:items-start justify-evenly flex-col md:flex-row gap-8">
@@ -246,7 +247,7 @@ const Home = () => {
               <SectionTitle>
                 How APIcally works
                 <SectionTitleDivider
-                  icon={<CodeOutlined className="text-xl !text-slate-500" />}
+                  icon={<CodeOutlined className="text-lg !text-slate-500" />}
                 />
               </SectionTitle>
               <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
@@ -280,7 +281,7 @@ const Home = () => {
               <SectionTitle className="text-white">
                 Benefits
                 <SectionTitleDivider
-                  icon={<FieldTimeOutlined className="!text-white text-xl" />}
+                  icon={<FieldTimeOutlined className="!text-white text-lg" />}
                 />
               </SectionTitle>
               <div className="grid grid-cols-6 items-start max-w-full lg:max-w-[80%] m-auto gap-8 md:gap-6">
@@ -307,7 +308,12 @@ const Home = () => {
             </div>
 
             <div className="p-16 px-4 pt-16 md:pt-20">
-              <SectionTitle>Made with...</SectionTitle>
+              <SectionTitle>
+                Made with...
+                <SectionTitleDivider
+                  icon={<BuildOutlined className="text-lg !text-slate-500" />}
+                />
+              </SectionTitle>
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (
                   <Link key={s.href} href={s.href}>

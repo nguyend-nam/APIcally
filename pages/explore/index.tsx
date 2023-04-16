@@ -36,6 +36,7 @@ import {
   subscribersDescSorter,
 } from "../../utils/sort";
 import cx from "classnames";
+import { useAuthContext } from "../../context/auth";
 
 export type Statistic = {
   subscribes?: number;
@@ -69,7 +70,7 @@ const sorters = {
 const ExplorePage = () => {
   const { query } = useRouter();
   const isMobile = useIsMobile();
-
+  const { isAuthenticated } = useAuthContext();
   const [apiRepos, setApiRepos] = useState<apiRepoType[]>(apiReposData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -330,7 +331,7 @@ const ExplorePage = () => {
                         trackStyle={[{ backgroundColor: "#2D31FA" }]}
                       />
                     </div>
-                    <div className="flex px-4 mb-8 gap-4 items-center">
+                    <div className="flex px-4 mb-6 gap-4 items-center">
                       <Input
                         step={0.05}
                         fullWidth
@@ -370,19 +371,23 @@ const ExplorePage = () => {
                   </>
                 ) : null}
 
-                <Typography.Title
-                  level={4}
-                  className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
-                  onClick={() => setSubscribedFilter(!subscribedFilter)}
-                >
-                  Subscribed
-                  <AntInput
-                    type="checkbox"
-                    className="!w-min"
-                    checked={subscribedFilter}
-                  />
-                </Typography.Title>
-                <Divider className="!my-0" />
+                {isAuthenticated ? (
+                  <>
+                    <Typography.Title
+                      level={4}
+                      className="px-4 py-2 md:py-3 !m-0 cursor-pointer flex items-center justify-between !text-lg md:!text-xl"
+                      onClick={() => setSubscribedFilter(!subscribedFilter)}
+                    >
+                      Subscribed
+                      <AntInput
+                        type="checkbox"
+                        className="!w-min"
+                        checked={subscribedFilter}
+                      />
+                    </Typography.Title>
+                    <Divider className="!my-0" />
+                  </>
+                ) : null}
 
                 <div className="p-4 flex flex-row md:flex-col gap-4">
                   <Button
