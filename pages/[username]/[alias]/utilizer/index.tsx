@@ -31,6 +31,7 @@ const UtilizerPage = () => {
   const { query, replace } = useRouter();
   const isMobile = useIsMobile();
   const { isAuthenticated, logout } = useAuthContext();
+  const { push } = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -181,16 +182,23 @@ const UtilizerPage = () => {
             <Typography.Title level={3}>API not found</Typography.Title>
           ) : (
             <>
-              <Typography.Title level={2}>
-                <span className="font-normal text-2xl md:text-3xl">
+              <Typography.Title level={2} className="!m-0">
+                <button
+                  onClick={() => {
+                    if (currentAPI.username) {
+                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
+                    }
+                  }}
+                  className="font-normal text-2xl no-underline !text-black"
+                >
                   {currentAPI?.author}/
-                </span>
-                <span className="text-primary text-2xl md:text-3xl">
+                </button>
+                <span className="text-primary text-2xl !font-semibold">
                   {currentAPI?.name}
                 </span>
               </Typography.Title>
 
-              <Row className="my-8" gutter={[16, 16]}>
+              <Row className="my-6 md:my-8" gutter={[16, 16]}>
                 <Col span={24} lg={{ span: 12 }}>
                   <Card className="p-4" shadowSize="sm">
                     <Typography.Title level={3} className="!m-0 !mb-4">

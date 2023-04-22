@@ -46,7 +46,7 @@ const HomePage = () => {
           className="mb-6 p-4 md:p-8 relative -mx-4 md:-mx-0"
         >
           <div
-            className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right"
+            className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right bg-primary"
             style={{ backgroundImage: `url(/img/top-apis-bg.png)` }}
           />
           <Typography.Title

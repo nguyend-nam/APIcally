@@ -218,7 +218,7 @@ const APICreatePage = () => {
                       max={FULL_PRICE_FILTER[1]}
                       min={FULL_PRICE_FILTER[0]}
                       onChange={setSubscribeFee}
-                      step={0.05}
+                      step={1}
                     />
                   </div>
 
@@ -226,7 +226,7 @@ const APICreatePage = () => {
                     <Input
                       id="api-price-input"
                       type="number"
-                      step={0.05}
+                      step={1}
                       min={FULL_PRICE_FILTER[0]}
                       max={FULL_PRICE_FILTER[1]}
                       value={subscribeFee}
@@ -254,7 +254,7 @@ const APICreatePage = () => {
                       min={REQUEST_PRICE_RANGE[0]}
                       max={REQUEST_PRICE_RANGE[1]}
                       onChange={setRequestFee}
-                      step={0.05}
+                      step={1}
                     />
                   </div>
 
@@ -262,7 +262,7 @@ const APICreatePage = () => {
                     <Input
                       id="api-request-price-input"
                       type="number"
-                      step={0.05}
+                      step={1}
                       min={REQUEST_PRICE_RANGE[0]}
                       max={REQUEST_PRICE_RANGE[1]}
                       value={requestFee}
