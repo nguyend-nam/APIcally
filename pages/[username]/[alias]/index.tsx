@@ -321,7 +321,7 @@ const APIDetailPage = () => {
               )}
             </Row>
 
-            <Typography.Title level={3}>Utilizations count</Typography.Title>
+            <Typography.Title level={3}>Utilizations Count</Typography.Title>
             <Card
               className="px-2 py-4 md:px-4 md:py-6 mb-6 md:mb-8 overflow-auto"
               shadowSize="sm"
