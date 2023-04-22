@@ -282,3 +282,38 @@ export const apiReposInCart: {
     ],
   },
 ];
+
+export const chartData = [
+  {
+    date: "09/2022",
+    usage: 0,
+  },
+  {
+    date: "10/2022",
+    usage: 1,
+  },
+  {
+    date: "11/2022",
+    usage: 0,
+  },
+  {
+    date: "12/2022",
+    usage: 3,
+  },
+  {
+    date: "01/2023",
+    usage: 4,
+  },
+  {
+    date: "02/2023",
+    usage: 1,
+  },
+  {
+    date: "03/2023",
+    usage: 0,
+  },
+  {
+    date: "04/2023",
+    usage: 1,
+  },
+];

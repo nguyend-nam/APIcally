@@ -43,20 +43,29 @@ const supplier = [
 const steps = [
   {
     title: "Provide your algorithm",
-    description: "Implement your algorithm in Python.",
+    description: "Implement your main logic in Python and upload models.",
     img: "img/how-to-first.png",
+    bgColor: "#6366F1",
+    textColor: "#FFF",
+    buttonClassName: "!text-white !ring-white",
   },
   {
     title: "Submit and let us generate the API",
     description:
-      "Test whether your algorithm runs correctly, then submit to generate the API.",
+      "Submit files to generate the API. When the API is generated, you can provide documentation and define inputs required in the payload.",
     img: "img/how-to-second.png",
+    bgColor: "#373E58",
+    textColor: "#FFF",
+    buttonClassName: "!text-white !ring-white",
   },
   {
     title: "Subscribe, utilize and so on",
     description:
       "Developers can grant access to anyone who subscribes to the API. As a non-tech user, you can subscribe to utilize the resource.",
     img: "img/how-to-third.png",
+    bgColor: "#F6F7FD",
+    textColor: "#334",
+    buttonClassName: "",
   },
 ];
 
@@ -139,7 +148,7 @@ const Home = () => {
               borderRadius={isMobile ? "bottomLeft" : "none"}
               className="z-50 fixed top-0 !backdrop-blur-md bg-white md:bg-white/50 p-3.5 md:px-8 w-full flex items-center justify-between shadow md:shadow-slate-50/0"
             >
-              <Logo size={isMobile ? "xs" : "sm"} />
+              <Logo size="xs" />
               <div>
                 <Button
                   className="text-base md:text-lg bg-white/0"
@@ -178,15 +187,90 @@ const Home = () => {
               <div className="sticky max-w-fit md:max-w-sm bottom-3 flex-wrap flex items-center gap-x-4 md:gap-x-6 mt-4 justify-end md:justify-start md:mr-0">
                 {supplier.slice(0, 7).map((s) => (
                   <Link key={s.href} href={s.href}>
-                    <a className="mb-1" target="_blank">
-                      <Image height={s.height} preview={false} src={s.img} />
+                    <a className="mb-1 max-w-[100px]" target="_blank">
+                      <Image
+                        height={s.height}
+                        preview={false}
+                        src={s.img}
+                        className="object-contain"
+                      />
                     </a>
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="p-4 pb-16 pt-32 mt-0 md:mt-4">
+            <div className="pb-16 pt-32 mt-0 md:mt-4">
+              <SectionTitle>
+                How APIcally works
+                <SectionTitleDivider
+                  icon={<CodeOutlined className="text-lg !text-slate-500" />}
+                />
+              </SectionTitle>
+              <div className="w-full">
+                {steps.map((s, i) => (
+                  <div
+                    key={s.title}
+                    className={cx(
+                      "w-full flex gap-0 md:gap-12 justify-between px-4 pt-6 md:px-16 md:pt-16",
+                      {
+                        "!flex-row": !isMobile,
+                        "!flex-row-reverse": i % 2 === 1,
+                        "!flex-col": isMobile,
+                      }
+                    )}
+                    style={{ backgroundColor: s.bgColor }}
+                  >
+                    <Card
+                      className="mb-6 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 w-full md:max-w-[40%] overflow-hidden"
+                      hasShadow={false}
+                      borderRadius={isMobile ? "primary" : "topRight"}
+                    >
+                      <div className="w-full overflow-hidden">
+                        <Image
+                          height={isMobile ? 240 : 330}
+                          width="100%"
+                          className="object-cover inline-block"
+                          preview={false}
+                          src={s.img}
+                        />
+                      </div>
+                    </Card>
+
+                    <div className="pb-6 flex-1">
+                      <Text
+                        className={cx(
+                          "text-xl md:text-3xl font-medium mb-4 md:mb-6"
+                        )}
+                        style={{ color: s.textColor }}
+                      >
+                        {s.title}
+                      </Text>
+                      <div
+                        className={cx(
+                          "text-[15px] md:text-lg whitespace-pre-line max-w-sm md:max-w-fit"
+                        )}
+                        style={{ color: s.textColor }}
+                      >
+                        {s.description}
+                      </div>
+
+                      <Button
+                        className={cx(
+                          "text-base md:text-lg bg-white/0 mt-4 md:mt-6",
+                          s.buttonClassName
+                        )}
+                        label="Learn more"
+                        appearance="outline"
+                        onClick={() => push(ROUTES.API_WORKSPACE_CREATE)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 pb-16 pt-16 mt-0 md:mt-4">
               <SectionTitle className="!text-primary !text-center">
                 Welcome all types of user
                 <SectionTitleDivider
@@ -243,40 +327,6 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="p-4 pb-16 pt-16 mt-0 md:mt-4">
-              <SectionTitle>
-                How APIcally works
-                <SectionTitleDivider
-                  icon={<CodeOutlined className="text-lg !text-slate-500" />}
-                />
-              </SectionTitle>
-              <div className="flex flex-wrap xl:flex-nowrap justify-center items-start max-w-full">
-                {steps.map((s) => (
-                  <Card
-                    key={s.title}
-                    className="pb-4 mx-0 md:mx-4 mb-4 md:mb-0 last-of-type:mb-0 flex flex-col items-center space-y-4 w-full md:max-w-[28%] overflow-hidden shadow"
-                    hasShadow={false}
-                  >
-                    <div className="w-full overflow-hidden">
-                      <Image
-                        height={isMobile ? 200 : 250}
-                        width="100%"
-                        className="object-cover"
-                        preview={false}
-                        src={s.img}
-                      />
-                    </div>
-                    <Text className="text-center text-lg md:text-xl font-medium text-slate-700">
-                      {s.title}
-                    </Text>
-                    <div className="px-4 text-center text-base md:text-lg text-slate-600 whitespace-pre-line max-w-sm md:max-w-fit">
-                      {s.description}
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
             <div className="p-16 px-4 pt-16 mt-0 md:mt-4 bg-indigo-500">
               <SectionTitle className="text-white">
                 Benefits
@@ -291,7 +341,7 @@ const Home = () => {
                     className="flex flex-col items-center space-y-4 col-span-6 lg:col-span-2 bg-indigo-500"
                     hasShadow={false}
                   >
-                    <div className="border border-slate-200 aspect-square w-[260px] max-w-full rounded-full flex justify-center">
+                    <div className="border border-slate-200 aspect-square !w-[260px] !h-[260px] max-w-full rounded-full flex justify-center">
                       <Image
                         height={240}
                         className="object-cover rounded-lg rounded-tl-none select-none"
@@ -317,11 +367,12 @@ const Home = () => {
               <div className="flex flex-wrap justify-center items-center max-w-lg m-auto">
                 {supplier.map((s) => (
                   <Link key={s.href} href={s.href}>
-                    <a className="mx-4 my-2 mb-1" target="_blank">
+                    <a className="mx-4 my-2 mb-1 max-w-[100px]" target="_blank">
                       <Image
                         height={s.height + 7}
                         preview={false}
                         src={s.img}
+                        className="object-contain"
                       />
                     </a>
                   </Link>

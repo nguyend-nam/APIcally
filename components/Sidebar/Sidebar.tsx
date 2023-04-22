@@ -18,29 +18,7 @@ import { useSidebarStatusContext } from "../../context";
 import { Button } from "../Button";
 import { Logo } from "../Logo";
 import cx from "classnames";
-
-const sidebarRoutes = [
-  {
-    icon: <HomeOutlined className="h-fit" />,
-    label: "Home",
-    route: "/home",
-  },
-  {
-    icon: <AppstoreAddOutlined className="h-fit" />,
-    label: "Explore",
-    route: "/explore",
-  },
-  {
-    icon: <CodeOutlined className="h-fit" />,
-    label: "API workspace",
-    route: "/api-workspace",
-  },
-  {
-    icon: <UserOutlined className="h-fit" />,
-    label: "Profile",
-    route: "/profile",
-  },
-];
+import { useAuthContext } from "../../context/auth";
 
 export const Sidebar = ({
   className,
@@ -54,6 +32,30 @@ export const Sidebar = ({
   const { pathname, push } = useRouter();
   const { sidebarStatus: isExpanded, setSidebarStatus } =
     useSidebarStatusContext();
+  const { isAuthenticated } = useAuthContext();
+
+  const sidebarRoutes = [
+    {
+      icon: <HomeOutlined className="h-fit" />,
+      label: "Home",
+      route: "/home",
+    },
+    {
+      icon: <AppstoreAddOutlined className="h-fit" />,
+      label: "Explore",
+      route: "/explore",
+    },
+    {
+      icon: <CodeOutlined className="h-fit" />,
+      label: "API workspace",
+      route: "/api-workspace",
+    },
+    {
+      icon: <UserOutlined className="h-fit" />,
+      label: isAuthenticated ? "Profile" : "Login",
+      route: "/profile",
+    },
+  ];
 
   const [isWorkspaceOpen, setIsWorkspaceOpen] = useState<boolean>(false);
 

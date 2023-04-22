@@ -1,5 +1,6 @@
 import {
   Col,
+  Divider,
   // Form,
   // Modal,
   notification,
@@ -17,10 +18,19 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { ApiRepo } from "../../../components/page/home/ApiRepo";
-import { apiReposData, apiReposInCart } from "../../../constants/mockData";
+import {
+  apiReposData,
+  apiReposInCart,
+  chartData,
+} from "../../../constants/mockData";
 import { defaultMD } from "../../api-workspace/documentation";
 import { Card } from "../../../components/Card";
-import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  InfoCircleOutlined,
+  StarFilled,
+  StarOutlined,
+} from "@ant-design/icons";
 import { useMemo, useState } from "react";
 // import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
@@ -28,6 +38,72 @@ import { useMemo, useState } from "react";
 import { ROUTES } from "../../../constants/routes";
 import { apiRepoType } from "../../explore";
 import { useAuthContext } from "../../../context/auth";
+import { CartesianAxisProps, TooltipProps } from "recharts";
+import { LineChart } from "../../../components/LineChart";
+
+const CustomAxisTick = ({
+  x,
+  y,
+  payload,
+  dy,
+  dx,
+}: CartesianAxisProps & {
+  payload?: any;
+}) => {
+  return (
+    <g
+      transform={`translate(${x},${y})`}
+      style={{
+        fontWeight: 400,
+        fontSize: 13,
+      }}
+    >
+      <text
+        role="button"
+        x={0}
+        y={0}
+        dy={dy}
+        dx={dx}
+        textAnchor="middle"
+        fill="#555"
+        style={{ fontWeight: 400 }}
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+};
+
+const CustomTooltip = (record: TooltipProps<any, any>) => {
+  if (record.active && record.payload?.length) {
+    return (
+      <Card shadowSize="md">
+        <div className="p-3 pb-2">
+          <strong>{record.label}</strong>
+        </div>
+        <Divider className="!m-0" />
+        <div className="p-3 pt-2">
+          {record.payload.map((item) => {
+            return (
+              <span key={item.dataKey}>
+                <span>Utilizations count: </span>
+                {item.payload.trend === null ? (
+                  <strong>{item?.value}</strong>
+                ) : (
+                  <>
+                    <strong>{item?.value}</strong>{" "}
+                  </>
+                )}
+              </span>
+            );
+          })}
+        </div>
+      </Card>
+    );
+  }
+
+  return null;
+};
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
   ssr: false,
@@ -37,6 +113,7 @@ const APIDetailPage = () => {
   const { query, push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isStarred, setIsStarred] = useState(false);
   const { isAuthenticated } = useAuthContext();
 
   const currentAPI = apiReposData.find(
@@ -78,28 +155,51 @@ const APIDetailPage = () => {
         </title>
       </Head>
 
-      <Layout hasSearch pageTitle={currentAPI?.author}>
+      <Layout hasSearch pageTitle={currentAPI?.author || "-"}>
         {currentAPI === undefined ? (
           <Typography.Title level={3}>API not found</Typography.Title>
         ) : (
           <>
-            <Typography.Title level={2}>
-              <button
-                onClick={() => {
-                  if (currentAPI.username) {
-                    push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
-                  }
-                }}
-                className="font-normal text-2xl no-underline !text-black"
-              >
-                {currentAPI?.author}/
-              </button>
-              <span className="text-primary text-2xl !font-semibold">
-                {currentAPI?.name}
-              </span>
-            </Typography.Title>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <Typography.Title level={2} className="!m-0">
+                <button
+                  onClick={() => {
+                    if (currentAPI.username) {
+                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
+                    }
+                  }}
+                  className="font-normal text-2xl no-underline !text-black"
+                >
+                  {currentAPI?.author}/
+                </button>
+                <span className="text-primary text-2xl !font-semibold">
+                  {currentAPI?.name}
+                </span>
+              </Typography.Title>
 
-            <Row className="my-8" gutter={[16, 16]}>
+              {isAuthenticated ? (
+                <Button
+                  className="!p-0 !text-sm !ring-none !bg-transparent !text-slate-700"
+                  label={
+                    <Card className="flex items-center" shadowSize="sm">
+                      {isStarred ? (
+                        <StarFilled className="text-lg !text-yellow-400 mx-2 h-[18px]" />
+                      ) : (
+                        <StarOutlined className="text-lg !text-yellow-400 mx-2 h-[18px]" />
+                      )}
+                      <div className="border-l px-2 py-1">
+                        {isStarred ? "Starred" : "Star"}
+                      </div>
+                    </Card>
+                  }
+                  onClick={() => {
+                    setIsStarred(!isStarred);
+                  }}
+                />
+              ) : null}
+            </div>
+
+            <Row className="my-6 md:my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
                 <ApiRepo
                   data={currentAPI}
@@ -220,6 +320,24 @@ const APIDetailPage = () => {
                 </Col>
               )}
             </Row>
+
+            <Typography.Title level={3}>Utilizations count</Typography.Title>
+            <Card
+              className="px-2 py-4 md:px-4 md:py-6 mb-6 md:mb-8 overflow-auto"
+              shadowSize="sm"
+            >
+              <LineChart
+                width="100%"
+                height={200}
+                minWidth={600}
+                dataset={chartData}
+                lineDataKeys="usage"
+                xAxisDataKey="date"
+                xAxisTick={<CustomAxisTick dy={16} />}
+                yAxisTick={<CustomAxisTick dy={5} dx={-5} />}
+                customToolTip={<CustomTooltip />}
+              />
+            </Card>
 
             <Typography.Title level={3}>Documentation</Typography.Title>
             <div className="border-primary border-t-4">
