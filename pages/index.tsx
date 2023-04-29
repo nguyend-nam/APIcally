@@ -180,7 +180,7 @@ const Home = () => {
                   <Button
                     className="text-lg md:text-xl mt-2 md:mt-4"
                     label="Get started"
-                    onClick={() => ROUTES.HOME}
+                    onClick={() => push(ROUTES.HOME)}
                   />
                 </Card>
               </Parallax>

@@ -66,14 +66,14 @@ const UserPage = () => {
     owned: (
       <OwnedApiRepoList
         searchQuery={searchQuerySubscribed}
-        className="!h-max !max-h-[350px]"
+        className="!h-max"
         username="nguyend-nam"
       />
     ),
     subscribed: (
       <SubscribedApiRepoList
         searchQuery={searchQuerySubscribed}
-        className="!h-max !max-h-[350px]"
+        className="!h-max"
       />
     ),
   };
@@ -88,7 +88,7 @@ const UserPage = () => {
         <Layout>
           <Row gutter={[20, 20]}>
             <Col span={24} xl={{ span: 8 }}>
-              <GeneralInfo />
+              <GeneralInfo className="block md:sticky top-[96px]" />
             </Col>
             <Col span={24} xl={{ span: 16 }}>
               <AntCard

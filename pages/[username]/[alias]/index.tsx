@@ -229,9 +229,6 @@ const APIDetailPage = () => {
                           <CheckCircleOutlined className="!text-success text-lg mr-1 mt-[5px]" />
                         </div>
                         <div className="flex gap-2 flex-wrap mt-4">
-                          {currentAPI.username === "nguyend-nam" ? null : (
-                            <Button appearance="outline" label="Unsubscribe" />
-                          )}
                           <Button
                             label="Start using"
                             onClick={() => {

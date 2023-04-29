@@ -10,24 +10,27 @@ import { Avatar, Col, Divider, Row, Tooltip, Typography } from "antd";
 import { useAuthContext } from "../../../../context/auth";
 import { Button } from "../../../Button";
 import { Card } from "../../../Card";
-import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
-import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
+import cx from "classnames";
+// import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
+// import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
 interface Props {
   username?: string;
   fullname?: string;
   showActions?: boolean;
+  className?: string;
 }
 
 export const GeneralInfo = ({
   username,
   fullname,
   showActions = true,
+  className,
 }: Props) => {
   const { logout, user } = useAuthContext();
 
   return (
-    <Card className="relative overflow-hidden" shadowSize="sm">
+    <Card className={cx("relative overflow-hidden", className)} shadowSize="sm">
       <div
         className="h-32 bg-cover bg-right"
         style={{ backgroundImage: `url(/img/cart-checkbox-all-bg.png)` }}
@@ -106,7 +109,7 @@ export const GeneralInfo = ({
           </Col>
         </Row>
 
-        <Divider
+        {/* <Divider
           className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
           orientation="left"
           orientationMargin={0}
@@ -129,7 +132,7 @@ export const GeneralInfo = ({
           >
             <LinkedInGradient height={24} />
           </a>
-        </div>
+        </div> */}
 
         {showActions ? (
           <>

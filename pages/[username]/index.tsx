@@ -64,7 +64,7 @@ const OtherUserPage = () => {
     owned: (
       <OwnedApiRepoList
         searchQuery={searchQuerySubscribed}
-        className="!h-max !max-h-[350px]"
+        className="!h-max"
         apiList={ownedAPIsByUser}
         username={query.username as string}
       />
@@ -84,6 +84,7 @@ const OtherUserPage = () => {
               username={userData?.username}
               fullname={userData?.fullname}
               showActions={false}
+              className="block md: sticky top-[96px]"
             />
           </Col>
           <Col span={24} xl={{ span: 16 }}>
