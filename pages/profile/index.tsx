@@ -88,7 +88,7 @@ const UserPage = () => {
         <Layout>
           <Row gutter={[20, 20]}>
             <Col span={24} xl={{ span: 8 }}>
-              <GeneralInfo className="block md:sticky top-[96px]" />
+              <GeneralInfo className="block md:sticky md:top-[96px]" />
             </Col>
             <Col span={24} xl={{ span: 16 }}>
               <AntCard

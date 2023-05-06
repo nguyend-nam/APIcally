@@ -12,13 +12,14 @@ import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../context/auth";
 import Link from "next/link";
 import { ROUTES } from "../constants/routes";
 import { useIsSSR } from "../hooks/useIsSSR";
+import { client } from "../libs/api";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const isMobile = useIsMobile();
   const { push } = useRouter();
   const isSSR = useIsSSR();
 
-  const { login, isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,10 +33,16 @@ const LoginPage = () => {
 
   const onSubmit = async (values: { username: string; password: string }) => {
     try {
-      login(values.username, values.password);
-    } catch (error) {
+      const res = await client.register(values.username, values.password);
+
+      console.log(res);
+      if (res?.data) {
+        notification.success({ message: "Created new account successfully" });
+        push(ROUTES.LOGIN);
+      }
+    } catch (error: any) {
       notification.error({
-        message: "Could not login",
+        message: error || "Could not create account",
       });
     }
   };
@@ -44,7 +51,7 @@ const LoginPage = () => {
     !isSSR && (
       <>
         <Head>
-          <title>Login | APIcally</title>
+          <title>Register | APIcally</title>
         </Head>
 
         <div
@@ -56,7 +63,7 @@ const LoginPage = () => {
             backgroundSize: "cover",
           }}
         >
-          <Card className="flex flex-col sm:flex-row h-[530px] sm:h-[470px] w-[670px] bg-white">
+          <Card className="flex flex-col sm:flex-row h-[550px] sm:h-[470px] w-[670px] bg-white">
             <Card
               borderRadius={isMobile ? "topRight" : "bottomLeft"}
               className="bg-primary text-white overflow-hidden w-full sm:w-1/2 relative min-h-[136px]"
@@ -84,7 +91,9 @@ const LoginPage = () => {
             <div className="w-full sm:w-1/2 p-4 sm:p-8 flex flex-col gap-4 justify-between">
               <Form className="mb-2" onFinish={onSubmit}>
                 <label className="text-center">
-                  <h1 className="text-3xl sm:font-semibold mt-0 mb-5">Login</h1>
+                  <h1 className="text-3xl sm:font-semibold mt-0 mb-5">
+                    Register
+                  </h1>
                 </label>
                 <label
                   htmlFor="username-input"
@@ -125,30 +134,19 @@ const LoginPage = () => {
                 </Form.Item>
                 <div className="flex justify-center mt-2">
                   <Text className="text-base text-center m-0 text-slate-500">
-                    Does not have an account?{" "}
-                    <Link passHref href={ROUTES.REGISTER}>
+                    Already have an account?{" "}
+                    <Link passHref href={ROUTES.LOGIN}>
                       <Text as="span" className="!text-primary cursor-pointer">
-                        Create
+                        Log in
                       </Text>
                     </Link>{" "}
-                    one.
+                    and start using.
                   </Text>
                 </div>
 
                 <div className="w-full text-center mt-5">
                   <Button label="Login" className="w-[125px]" type="submit" />
                 </div>
-                {/* <div className="w-full text-center mt-5">
-                  <Button
-                    label="Or use testing account"
-                    appearance="link"
-                    onClick={() => {
-                      setIsUseTestAccountLoading(true);
-                      setTimeout(() => login(), 1000);
-                    }}
-                    isLoading={isUseTestAccountLoading}
-                  />
-                </div> */}
               </Form>
               <div className="flex justify-center mt-2">
                 <Text className="text-base m-0 text-slate-500">
@@ -163,4 +161,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

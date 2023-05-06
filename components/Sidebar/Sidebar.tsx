@@ -117,9 +117,12 @@ export const Sidebar = ({
       <div className="h-full overflow-y-auto overflow-x-hidden w-full">
         {sidebarRoutes.map((route) =>
           route.label !== "API workspace" ? (
-            <Tooltip title={!isExpanded ? route.label : null} placement="right">
+            <Tooltip
+              title={!isExpanded ? route.label : null}
+              placement="right"
+              key={route.route}
+            >
               <Button
-                key={route.route}
                 label={
                   <>
                     {route.icon}

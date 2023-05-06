@@ -5,6 +5,7 @@ export const ROUTES = {
   LANDING_PAGE: "/",
   HOME: "/home",
   LOGIN: "/login",
+  REGISTER: "/register",
   EXPLORE: (keyword?: string, filterQueries?: any) => {
     if (!keyword && !filterQueries) {
       return "/explore";
