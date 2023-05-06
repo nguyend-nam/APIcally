@@ -30,4 +30,5 @@ export const ROUTES = {
   PROFILE: "/profile",
   PROFILE_OTHER_USER: (alias: string) => `/${alias}`,
   CART: "/profile/cart",
+  SETTINGS: "/profile/settings",
 };

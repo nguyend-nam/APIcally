@@ -11,6 +11,8 @@ import { useAuthContext } from "../../../../context/auth";
 import { Button } from "../../../Button";
 import { Card } from "../../../Card";
 import cx from "classnames";
+import { useRouter } from "next/router";
+import { ROUTES } from "../../../../constants/routes";
 // import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
 // import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
@@ -28,6 +30,7 @@ export const GeneralInfo = ({
   className,
 }: Props) => {
   const { logout, user } = useAuthContext();
+  const { push } = useRouter();
 
   return (
     <Card className={cx("relative overflow-hidden", className)} shadowSize="sm">
@@ -42,10 +45,10 @@ export const GeneralInfo = ({
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">
-          {fullname || user?.sub || "Dinh Nam Nguyen"}
+          {fullname || user?.username || "Dinh Nam Nguyen"}
         </Typography.Title>
         <Typography.Text className="text-base">
-          {username || user?.name || "nguyend-nam"}
+          {username || user?.username || "nguyend-nam"}
         </Typography.Text>
         <Typography.Paragraph className="mt-4 !text-slate-500">
           They say &quot;garbage can&quot;, not &quot;garbage cannot&quot;
@@ -145,7 +148,11 @@ export const GeneralInfo = ({
             </Divider>
 
             <div className="flex gap-3 flex-col md:flex-row">
-              <Button label="Edit" className="w-full !text-base" />
+              <Button
+                label="Settings"
+                className="w-full !text-base"
+                onClick={() => push(ROUTES.SETTINGS)}
+              />
               <Button
                 appearance="outline"
                 label="Logout"

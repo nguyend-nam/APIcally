@@ -89,7 +89,7 @@ export const Layout = ({
 
     const timer = setInterval(async () => {
       const res = await client.refreshToken(refreshToken);
-      if (res) {
+      if (res?.accessToken) {
         window.localStorage.setItem(APICALLY_KEY, res.accessToken);
         client.setAuthToken(res.accessToken);
       } else {

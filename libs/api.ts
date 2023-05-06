@@ -89,6 +89,16 @@ class Client {
     });
   }
 
+  public changePassword(oldPassword: string, newPassword: string) {
+    return fetcher<BaseResponse<string>>(`${AUTH_BASE_API_URL}/v1/auth`, {
+      method: "PATCH",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ oldPassword, newPassword }),
+    });
+  }
+
   public createProject(params: GetAllProjectsParams) {
     return fetcher<any>(`${PYTHON_BASE_API_URL}`, {
       method: "POST",

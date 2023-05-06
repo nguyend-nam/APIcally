@@ -40,9 +40,9 @@ const RegisterPage = () => {
         notification.success({ message: "Created new account successfully" });
         push(ROUTES.LOGIN);
       }
-    } catch (error: any) {
+    } catch (error) {
       notification.error({
-        message: error || "Could not create account",
+        message: String(error) || "Could not create account",
       });
     }
   };
