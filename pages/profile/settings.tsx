@@ -60,7 +60,7 @@ const UserSettingsPage = () => {
             label={<LeftOutlined />}
             onClick={() => setStep("main")}
           />
-          <Text as="h2" className="text-lg !m-0">
+          <Text as="h2" className="text-lg !m-0 capitalize">
             Change password
           </Text>
         </div>

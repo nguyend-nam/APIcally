@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { client } from "../libs/api";
 import { WithChildren } from "../types/common";
 import { removeCookie, setCookie } from "../utils";
-import { useAsyncEffect } from "@dwarvesf/react-hooks";
+// import { useAsyncEffect } from "@dwarvesf/react-hooks";
 // import jwtDecode from "jwt-decode";
 // import { diffTime, parseJWT } from "../utils";
 // import { encodeData } from "../utils/crypto";
@@ -83,15 +83,6 @@ const AuthProvider = ({ children }: WithChildren) => {
     });
     client.clearAuthToken();
   }, []);
-
-  useAsyncEffect(async () => {
-    if (authToken) {
-      const res = await client.validateAccessToken();
-      if (!res?.data) {
-        logout();
-      }
-    }
-  }, [logout]);
 
   return (
     <Provider

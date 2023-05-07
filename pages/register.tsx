@@ -6,18 +6,20 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { LOGIN_REDIRECTION_KEY, useAuthContext } from "../context/auth";
 import Link from "next/link";
 import { ROUTES } from "../constants/routes";
 import { useIsSSR } from "../hooks/useIsSSR";
 import { client } from "../libs/api";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
 const RegisterPage = () => {
   const isMobile = useIsMobile();
   const { push } = useRouter();
   const isSSR = useIsSSR();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { isAuthenticated } = useAuthContext();
 
@@ -63,7 +65,7 @@ const RegisterPage = () => {
             backgroundSize: "cover",
           }}
         >
-          <Card className="flex flex-col sm:flex-row h-[550px] sm:h-[470px] w-[670px] bg-white">
+          <Card className="flex flex-col sm:flex-row h-[560px] sm:h-[470px] w-[670px] bg-white">
             <Card
               borderRadius={isMobile ? "topRight" : "bottomLeft"}
               className="bg-primary text-white overflow-hidden w-full sm:w-1/2 relative min-h-[136px]"
@@ -120,18 +122,29 @@ const RegisterPage = () => {
                 >
                   Password
                 </label>
-                <Form.Item
-                  name="password"
-                  rules={[{ required: true, message: "Required" }]}
-                  className="mt-1"
-                >
-                  <Input
-                    type="password"
-                    id="password-input"
-                    fullWidth
-                    placeholder="Enter password..."
+                <div className="flex justify-between items-center gap-2">
+                  <Form.Item
+                    name="password"
+                    rules={[{ required: true, message: "Required" }]}
+                    className="mt-1 flex-1"
+                  >
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      id="password-input"
+                      fullWidth
+                      placeholder="Enter password..."
+                    />
+                  </Form.Item>
+                  <Button
+                    type="button"
+                    appearance="link"
+                    className="!px-0 !py-0 mb-8"
+                    label={
+                      showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />
+                    }
+                    onClick={() => setShowPassword(!showPassword)}
                   />
-                </Form.Item>
+                </div>
                 <div className="flex justify-center mt-2">
                   <Text className="text-base text-center m-0 text-slate-500">
                     Already have an account?{" "}

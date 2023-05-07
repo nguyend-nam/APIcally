@@ -22,6 +22,7 @@ import { useIsSSR } from "../../hooks/useIsSSR";
 import cx from "classnames";
 import { getCookie } from "../../utils";
 import { client } from "../../libs/api";
+import { useAsyncEffect } from "@dwarvesf/react-hooks";
 
 export const Layout = ({
   children,
@@ -88,17 +89,53 @@ export const Layout = ({
     }
 
     const timer = setInterval(async () => {
-      const res = await client.refreshToken(refreshToken);
-      if (res?.accessToken) {
-        window.localStorage.setItem(APICALLY_KEY, res.accessToken);
-        client.setAuthToken(res.accessToken);
-      } else {
+      try {
+        const res = await client.refreshToken(refreshToken);
+        if (res?.accessToken) {
+          window.localStorage.setItem(APICALLY_KEY, res.accessToken);
+          client.setAuthToken(res.accessToken);
+        } else {
+          logout();
+        }
+      } catch (error) {
         logout();
       }
     }, REFRESH_TOKEN_THRESHOLD_SECS * 1000);
     return () => clearInterval(timer);
     // eslint-disable-next-line
   }, []);
+
+  useAsyncEffect(async () => {
+    const accessToken = window.localStorage.getItem(APICALLY_KEY);
+    if (accessToken) {
+      try {
+        const res = await client.validateAccessToken();
+        if (res?.data) {
+          return;
+        }
+      } catch (error) {
+        const refreshToken = getCookie(APICALLY_REFRESH_KEY);
+        if (!refreshToken) {
+          console.log("c");
+          logout();
+        }
+
+        try {
+          const res = await client.refreshToken(refreshToken);
+          if (res?.accessToken) {
+            window.localStorage.setItem(APICALLY_KEY, res.accessToken);
+            client.setAuthToken(res.accessToken);
+          } else {
+            logout();
+          }
+        } catch (error) {
+          logout();
+        }
+      }
+    } else {
+      logout();
+    }
+  }, [logout]);
 
   return !isSSR ? (
     <div className={cx("relative md:flex", className)}>

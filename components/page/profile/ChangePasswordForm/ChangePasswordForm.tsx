@@ -3,9 +3,14 @@ import { Input } from "../../../../components/Input";
 import { Button } from "../../../../components/Button";
 import { client } from "../../../../libs/api";
 import { useState } from "react";
+import { useAuthContext } from "../../../../context/auth";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
 export const ChangePasswordForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const { logout } = useAuthContext();
 
   const onSubmit = async (values: {
     oldPassword: string;
@@ -21,6 +26,7 @@ export const ChangePasswordForm = () => {
         notification.success({
           message: "Password changed successfully",
         });
+        logout();
       }
     } catch (error: any) {
       notification.error({
@@ -37,36 +43,54 @@ export const ChangePasswordForm = () => {
         <label htmlFor="old-password-input" className="text-lg text-primary">
           Old password
         </label>
-        <Form.Item
-          name="oldPassword"
-          rules={[{ required: true, message: "Required" }]}
-          className="mt-1 mb-4"
-        >
-          <Input
-            type="text"
-            id="old-password-input"
-            fullWidth
-            placeholder="Enter old password..."
+        <div className="flex justify-between gap-2 items-center">
+          <Form.Item
+            name="oldPassword"
+            rules={[{ required: true, message: "Required" }]}
+            className="mt-1 mb-2 flex-1"
+          >
+            <Input
+              type={showOldPassword ? "text" : "password"}
+              id="old-password-input"
+              fullWidth
+              placeholder="Enter old password..."
+            />
+          </Form.Item>
+          <Button
+            type="button"
+            appearance="link"
+            className="!px-0 !py-0 mb-8"
+            label={showOldPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+            onClick={() => setShowOldPassword(!showOldPassword)}
           />
-        </Form.Item>
+        </div>
 
         <label htmlFor="new-password-input" className="text-lg text-primary">
           New password
         </label>
-        <Form.Item
-          name="newPassword"
-          rules={[{ required: true, message: "Required" }]}
-          className="mt-1"
-        >
-          <Input
-            type="new-password"
-            id="new-password-input"
-            fullWidth
-            placeholder="Enter new password..."
+        <div className="flex justify-between gap-2 items-center">
+          <Form.Item
+            name="newPassword"
+            rules={[{ required: true, message: "Required" }]}
+            className="flex-1"
+          >
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              id="new-password-input"
+              fullWidth
+              placeholder="Enter new password..."
+            />
+          </Form.Item>
+          <Button
+            type="button"
+            appearance="link"
+            className="!px-0 !py-0 mb-8"
+            label={showNewPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+            onClick={() => setShowNewPassword(!showNewPassword)}
           />
-        </Form.Item>
+        </div>
 
-        <div className="mt-5">
+        <div className="mt-2">
           <Button
             label="Confirm"
             className="w-[125px]"
