@@ -1,7 +1,9 @@
 import fetcher from "./fetcher";
 import FormData from "form-data";
+import { BaseResponse, CheckTokenResponse, GetTokenResponse } from "./types";
 
-const BASE_API_URL = process.env.BASE_API_URL;
+const AUTH_BASE_API_URL =
+  process.env.AUTH_BASE_API_URL || "http://localhost:4000";
 const PYTHON_BASE_API_URL = process.env.PYTHON_BASE_API_URL;
 
 export interface GetAllProjectsParams {
@@ -48,13 +50,52 @@ class Client {
     this.privateHeaders = { ...this.headers };
   }
 
-  public login(email: string, password: string) {
-    return fetcher<any>(`${BASE_API_URL}/authenticate`, {
+  public login(username: string, password: string) {
+    return fetcher<GetTokenResponse>(`${AUTH_BASE_API_URL}/v1/auth`, {
       method: "POST",
       headers: {
         ...this.headers,
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
+    });
+  }
+
+  public register(username: string, password: string) {
+    return fetcher<BaseResponse<string>>(`${AUTH_BASE_API_URL}/v1/register`, {
+      method: "POST",
+      headers: {
+        ...this.headers,
+      },
+      body: JSON.stringify({ username, password }),
+    });
+  }
+
+  public refreshToken(refreshToken: string) {
+    return fetcher<GetTokenResponse>(`${AUTH_BASE_API_URL}/v1/refresh`, {
+      method: "POST",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
+  }
+
+  public validateAccessToken() {
+    return fetcher<CheckTokenResponse>(`${AUTH_BASE_API_URL}/v1/check`, {
+      method: "POST",
+      headers: {
+        ...this.privateHeaders,
+      },
+    });
+  }
+
+  public changePassword(oldPassword: string, newPassword: string) {
+    return fetcher<BaseResponse<string>>(`${AUTH_BASE_API_URL}/v1/auth`, {
+      method: "PATCH",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ oldPassword, newPassword }),
     });
   }
 

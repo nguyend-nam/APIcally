@@ -8,15 +8,21 @@ import { Text } from "../Text";
 import { Form } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import {
-  // APICALLY_KEY,
+  APICALLY_KEY,
+  APICALLY_REFRESH_EXPIRY_KEY,
+  APICALLY_REFRESH_KEY,
   LOGIN_REDIRECTION_KEY,
-  // useAuthContext,
+  REFRESH_TOKEN_THRESHOLD_SECS,
+  useAuthContext,
 } from "../../context/auth";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
 import { Button } from "../Button";
 import { useIsSSR } from "../../hooks/useIsSSR";
 import cx from "classnames";
+import { getCookie } from "../../utils";
+import { client } from "../../libs/api";
+import { useAsyncEffect } from "@dwarvesf/react-hooks";
 
 export const Layout = ({
   children,
@@ -36,7 +42,7 @@ export const Layout = ({
   const { sidebarStatus } = useSidebarStatusContext();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { push } = useRouter();
-  // const { isAuthenticated, logout } = useAuthContext();
+  const { logout } = useAuthContext();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // useEffect(() => {
@@ -61,6 +67,75 @@ export const Layout = ({
       window.localStorage.setItem(LOGIN_REDIRECTION_KEY, window.location.href);
     }
   }, []);
+
+  useEffect(() => {
+    const refreshTokenExpiry = getCookie(APICALLY_REFRESH_EXPIRY_KEY);
+    const currentTime = new Date();
+
+    console.log(currentTime, new Date(refreshTokenExpiry));
+    console.log("expired?:", currentTime > new Date(refreshTokenExpiry));
+
+    if (currentTime > new Date(refreshTokenExpiry)) {
+      logout();
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    const refreshToken = getCookie(APICALLY_REFRESH_KEY);
+
+    if (!refreshToken) {
+      return;
+    }
+
+    const timer = setInterval(async () => {
+      try {
+        const res = await client.refreshToken(refreshToken);
+        if (res?.accessToken) {
+          window.localStorage.setItem(APICALLY_KEY, res.accessToken);
+          client.setAuthToken(res.accessToken);
+        } else {
+          logout();
+        }
+      } catch (error) {
+        logout();
+      }
+    }, REFRESH_TOKEN_THRESHOLD_SECS * 1000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line
+  }, []);
+
+  useAsyncEffect(async () => {
+    const accessToken = window.localStorage.getItem(APICALLY_KEY);
+    if (accessToken) {
+      try {
+        const res = await client.validateAccessToken();
+        if (res?.data) {
+          return;
+        }
+      } catch (error) {
+        const refreshToken = getCookie(APICALLY_REFRESH_KEY);
+        if (!refreshToken) {
+          console.log("c");
+          logout();
+        }
+
+        try {
+          const res = await client.refreshToken(refreshToken);
+          if (res?.accessToken) {
+            window.localStorage.setItem(APICALLY_KEY, res.accessToken);
+            client.setAuthToken(res.accessToken);
+          } else {
+            logout();
+          }
+        } catch (error) {
+          logout();
+        }
+      }
+    } else {
+      logout();
+    }
+  }, [logout]);
 
   return !isSSR ? (
     <div className={cx("relative md:flex", className)}>

@@ -5,6 +5,7 @@ export const ROUTES = {
   LANDING_PAGE: "/",
   HOME: "/home",
   LOGIN: "/login",
+  REGISTER: "/register",
   EXPLORE: (keyword?: string, filterQueries?: any) => {
     if (!keyword && !filterQueries) {
       return "/explore";
@@ -29,4 +30,5 @@ export const ROUTES = {
   PROFILE: "/profile",
   PROFILE_OTHER_USER: (alias: string) => `/${alias}`,
   CART: "/profile/cart",
+  SETTINGS: "/profile/settings",
 };
