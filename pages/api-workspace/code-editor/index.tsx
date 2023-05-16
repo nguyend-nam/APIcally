@@ -26,7 +26,12 @@ const CodeEditorPageInner = () => {
   const { push, query, isReady, replace } = useRouter();
 
   const { data, error } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECT_BY_ALIAS(user?.name || "-", query.alias as string)],
+    [
+      GET_PATHS.GET_PROJECT_BY_ALIAS(
+        user?.username || "-",
+        query.alias as string
+      ),
+    ],
     () => client.getProjectByAlias(query.alias as string)
   );
 

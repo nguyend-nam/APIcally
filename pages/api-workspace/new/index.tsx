@@ -87,7 +87,7 @@ const APICreatePage = () => {
             notification.success({ message: "API created successfully" });
             push(
               ROUTES.API_WORKSPACE_CODE_EDITOR(
-                user?.name || "-",
+                user?.username || "-",
                 transformedValues.alias
               )
             );
@@ -132,16 +132,16 @@ const APICreatePage = () => {
                       />
                       <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
                         <Tooltip
-                          title={user?.name || "nguyend-nam"}
+                          title={user?.username || "nguyend-nam"}
                           placement="bottom"
                         >
-                          {user?.name
-                            ? truncate(user?.name, 10)
+                          {user?.username
+                            ? truncate(user?.username, 10)
                             : "nguyend-nam"}
                         </Tooltip>
                       </div>
                       <div className="text-base !text-slate-500 block md:hidden mr-0 py-1 px-1.5 rounded-md bg-slate-100 w-screen overflow-auto whitespace-nowrap">
-                        {user?.name || "nguyend-nam"}
+                        {user?.username || "nguyend-nam"}
                       </div>
                       <div className="hidden md:block">/</div>
                     </div>

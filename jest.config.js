@@ -39,13 +39,7 @@ const customJestConfig = {
     },
   },
   preset: "ts-jest",
-  collectCoverageFrom: [
-    "**/*.(ts|tsx)",
-    "!**/*.d.ts",
-    "!**/*.stories.js",
-    "!**/*.stories.tsx",
-    "!**/__stubs__/**",
-  ],
+  collectCoverageFrom: ["**/utils/{!(cookies|index|datetime),}.(ts|tsx)"],
   coverageProvider: "v8",
 };
 

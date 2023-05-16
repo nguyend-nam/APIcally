@@ -7,7 +7,6 @@ import { Layout } from "../../components/Layout";
 import { Text } from "../../components/Text";
 import { apiRepoType } from "../explore";
 import { useDisclosure } from "@dwarvesf/react-hooks";
-import { renderSubscribeListConfirmation } from "../../utils";
 import { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { APICALLY_KEY, useAuthContext } from "../../context/auth";
@@ -163,6 +162,38 @@ const CartPage = () => {
           </Text>
         </Modal>
       ) : null}
+    </>
+  );
+};
+
+export const renderSubscribeListConfirmation = (
+  apiList: apiRepoType[],
+  func: "subscribe" | "remove"
+) => {
+  if (apiList.length === 0) return;
+  if (apiList.length === 1) {
+    return (
+      <>
+        Are you sure you want to{" "}
+        {func === "subscribe" ? "subscribe to" : "remove"}{" "}
+        <b>{apiList[0].name}</b>.
+      </>
+    );
+  }
+
+  const nameList = apiList.map((a) => a.name);
+
+  return (
+    <>
+      Are you sure you want to{" "}
+      {func === "subscribe" ? "subscribe to" : "remove"}{" "}
+      {nameList.slice(0, apiList.length - 1).map((n, i) => (
+        <>
+          <b key={n}>{n}</b>
+          {i < nameList.length - 2 ? ", " : ""}
+        </>
+      ))}{" "}
+      and <b>{apiList[apiList.length - 1].name}</b>.
     </>
   );
 };
