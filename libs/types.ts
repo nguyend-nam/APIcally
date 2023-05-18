@@ -44,3 +44,37 @@ export interface ScanAllProjectsResponse
 
 export interface GetSubscribedProjectsResponse
   extends BaseResponse<APIProjectItem[]> {}
+
+export interface CreateProjectRequest {
+  name: string;
+  alias: string;
+  description: string;
+  documentation: string;
+  input: string;
+  subscribeCost: number;
+  costPerRequest: number;
+  category: string;
+}
+
+export interface CreateProjectResponseData {
+  id: string;
+  ownerId: string;
+  alias: string;
+  description: string;
+  name: string;
+  input: string;
+  documentation: string;
+  fileNames: string[];
+  createdAt: number;
+  updatedAt: number;
+  costPerRequest: number;
+  subscribeCost: number;
+  category: string;
+}
+
+export interface CreateProjectResponse
+  extends BaseResponse<CreateProjectResponseData> {}
+
+export interface RateProjectRequest {
+  stars: number;
+}

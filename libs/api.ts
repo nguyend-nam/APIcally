@@ -3,8 +3,11 @@ import FormData from "form-data";
 import {
   BaseResponse,
   CheckTokenResponse,
+  CreateProjectRequest,
+  CreateProjectResponse,
   GetSubscribedProjectsResponse,
   GetTokenResponse,
+  RateProjectRequest,
   ScanAllProjectsResponse,
 } from "./types";
 
@@ -151,15 +154,31 @@ class Client {
     );
   }
 
-  public createProject(params: GetAllProjectsParams) {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}`, {
+  public createProject(params: CreateProjectRequest) {
+    return fetcher<CreateProjectResponse>(`${API_BASE_API_URL}/v1/`, {
       method: "POST",
       headers: {
         ...this.privateHeaders,
       },
       body: JSON.stringify(params),
-      mode: "no-cors",
     });
+  }
+
+  public rateProject(
+    ownerId: string,
+    alias: string,
+    params: RateProjectRequest
+  ) {
+    return fetcher<BaseResponse<any>>(
+      `${API_BASE_API_URL}/v1/rating/${ownerId}/${alias}`,
+      {
+        method: "POST",
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(params),
+      }
+    );
   }
 
   public getProjectByAlias(alias: string) {

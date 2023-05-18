@@ -8,6 +8,7 @@ import {
   Tooltip,
   notification,
   Slider,
+  Select,
 } from "antd";
 import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "../../../components/Button";
@@ -22,13 +23,15 @@ import { isAPINameFormatValid } from "../../../utils";
 import { ROUTES } from "../../../constants/routes";
 import { UserOutlined } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
-import { client, GetAllProjectsParams } from "../../../libs/api";
+import { client } from "../../../libs/api";
 import { Alert } from "../../../components/Alert";
 import {
   FULL_PRICE_FILTER,
   REQUEST_PRICE_RANGE,
 } from "../../../constants/filter";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
+import { CreateProjectRequest } from "../../../libs/types";
+import { apiTags } from "../../../constants/tagTypes";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
@@ -40,6 +43,11 @@ const APICreatePage = () => {
   const { user, isAuthenticated, logout } = useAuthContext();
   const [requestFee, setRequestFee] = useState<number>(REQUEST_PRICE_RANGE[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [categories, setCategories] = useState("");
+
+  const handleChangeCategories = (values: string[]) => {
+    setCategories(values.join(","));
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -58,13 +66,13 @@ const APICreatePage = () => {
     }
   }, [logout]);
 
-  const onSubmit = async (values: GetAllProjectsParams) => {
+  const onSubmit = async (values: CreateProjectRequest) => {
     if (!isAPINameFormatValid(values.alias)) {
       notification.error({
         message: "API name should not contain special characters",
       });
     } else {
-      const transformedValues: GetAllProjectsParams = {
+      const transformedValues: CreateProjectRequest = {
         ...values,
         description:
           !values.description || values.description === ""
@@ -74,9 +82,8 @@ const APICreatePage = () => {
         input: "-",
         subscribeCost: subscribeFee,
         costPerRequest: requestFee,
+        category: categories,
       };
-
-      console.log(transformedValues);
 
       try {
         setIsLoading(true);
@@ -115,13 +122,13 @@ const APICreatePage = () => {
             <Typography.Title level={4}>Create API</Typography.Title>
 
             <Divider className="!my-4" />
-            <Form onFinish={(values: GetAllProjectsParams) => onSubmit(values)}>
+            <Form onFinish={(values: CreateProjectRequest) => onSubmit(values)}>
               <Row gutter={[24, 0]} className="mb-6">
                 <Col span={24} md={{ span: 8 }} className="mb-6">
                   <div>
                     <Typography.Title
                       level={5}
-                      className="!text-lg !font-medium !mb-0"
+                      className="!text-sm !font-normal !mb-0"
                     >
                       Owner
                     </Typography.Title>
@@ -150,7 +157,7 @@ const APICreatePage = () => {
 
                 <Col span={24} md={{ span: 16 }}>
                   <label
-                    className='after:content-["*"] after:ml-1 after:text-red-500 !text-lg font-medium'
+                    className='after:content-["*"] after:ml-1 after:text-red-500 !text-sm font-normal'
                     htmlFor="api-name-input"
                   >
                     API alias
@@ -170,7 +177,7 @@ const APICreatePage = () => {
 
                 <Col span={24}>
                   <label
-                    className='after:content-["*"] after:ml-1 after:text-red-500 !text-lg font-medium'
+                    className='after:content-["*"] after:ml-1 after:text-red-500 !text-sm font-normal'
                     htmlFor="api-display-name-input"
                   >
                     API name
@@ -190,7 +197,7 @@ const APICreatePage = () => {
 
                 <Col span={24}>
                   <label
-                    className="!text-lg font-medium"
+                    className="!text-sm font-normal"
                     htmlFor="api-description-input"
                   >
                     Description
@@ -205,9 +212,30 @@ const APICreatePage = () => {
                   </Form.Item>
                 </Col>
 
+                <Col span={24} className="mb-6">
+                  <label
+                    className="!text-sm font-normal"
+                    htmlFor="api-categories-input"
+                  >
+                    Categories
+                  </label>
+                  <Select
+                    id="api-categories-input"
+                    mode="multiple"
+                    allowClear
+                    placeholder="Select categories"
+                    className="bg-slate-100 border-none text-lg px-2 py-1 outline-none w-full rounded-r-md rounded-bl-md"
+                    onChange={handleChangeCategories}
+                    options={Object.entries(apiTags).map((entry) => ({
+                      value: entry[0],
+                      label: entry[1],
+                    }))}
+                  />
+                </Col>
+
                 <Col span={24} md={{ span: 12 }} className="mb-6">
                   <label
-                    className="!m-0 !text-lg font-medium"
+                    className="!m-0 !text-sm font-normal"
                     htmlFor="api-price-input"
                   >
                     Subscribe fee (per day)
@@ -243,7 +271,7 @@ const APICreatePage = () => {
 
                 <Col span={24} md={{ span: 12 }} className="mb-6">
                   <label
-                    className="!m-0 !text-lg font-medium"
+                    className="!m-0 !text-sm font-normal"
                     htmlFor="api-request-price-input"
                   >
                     Execute fee (per request)

@@ -25,12 +25,7 @@ import {
 } from "../../../constants/mockData";
 import { defaultMD } from "../../api-workspace/documentation";
 import { Card } from "../../../components/Card";
-import {
-  CheckCircleOutlined,
-  InfoCircleOutlined,
-  StarFilled,
-  StarOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useMemo, useState } from "react";
 // import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
@@ -40,6 +35,8 @@ import { apiRepoType } from "../../explore";
 import { useAuthContext } from "../../../context/auth";
 import { CartesianAxisProps, TooltipProps } from "recharts";
 import { LineChart } from "../../../components/LineChart";
+import StarRating from "react-svg-star-rating";
+import { client } from "../../../libs/api";
 
 const CustomAxisTick = ({
   x,
@@ -113,7 +110,10 @@ const APIDetailPage = () => {
   const { query, push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const [isStarred, setIsStarred] = useState(false);
+
+  const [currRating, setCurrRating] = useState(0);
+  const [isRateSubmitting, setIsRateSubmitting] = useState(false);
+
   const [isSubscribed] = useState(false);
   const { isAuthenticated } = useAuthContext();
 
@@ -140,6 +140,28 @@ const APIDetailPage = () => {
   //   onClose: closeSubscribeDialog,
   // } = useDisclosure();
 
+  const onRatingSubmit = async () => {
+    try {
+      setIsRateSubmitting(true);
+      const res = await client.rateProject(
+        query.ownerId as string,
+        query.alias as string,
+        { stars: currRating }
+      );
+      if (res?.data) {
+        notification.success({
+          message: "Rating submitted successfully",
+        });
+      }
+    } catch (error: any) {
+      notification.error({
+        message: String(error) || "Could not submit rating",
+      });
+    } finally {
+      setIsRateSubmitting(false);
+    }
+  };
+
   const onAddToCart = () => {
     setIsAddingToCart(true);
     setTimeout(() => {
@@ -162,7 +184,7 @@ const APIDetailPage = () => {
         ) : (
           <>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <Typography.Title level={2} className="!m-0">
+              <Typography.Title level={2} className="!m-0 shrink-0">
                 <button
                   onClick={() => {
                     if (currentAPI.ownerId) {
@@ -179,27 +201,29 @@ const APIDetailPage = () => {
               </Typography.Title>
 
               {isAuthenticated ? (
-                <Button
-                  className="!p-0 !text-sm !ring-none !bg-transparent !text-slate-700"
-                  label={
-                    <Card className="flex items-center" shadowSize="sm">
-                      {isStarred ? (
-                        <StarFilled className="text-lg !text-yellow-400 mx-2 h-[18px]" />
-                      ) : (
-                        <StarOutlined className="text-lg !text-yellow-400 mx-2 h-[18px]" />
-                      )}
-                      <div className="border-l px-2 py-1">
-                        {isStarred ? "Starred" : "Star"}
-                      </div>
-                    </Card>
-                  }
-                  onClick={() => {
-                    setIsStarred(!isStarred);
-                  }}
-                />
+                <div className="w-full flex items-center gap-2">
+                  <div className="relative w-full">
+                    <div className="!m-0 w-[120px] h-max -rotate-90 flex justify-center items-center absolute !right-0 !-bottom-[60px]">
+                      <StarRating
+                        handleOnClick={(rating) => setCurrRating(rating)}
+                        starClassName="rotate-90"
+                        size={24}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    disabled={currRating === 0 || isRateSubmitting}
+                    className="!p-0 !text-sm !ring-none !bg-transparent !text-slate-700"
+                    label={
+                      <Card className="flex items-center" shadowSize="sm">
+                        <div className="border-l px-2 py-1">Submit</div>
+                      </Card>
+                    }
+                    onClick={onRatingSubmit}
+                  />
+                </div>
               ) : null}
             </div>
-
             <Row className="my-6 md:my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
                 <ApiRepo
