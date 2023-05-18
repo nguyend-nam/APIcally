@@ -71,18 +71,27 @@ const UserTopUpPage = () => {
               />
             </Col>
             <Col span={24} xl={{ span: 16 }}>
-              <Card shadowSize="sm" className="p-4">
-                <Text as="h2" className="text-lg !m-0 capitalize">
+              <Card
+                shadowSize="sm"
+                className="p-4 flex flex-col items-center bg-cover bg-right"
+                style={{
+                  backgroundImage: `url(/img/api-status-bg.png)`,
+                }}
+              >
+                <Text as="h2" className="text-lg text-center !m-0 capitalize">
                   Top up
                 </Text>
-                <Form className="mb-2" onFinish={onSubmit}>
+                <Form
+                  className="mt-2 flex flex-col items-center min-w-full md:min-w-[300px]"
+                  onFinish={onSubmit}
+                >
                   <label
-                    htmlFor="old-password-input"
-                    className="text-lg text-primary"
+                    htmlFor="amount-input"
+                    className="text-lg text-primary w-full"
                   >
                     Amount
                   </label>
-                  <div className="flex justify-between gap-2 items-center">
+                  <div className="flex justify-between gap-2 items-center w-full">
                     <Form.Item
                       name="amount"
                       rules={[{ required: true, message: "Required" }]}
@@ -92,17 +101,19 @@ const UserTopUpPage = () => {
                         type="number"
                         id="amount-input"
                         fullWidth
-                        placeholder="Enter old password..."
+                        placeholder="Enter top up amount..."
                         max={100}
                         min={0}
                         step={0.1}
+                        className="!ring-2 !ring-info"
                       />
                     </Form.Item>
+                    <Text className="text-2xl font-light">$</Text>
                   </div>
 
                   <Button
                     label="Confirm"
-                    className="w-[125px]"
+                    className="w-[125px] mt-4"
                     type="submit"
                     isLoading={isSubmitting}
                   />

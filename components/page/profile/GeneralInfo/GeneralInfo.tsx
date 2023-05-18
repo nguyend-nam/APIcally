@@ -17,14 +17,14 @@ import { ROUTES } from "../../../../constants/routes";
 // import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
 
 interface Props {
-  username?: string;
+  // username?: string;
   fullname?: string;
   showActions?: boolean;
   className?: string;
 }
 
 export const GeneralInfo = ({
-  username,
+  // username,
   fullname,
   showActions = true,
   className,
@@ -47,9 +47,9 @@ export const GeneralInfo = ({
         <Typography.Title level={3} className="!mb-0 !font-medium">
           {fullname || user?.username || "-"}
         </Typography.Title>
-        <Typography.Text className="text-base">
+        {/* <Typography.Text className="text-base">
           {username || user?.username || "-"}
-        </Typography.Text>
+        </Typography.Text> */}
 
         {isAuthenticated ? (
           <Button

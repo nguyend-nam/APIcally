@@ -29,18 +29,16 @@ const OtherUserPage = () => {
   }, [replace, query.username, isAuthenticated]);
 
   const ownedAPIsByUser = apiReposData.filter(
-    (a) => a.username === query.username
+    (a) => a.ownerId === query.username
   );
 
   const userData = useMemo(() => {
     if (ownedAPIsByUser.length) {
       return {
-        username: ownedAPIsByUser[0].username,
-        fullname: ownedAPIsByUser[0].author,
+        fullname: ownedAPIsByUser[0].ownerId,
       };
     }
     return {
-      username: "nguyend-nam",
       fullname: "Dinh Nam Nguyen",
     };
   }, [ownedAPIsByUser]);
@@ -81,7 +79,6 @@ const OtherUserPage = () => {
         <Row gutter={[20, 20]}>
           <Col span={24} xl={{ span: 8 }}>
             <GeneralInfo
-              username={userData?.username}
               fullname={userData?.fullname}
               showActions={false}
               className="block md: sticky top-[96px]"
