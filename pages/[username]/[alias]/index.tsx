@@ -114,10 +114,11 @@ const APIDetailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
+  const [isSubscribed] = useState(false);
   const { isAuthenticated } = useAuthContext();
 
   const currentAPI = apiReposData.find(
-    (a) => a.alias === query.alias && a.username === query.username
+    (a) => a.alias === query.alias && a.ownerId === query.username
   );
 
   const allAddedToCartApisRepos = useMemo(() => {
@@ -151,11 +152,11 @@ const APIDetailPage = () => {
     <>
       <Head>
         <title>
-          {currentAPI?.author}/{currentAPI?.name} | APIcally
+          {currentAPI?.ownerId}/{currentAPI?.name} | APIcally
         </title>
       </Head>
 
-      <Layout hasSearch pageTitle={currentAPI?.author || "-"}>
+      <Layout hasSearch pageTitle={currentAPI?.ownerId || "-"}>
         {currentAPI === undefined ? (
           <Typography.Title level={3}>API not found</Typography.Title>
         ) : (
@@ -164,13 +165,13 @@ const APIDetailPage = () => {
               <Typography.Title level={2} className="!m-0">
                 <button
                   onClick={() => {
-                    if (currentAPI.username) {
-                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
+                    if (currentAPI.ownerId) {
+                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.ownerId));
                     }
                   }}
                   className="font-normal text-2xl no-underline !text-black"
                 >
-                  {currentAPI?.author}/
+                  {currentAPI?.ownerId}/
                 </button>
                 <span className="text-primary text-2xl !font-semibold">
                   {currentAPI?.name}
@@ -216,12 +217,13 @@ const APIDetailPage = () => {
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    {currentAPI.subscribeStatus ? (
+                    {/* {currentAPI?.subscribeStatus ? ( */}
+                    {isSubscribed ? (
                       <Spin spinning={isLoading}>
                         <div className="flex justify-between !items-start">
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
                             You{" "}
-                            {currentAPI.username === "nguyend-nam"
+                            {currentAPI.ownerId === "nguyend-nam"
                               ? "owned"
                               : "already subscribed to"}{" "}
                             this API
@@ -234,10 +236,10 @@ const APIDetailPage = () => {
                             onClick={() => {
                               setIsLoading(!isLoading);
                               setTimeout(() => {
-                                if (currentAPI.username && currentAPI.alias)
+                                if (currentAPI.ownerId && currentAPI.alias)
                                   push(
                                     ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
-                                      currentAPI.username,
+                                      currentAPI.ownerId,
                                       currentAPI.alias
                                     )
                                   );

@@ -31,4 +31,5 @@ export const ROUTES = {
   PROFILE_OTHER_USER: (alias: string) => `/${alias}`,
   CART: "/profile/cart",
   SETTINGS: "/profile/settings",
+  TOP_UP: "/profile/top-up",
 };

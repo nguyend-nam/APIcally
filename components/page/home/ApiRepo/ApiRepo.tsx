@@ -2,7 +2,7 @@ import {
   BookOutlined,
   UserAddOutlined,
   StarOutlined,
-  CheckCircleOutlined,
+  // CheckCircleOutlined,
   CaretLeftOutlined,
 } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
@@ -15,7 +15,8 @@ import { Card } from "../../../Card";
 import { TagsArray } from "../../../TagsArray";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
 import cx from "classnames";
-import { useAuthContext } from "../../../../context/auth";
+// import { useAuthContext } from "../../../../context/auth";
+import { apiTagTypes } from "../../../../constants/tagTypes";
 
 export const ApiRepo = ({
   data,
@@ -40,7 +41,7 @@ export const ApiRepo = ({
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
-  const { isAuthenticated } = useAuthContext();
+  // const { isAuthenticated } = useAuthContext();
 
   return (
     <Card
@@ -62,60 +63,63 @@ export const ApiRepo = ({
             <a
               className="!text-primary inline items-center"
               onClick={() => {
-                if (data?.username && data?.alias && isLinkActive) {
+                if (data?.ownerId && data?.alias && isLinkActive) {
                   push(
-                    ROUTES.API_WORKSPACE_API_DETAIL(data.username, data.alias)
+                    ROUTES.API_WORKSPACE_API_DETAIL(data?.ownerId, data?.alias)
                   );
                 }
               }}
             >
               <BookOutlined className="text-base -translate-y-[5px] !text-gray-400 mr-1" />
-              {data.name}
+              {data?.name}
             </a>
-            {data.subscribeStatus && isAuthenticated ? (
+            {/* {data?.subscribeStatus && isAuthenticated ? (
               <Tooltip title="Subscribed" className="ml-1">
                 <CheckCircleOutlined className="text-base -translate-y-[5px] !text-green-500 mr-1" />
               </Tooltip>
-            ) : null}
+            ) : null} */}
           </Typography.Title>
 
           <div className="flex gap-4">
-            {data.statistics?.subscribes ? (
+            {data?.subscriber ? (
               <Tooltip
                 placement={isMobile || !isStatsAlignRight ? "right" : "left"}
                 title="Subscribers"
                 className="flex flex-col items-center w-6 h-max"
               >
                 <UserAddOutlined className="text-xl !text-indigo-400" />
-                <div className="!text-xs">{data.statistics.subscribes}</div>
+                <div className="!text-xs">{data?.subscriber}</div>
               </Tooltip>
             ) : null}
 
-            {data.statistics?.starGazers ? (
+            {data?.stars ? (
               <Tooltip
                 placement={isMobile || !isStatsAlignRight ? "right" : "left"}
                 title="Stars"
                 className="flex flex-col items-center w-6 h-max"
               >
                 <StarOutlined className="text-xl !text-amber-300" />
-                <div className="!text-xs">{data.statistics.starGazers}</div>
+                <div className="!text-xs">{data?.stars}</div>
               </Tooltip>
             ) : null}
           </div>
         </div>
 
-        <TagsArray tags={data.tags || []} visibleTagsCount={2} />
+        <TagsArray
+          tags={(data?.category?.split(",") as apiTagTypes[]) || []}
+          visibleTagsCount={2}
+        />
       </div>
 
       {showOwner ? (
         <div className="!mt-2 h-6 relative flex items-center">
           <button
             onClick={() =>
-              push(ROUTES.PROFILE_OTHER_USER(data.username as string))
+              push(ROUTES.PROFILE_OTHER_USER(data?.ownerId as string))
             }
             className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-700"
           >
-            {data.author}
+            {data?.ownerId}
           </button>
           <Divider className="!my-2" />
         </div>
@@ -125,8 +129,8 @@ export const ApiRepo = ({
         <Typography.Paragraph className="!text-slate-500 !m-0 !my-2">
           <p>
             {isDescriptionTruncated
-              ? truncate(data.description || "", 100)
-              : data.description}
+              ? truncate(data?.description || "", 100)
+              : data?.description}
           </p>
         </Typography.Paragraph>
       ) : null}
@@ -134,14 +138,12 @@ export const ApiRepo = ({
       {showPrice ? (
         <div
           className={`relative !text-base md:!text-lg font-semibold rounded-l -ml-5 pr-7 md:pr-8 pl-5 py-1 bg-gradient-to-r w-max text-white ${
-            data.statistics?.price
+            data?.subscribeCost
               ? "from-indigo-500 to-sky-400"
               : "from-green-500 to-emerald-300"
           }`}
         >
-          {data.statistics?.price
-            ? formatCurrency(data.statistics?.price)
-            : "Free"}
+          {data?.subscribeCost ? formatCurrency(data?.subscribeCost) : "Free"}
           <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
         </div>
       ) : null}

@@ -20,3 +20,27 @@ export interface CheckTokenData {
 }
 
 export interface CheckTokenResponse extends BaseResponse<CheckTokenData> {}
+
+export interface APIProjectItem {
+  documentation: string;
+  description: string;
+  ownerId: string;
+  input: string;
+  createdAt: number;
+  name: string;
+  alias: string;
+  id: string;
+  subscribeCost: number;
+  costPerRequest: number;
+  category: string;
+  fileNames: string[];
+  updatedAt: number;
+  stars: number;
+  subscriber: number;
+}
+
+export interface ScanAllProjectsResponse
+  extends BaseResponse<APIProjectItem[]> {}
+
+export interface GetSubscribedProjectsResponse
+  extends BaseResponse<APIProjectItem[]> {}

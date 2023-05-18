@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import cx from "classnames";
 
 export interface InputProps
@@ -61,12 +60,6 @@ export const Input = (props: InputProps) => {
     ...rest
   } = props;
 
-  const [internalValue, setInternalValue] = useState(value);
-
-  useEffect(() => {
-    setInternalValue(value);
-  }, [value]);
-
   return (
     <div className={`${fullWidth ? "w-full" : ""}`}>
       <input
@@ -76,7 +69,7 @@ export const Input = (props: InputProps) => {
           getBorderRadius(borderRadius),
           className
         )}
-        value={internalValue}
+        value={value}
         onFocus={onFocus}
         onBlur={onBlur}
         {...rest}

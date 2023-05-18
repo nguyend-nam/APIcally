@@ -1,8 +1,8 @@
 import {
   CheckCircleTwoTone,
   CodeTwoTone,
-  EnvironmentTwoTone,
-  MailTwoTone,
+  // EnvironmentTwoTone,
+  // MailTwoTone,
   StarTwoTone,
   UserOutlined,
 } from "@ant-design/icons";
@@ -29,7 +29,7 @@ export const GeneralInfo = ({
   showActions = true,
   className,
 }: Props) => {
-  const { logout, user } = useAuthContext();
+  const { logout, user, isAuthenticated } = useAuthContext();
   const { push } = useRouter();
 
   return (
@@ -45,14 +45,20 @@ export const GeneralInfo = ({
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">
-          {fullname || user?.username || "Dinh Nam Nguyen"}
+          {fullname || user?.username || "-"}
         </Typography.Title>
         <Typography.Text className="text-base">
-          {username || user?.username || "nguyend-nam"}
+          {username || user?.username || "-"}
         </Typography.Text>
-        <Typography.Paragraph className="mt-4 !text-slate-500">
-          They say &quot;garbage can&quot;, not &quot;garbage cannot&quot;
-        </Typography.Paragraph>
+
+        {isAuthenticated ? (
+          <Button
+            appearance="outline"
+            label="Top up"
+            className="w-full !text-base mt-4"
+            onClick={() => push(ROUTES.TOP_UP)}
+          />
+        ) : null}
 
         <Divider
           className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
@@ -87,7 +93,7 @@ export const GeneralInfo = ({
               <span className="!text-sm">10</span>
             </div>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <div className="flex items-center gap-3 text-base">
               <Tooltip title="Location">
                 <EnvironmentTwoTone twoToneColor="#2D31FA" />
@@ -109,7 +115,7 @@ export const GeneralInfo = ({
                 </a>
               </span>
             </div>
-          </Col>
+          </Col> */}
         </Row>
 
         {/* <Divider

@@ -1,10 +1,12 @@
-import { Empty } from "antd";
-import { apiReposData } from "../../constants/mockData";
+import { Empty, Spin } from "antd";
+// import { apiReposData } from "../../constants/mockData";
 import { Text } from "../Text";
 import { ApiRepo } from "../page/home/ApiRepo";
 import { useMemo } from "react";
 import cx from "classnames";
 import { apiRepoType } from "../../pages/explore";
+import { useFetchWithCache } from "../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../libs/api";
 
 interface Props {
   searchQuery?: string;
@@ -19,12 +21,21 @@ export const OwnedApiRepoList = ({
   apiList = [],
   username = "",
 }: Props) => {
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.SCAN_OWNED_PROJECTS_BY_USER(username)],
+    () => client.scanOnwedProjectsOfUser(username)
+  );
+
   const internalApiRepos = useMemo(() => {
     if (apiList.length) {
       return apiList;
     }
-    return apiReposData;
-  }, [apiList]);
+
+    if (loading || !data || !data?.data) {
+      return [];
+    }
+    return data.data;
+  }, [apiList, data, loading]);
 
   const displayedApiRepos = useMemo(() => {
     return searchQuery
@@ -33,21 +44,28 @@ export const OwnedApiRepoList = ({
             (a) =>
               (a.alias && a.alias.includes(searchQuery)) ||
               (a.name && a.name.includes(searchQuery)) ||
-              (a.author && a.author.includes(searchQuery)) ||
-              (a.description && a.description.includes(searchQuery)) ||
-              (a.username && a.username.includes(searchQuery))
+              (a.ownerId && a.ownerId.includes(searchQuery)) ||
+              (a.description && a.description.includes(searchQuery))
           )
-          .filter((a) => a.username === username)
-      : internalApiRepos.filter((a) => a.username === username);
+          .filter((a) => a.ownerId === username)
+      : internalApiRepos.filter((a) => a.ownerId === username);
   }, [internalApiRepos, searchQuery, username]);
 
-  if (displayedApiRepos.length === 0) {
+  if (loading) {
+    return (
+      <div className={cx("h-[350px] flex flex-col justify-center", className)}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (!data || (data?.data || []).length === 0) {
     return (
       <div className={cx("h-[350px] flex flex-col justify-center", className)}>
         <Empty
           description={
             <Text as="div" className="text-base">
-              No subscribed APIs found
+              No APIs found of user {username}
               {searchQuery
                 ? `with keyword "
               ${searchQuery}"`

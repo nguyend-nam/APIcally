@@ -37,6 +37,8 @@ import {
 } from "../../utils/sort";
 import cx from "classnames";
 import { useAuthContext } from "../../context/auth";
+import { useFetchWithCache } from "../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../libs/api";
 
 export type Statistic = {
   subscribes?: number;
@@ -45,15 +47,31 @@ export type Statistic = {
 };
 
 export interface apiRepoType {
-  id?: string;
-  subscribeStatus?: boolean;
-  name?: string;
-  alias?: string;
-  author?: string;
-  username?: string;
-  description?: string;
-  statistics?: Statistic;
-  tags?: apiTagTypes[];
+  // id?: string;
+  // subscribeStatus?: boolean;
+  // name?: string;
+  // alias?: string;
+  // author?: string;
+  // username?: string;
+  // description?: string;
+  // statistics?: Statistic;
+  // tags?: apiTagTypes[];
+
+  documentation: string;
+  description: string;
+  ownerId: string;
+  input: string;
+  createdAt?: number;
+  name: string;
+  alias: string;
+  id: string;
+  subscribeCost: number;
+  costPerRequest: number;
+  category: string;
+  fileNames: string[];
+  updatedAt?: number;
+  subscriber: number;
+  stars: number;
 }
 
 const sorterCategories = ["price", "stars", "subscribers"];
@@ -71,7 +89,15 @@ const ExplorePage = () => {
   const { query } = useRouter();
   const isMobile = useIsMobile();
   const { isAuthenticated } = useAuthContext();
-  const [apiRepos, setApiRepos] = useState<apiRepoType[]>(apiReposData);
+
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.SCAN_ALL_PROJECTS],
+    () => client.scanAllProjects()
+  );
+
+  const [apiRepos, setApiRepos] = useState<apiRepoType[] | []>(
+    loading ? [] : (data?.data as apiRepoType[])
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // filter states
@@ -145,17 +171,17 @@ const ExplorePage = () => {
       appliedPriceFilter[1] === FULL_PRICE_FILTER[1] &&
       !appliedSubscribedFilter
     ) {
-      setApiRepos(apiReposData);
+      setApiRepos(loading ? [] : (data?.data as apiRepoType[]));
     } else {
-      const filteredApiRepos = apiReposData
-        .filter((a) => {
+      const filteredApiRepos = (loading ? [] : (data?.data as apiRepoType[]))
+        ?.filter((a) => {
           if (appliedTagFilter.length === 0) {
             return true;
           }
 
           let has = false;
-          (a.tags || []).forEach((t: apiTagTypes) => {
-            if (appliedTagFilter.includes(t)) {
+          (a.category.split(",") || []).forEach((t) => {
+            if (appliedTagFilter.includes(t as apiTagTypes)) {
               has = true;
             }
           });
@@ -163,10 +189,10 @@ const ExplorePage = () => {
         })
         .filter((a) => {
           let has = false;
-          if (a.statistics != undefined && a.statistics.price !== undefined) {
+          if (/*a.statistics != undefined &&*/ a.subscribeCost !== undefined) {
             if (
-              a.statistics.price >= appliedPriceFilter[0] &&
-              a.statistics.price <= appliedPriceFilter[1]
+              a.subscribeCost >= appliedPriceFilter[0] &&
+              a.subscribeCost <= appliedPriceFilter[1]
             ) {
               has = true;
             }
@@ -178,10 +204,11 @@ const ExplorePage = () => {
             return true;
           }
 
-          let has = false;
-          if (a.subscribeStatus) {
-            has = true;
-          }
+          const has = true;
+          // let has = false;
+          // if (a.subscribeStatus) {
+          // has = true;
+          // }
           return has;
         });
 
@@ -192,6 +219,8 @@ const ExplorePage = () => {
     appliedPriceFilter,
     appliedSubscribedFilter,
     setApiRepos,
+    loading,
+    data?.data,
   ]);
 
   const sortsRenderer = useMemo(() => {
@@ -418,14 +447,14 @@ const ExplorePage = () => {
           </div>
 
           <div className="p-4 md:p-8 pb-0 w-full max-w-2xl mx-auto">
-            {query.query && apiRepos.length ? (
+            {query.query && (apiRepos || []).length ? (
               <div>
-                Showing {apiRepos.length} results for &quot;
+                Showing {(apiRepos || []).length} results for &quot;
                 {query.query}
                 &quot;
               </div>
             ) : (
-              <div>Showing {apiRepos.length} results</div>
+              <div>Showing {(apiRepos || []).length} results</div>
             )}
 
             <div className="flex flex-col items-center gap-6 mt-2 md:mt-4 w-full">

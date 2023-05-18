@@ -7,6 +7,7 @@ export type apiTagTypes =
   | "environment"
   | "entertainment"
   | "healthcare"
+  | "language"
   | "social-network"
   | "sport"
   | "technology"
@@ -22,6 +23,7 @@ export const apiTags: Record<apiTagTypes, string> = {
   entertainment: "Entertainment",
   environment: "Environment",
   healthcare: "Healthcare",
+  language: "Language",
   "social-network": "Social network",
   sport: "Sport",
   technology: "Technology",

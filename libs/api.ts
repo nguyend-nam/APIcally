@@ -1,9 +1,17 @@
 import fetcher from "./fetcher";
 import FormData from "form-data";
-import { BaseResponse, CheckTokenResponse, GetTokenResponse } from "./types";
+import {
+  BaseResponse,
+  CheckTokenResponse,
+  GetSubscribedProjectsResponse,
+  GetTokenResponse,
+  ScanAllProjectsResponse,
+} from "./types";
 
 const AUTH_BASE_API_URL =
   process.env.AUTH_BASE_API_URL || "http://localhost:4000";
+const API_BASE_API_URL =
+  process.env.API_BASE_API_URL || "http://localhost:3001";
 const PYTHON_BASE_API_URL = process.env.PYTHON_BASE_API_URL;
 
 export interface GetAllProjectsParams {
@@ -28,6 +36,10 @@ export const GET_PATHS = {
   GET_PROJECT_BY_ALIAS: (ownerId: string, alias: string) =>
     `/${ownerId}/get/project/${alias}`,
   UPLOAD_PROJECT_FILES: (ownerId: string) => `/${ownerId}/post/project/upload`,
+  SCAN_ALL_PROJECTS: "projects/no-auth",
+  SCAN_OWNED_PROJECTS_BY_USER: (ownerId: string) =>
+    `projects/no-auth/${ownerId}`,
+  GET_SUBSCRIBED_PROJECTS: "projects/subscribed",
 };
 
 class Client {
@@ -99,6 +111,46 @@ class Client {
     });
   }
 
+  public topUp(amount: number) {
+    return fetcher<BaseResponse<number>>(`${AUTH_BASE_API_URL}/v1/balance`, {
+      method: "POST",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ amount }),
+    });
+  }
+
+  public scanAllProjects() {
+    return fetcher<ScanAllProjectsResponse>(`${API_BASE_API_URL}/no-auth`, {
+      headers: {
+        ...this.headers,
+      },
+    });
+  }
+
+  public scanOnwedProjectsOfUser(ownerId: string) {
+    return fetcher<ScanAllProjectsResponse>(
+      `${API_BASE_API_URL}/no-auth/${ownerId}`,
+      {
+        headers: {
+          ...this.headers,
+        },
+      }
+    );
+  }
+
+  public getSubscribedProjects() {
+    return fetcher<GetSubscribedProjectsResponse>(
+      `${API_BASE_API_URL}/v1/subscribe`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
   public createProject(params: GetAllProjectsParams) {
     return fetcher<any>(`${PYTHON_BASE_API_URL}`, {
       method: "POST",
@@ -107,14 +159,6 @@ class Client {
       },
       body: JSON.stringify(params),
       mode: "no-cors",
-    });
-  }
-
-  public getProjects() {
-    return fetcher<any>(`${PYTHON_BASE_API_URL}/`, {
-      headers: {
-        ...this.privateHeaders,
-      },
     });
   }
 

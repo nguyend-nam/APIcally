@@ -67,7 +67,7 @@ const UserPage = () => {
       <OwnedApiRepoList
         searchQuery={searchQuerySubscribed}
         className="!h-max"
-        username="nguyend-nam"
+        username="nammm"
       />
     ),
     subscribed: (

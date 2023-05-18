@@ -1,8 +1,12 @@
-import { apiReposData } from "../../constants/mockData";
+// import { apiReposData } from "../../constants/mockData";
 import { subscribersAscSorter } from "../../utils/sort";
 import { Card } from "../Card";
 import { ApiRepo } from "../page/home/ApiRepo";
 import cx from "classnames";
+import { useFetchWithCache } from "../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../libs/api";
+import { Spin } from "antd";
+import { apiRepoType } from "../../pages/explore";
 
 export const rankColor = [
   {
@@ -61,10 +65,24 @@ const RankRender = ({ rank }: { rank: number }) => {
 };
 
 export const TopSubscribedAPIs = () => {
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.SCAN_ALL_PROJECTS],
+    () => client.scanAllProjects()
+  );
+
+  if (loading) {
+    return (
+      <div className="w-full h-36 !bg-primary">
+        <div className="flex items-center justify-center text-white">
+          <Spin size="large" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full overflow-auto">
       <div className="flex gap-4 items-stretch">
-        {apiReposData
+        {data?.data
           .sort(subscribersAscSorter)
           .slice(0, 5)
           .map((d, i) => (
@@ -74,7 +92,7 @@ export const TopSubscribedAPIs = () => {
             >
               <RankRender rank={i + 1} />
               <ApiRepo
-                data={d}
+                data={d as apiRepoType}
                 className="!min-w-[290px] md:!min-w-[350px] bg-white flex flex-col justify-between"
                 isStatsAlignRight={false}
                 showDescription={false}

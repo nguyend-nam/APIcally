@@ -12,6 +12,7 @@ const categories: { key: apiTagTypes; img: string }[] = [
   { key: "entertainment", img: "category-entertainment" },
   { key: "environment", img: "category-environment" },
   { key: "healthcare", img: "category-healthcare" },
+  { key: "language", img: "category-language" },
   { key: "social-network", img: "category-social-networks" },
   { key: "sport", img: "category-sport" },
   { key: "technology", img: "category-technology" },
@@ -44,12 +45,12 @@ export const CategoryCollection = () => {
   return (
     <div className="overflow-auto max-w-full !pb-4">
       <div className="flex flex-nowrap gap-2">
-        {categories.slice(0, categories.length / 2 + 1).map((t) => (
+        {categories.slice(0, categories.length / 2).map((t) => (
           <CategoryButton key={t.key} t={t} />
         ))}
       </div>
       <div className="flex flex-nowrap gap-2 mt-2">
-        {categories.slice(categories.length / 2 + 1).map((t) => (
+        {categories.slice(categories.length / 2).map((t) => (
           <CategoryButton key={t.key} t={t} />
         ))}
       </div>
