@@ -21,7 +21,7 @@ const HomePage = () => {
   const [searchQuerySubscribed, setSearchQuerySubscribed] =
     useState<string>("");
   const [searchQueryCreated, setSearchQueryCreated] = useState<string>("");
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
   return (
     <>
@@ -87,8 +87,7 @@ const HomePage = () => {
                   />
                   <OwnedApiRepoList
                     searchQuery={searchQueryCreated}
-                    className="!h-max !max-h-[350px]"
-                    username="nammm"
+                    username={user?.username}
                   />
                 </Card>
               </Col>

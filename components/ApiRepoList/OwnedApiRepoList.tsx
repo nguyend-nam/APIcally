@@ -12,7 +12,7 @@ interface Props {
   searchQuery?: string;
   className?: string;
   apiList?: apiRepoType[];
-  username: string;
+  username?: string;
 }
 
 export const OwnedApiRepoList = ({

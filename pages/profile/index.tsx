@@ -20,7 +20,7 @@ const UserPage = () => {
   const [activeTabKey, setActiveTabKey] = useState<tabTypes>("owned");
   const isMobile = useIsMobile();
   const { replace } = useRouter();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, user } = useAuthContext();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -47,7 +47,7 @@ const UserPage = () => {
     {
       tab: (
         <Text as="h2" className="mb-0">
-          Owned APIs
+          Created APIs
         </Text>
       ),
       key: "owned",
@@ -67,7 +67,7 @@ const UserPage = () => {
       <OwnedApiRepoList
         searchQuery={searchQuerySubscribed}
         className="!h-max"
-        username="nammm"
+        username={user?.username}
       />
     ),
     subscribed: (

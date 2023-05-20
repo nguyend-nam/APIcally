@@ -79,10 +79,7 @@ const UserSettingsPage = () => {
         <Layout pageTitle="Settings">
           <Row gutter={[20, 20]}>
             <Col span={24} xl={{ span: 8 }}>
-              <GeneralInfo
-                className="block md:sticky md:top-[96px]"
-                showActions={false}
-              />
+              <GeneralInfo className="block md:sticky md:top-[96px]" />
             </Col>
             <Col span={24} xl={{ span: 16 }}>
               {renderStep}

@@ -1,16 +1,17 @@
-import { Card as AntCard, Col, Row } from "antd";
+import { Card as AntCard, Col, Row, Spin } from "antd";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import { Layout } from "../../components/Layout";
 import { GeneralInfo } from "../../components/page/profile/GeneralInfo";
 import { Text } from "../../components/Text";
 import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList";
 import { useIsMobile } from "../../hooks/useIsMobile";
-import { apiReposData } from "../../constants/mockData";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
 import { useAuthContext } from "../../context/auth";
+import { useFetchWithCache } from "../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../libs/api";
 
 export type tabTypes = "owned";
 
@@ -20,28 +21,46 @@ const OtherUserPage = () => {
   const [activeTabKey, setActiveTabKey] = useState<tabTypes>("owned");
   const isMobile = useIsMobile();
   const { query, replace } = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
   useEffect(() => {
-    if (isAuthenticated && query.username && query.username === "nguyend-nam") {
+    if (
+      isAuthenticated &&
+      query?.username &&
+      user?.username &&
+      query.username === user.username
+    ) {
       replace(ROUTES.PROFILE);
     }
-  }, [replace, query.username, isAuthenticated]);
+  }, [replace, query.username, isAuthenticated, user?.username]);
 
-  const ownedAPIsByUser = apiReposData.filter(
-    (a) => a.ownerId === query.username
+  const { data, loading } = useFetchWithCache(
+    [GET_PATHS.GET_USER_INFO(query.username as string)],
+    () => client.getUserInfo(query.username as string)
   );
 
-  const userData = useMemo(() => {
-    if (ownedAPIsByUser.length) {
-      return {
-        fullname: ownedAPIsByUser[0].ownerId,
-      };
-    }
-    return {
-      fullname: "Dinh Nam Nguyen",
-    };
-  }, [ownedAPIsByUser]);
+  if (
+    loading ||
+    !data ||
+    !query?.username ||
+    typeof query?.username !== "string"
+  ) {
+    return (
+      <>
+        <Head>
+          <title>User profile | APIcally</title>
+        </Head>
+
+        <Layout hasSearch pageTitle="User profile">
+          <div className="text-center">
+            <Spin size="large" />
+          </div>
+        </Layout>
+      </>
+    );
+  }
+
+  console.log(data);
 
   const onTabChange = (key: string) => {
     setActiveTabKey(key as tabTypes);
@@ -51,7 +70,7 @@ const OtherUserPage = () => {
     {
       tab: (
         <Text as="h2" className="mb-0">
-          Owned APIs
+          Created APIs
         </Text>
       ),
       key: "owned",
@@ -63,7 +82,6 @@ const OtherUserPage = () => {
       <OwnedApiRepoList
         searchQuery={searchQuerySubscribed}
         className="!h-max"
-        apiList={ownedAPIsByUser}
         username={query.username as string}
       />
     ),
@@ -72,16 +90,24 @@ const OtherUserPage = () => {
   return (
     <>
       <Head>
-        <title>{userData?.fullname || "-"} | APIcally</title>
+        <title>
+          {data?.data?.username ? `${data?.data?.username}'s profile` : "-"} |
+          APIcally
+        </title>
       </Head>
 
-      <Layout hasSearch pageTitle={userData?.fullname}>
+      <Layout
+        hasSearch
+        pageTitle={
+          data?.data?.username ? `${data?.data?.username}'s profile` : "-"
+        }
+      >
         <Row gutter={[20, 20]}>
           <Col span={24} xl={{ span: 8 }}>
             <GeneralInfo
-              fullname={userData?.fullname}
               showActions={false}
               className="block md: sticky top-[96px]"
+              userData={data?.data}
             />
           </Col>
           <Col span={24} xl={{ span: 16 }}>

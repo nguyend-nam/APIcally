@@ -5,14 +5,17 @@ import { useCallback, useEffect, useState } from "react";
 import { client } from "../libs/api";
 import { WithChildren } from "../types/common";
 import { removeCookie, setCookie } from "../utils";
+import { UserInfoData } from "../libs/types";
+import { useAsyncEffect } from "@dwarvesf/react-hooks";
 // import { useAsyncEffect } from "@dwarvesf/react-hooks";
 // import jwtDecode from "jwt-decode";
 // import { diffTime, parseJWT } from "../utils";
 // import { encodeData } from "../utils/crypto";
 
-export interface UserInfo {
-  username: string;
+export interface UserInfo extends UserInfoData {
+  balance: number;
 }
+
 const [Provider, useAuthContext] = createContext<{
   isAuthenticated: boolean;
   login: (username: string, password: string) => void;
@@ -36,22 +39,38 @@ const AuthProvider = ({ children }: WithChildren) => {
     return value;
   });
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     const newAccessToken = window.localStorage.getItem(APICALLY_KEY);
     if (newAccessToken) {
       setAuthToken(newAccessToken);
-      client.setAuthToken(newAccessToken);
+      await client.setAuthToken(newAccessToken);
+
+      console.log(newAccessToken);
+
+      try {
+        const userInfoRes = await client.getUserProfile();
+        const balanceRes = await client.getUserBalance();
+
+        if (userInfoRes?.data && balanceRes?.data !== undefined) {
+          setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
+        } else {
+          notification.error({ message: "Failed to authenticate" });
+        }
+      } catch (error) {
+        notification.error({ message: error as any });
+        console.error(error);
+      }
     }
   }, []);
 
-  // const [user, setUser] = useState<UserInfo>();
+  const [user, setUser] = useState<UserInfo>();
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   useEffect(() => setIsAuthenticated(Boolean(authToken)), [authToken]);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (username: string, password: string) => {
     try {
-      const res = await client.login(email, password);
+      const res = await client.login(username, password);
 
       if (res?.accessToken) {
         window.localStorage.setItem(APICALLY_KEY, res.accessToken);
@@ -61,6 +80,7 @@ const AuthProvider = ({ children }: WithChildren) => {
         const oneWeekTimestamp = dayjs().add(3, "day").unix();
         const expiryTime = dayjs.unix(oneWeekTimestamp);
         console.log(expiryTime);
+
         setCookie(APICALLY_REFRESH_KEY, res.refreshToken, {
           // expires: expiryTime.toDate(),
           domain: window.location.hostname,
@@ -68,6 +88,22 @@ const AuthProvider = ({ children }: WithChildren) => {
         setCookie(APICALLY_REFRESH_EXPIRY_KEY, expiryTime.toString(), {
           domain: window.location.hostname,
         });
+
+        try {
+          const userInfoRes = await client.getUserProfile();
+          const balanceRes = await client.getUserBalance();
+
+          console.log(userInfoRes, balanceRes);
+
+          if (userInfoRes?.data && balanceRes?.data !== undefined) {
+            setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
+          } else {
+            notification.error({ message: "Could not login" });
+          }
+        } catch (error) {
+          notification.error({ message: error as any });
+          console.error(error);
+        }
       }
     } catch (error) {
       notification.error({ message: error as any });
@@ -76,9 +112,14 @@ const AuthProvider = ({ children }: WithChildren) => {
   }, []);
 
   const logout = useCallback(() => {
+    setIsAuthenticated(false);
+    setUser(undefined);
     setAuthToken(undefined);
     window.localStorage.removeItem(APICALLY_KEY);
     removeCookie(APICALLY_REFRESH_KEY, {
+      domain: window.location.hostname,
+    });
+    removeCookie(APICALLY_REFRESH_EXPIRY_KEY, {
       domain: window.location.hostname,
     });
     client.clearAuthToken();
@@ -90,7 +131,7 @@ const AuthProvider = ({ children }: WithChildren) => {
         isAuthenticated,
         login,
         logout,
-        // user,
+        user,
       }}
     >
       {children}

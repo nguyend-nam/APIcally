@@ -117,7 +117,7 @@ const APIDetailPage = () => {
   const [isRateSubmitting, setIsRateSubmitting] = useState(false);
 
   const [isSubscribed] = useState(false);
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
   const [defaultMDValue, setDefaultMDValue] = useState("");
 
@@ -247,7 +247,9 @@ const APIDetailPage = () => {
                 </span>
               </Typography.Title>
 
-              {isAuthenticated ? (
+              {isAuthenticated &&
+              user?.username &&
+              user?.username !== data.data.project.ownerId ? (
                 <div className="w-full flex items-center gap-2">
                   <div className="relative w-full">
                     <div className="!m-0 w-[120px] h-max -rotate-90 flex justify-center items-center absolute !right-0 !-bottom-[60px]">
@@ -294,7 +296,7 @@ const APIDetailPage = () => {
                         <div className="flex justify-between !items-start">
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
                             You{" "}
-                            {data?.data.project.ownerId === "nguyend-nam"
+                            {data?.data.project.ownerId === user?.username
                               ? "owned"
                               : "already subscribed to"}{" "}
                             this API

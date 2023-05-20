@@ -20,6 +20,7 @@ const RegisterPage = () => {
   const { push } = useRouter();
   const isSSR = useIsSSR();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { isAuthenticated } = useAuthContext();
 
@@ -35,6 +36,7 @@ const RegisterPage = () => {
 
   const onSubmit = async (values: { username: string; password: string }) => {
     try {
+      setIsSubmitting(true);
       const res = await client.register(values.username, values.password);
 
       console.log(res);
@@ -46,6 +48,8 @@ const RegisterPage = () => {
       notification.error({
         message: String(error) || "Could not create account",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -158,7 +162,12 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="w-full text-center mt-5">
-                  <Button label="Login" className="w-[125px]" type="submit" />
+                  <Button
+                    label="Register"
+                    className="w-[125px]"
+                    type="submit"
+                    isLoading={isSubmitting}
+                  />
                 </div>
               </Form>
               <div className="flex justify-center mt-2">

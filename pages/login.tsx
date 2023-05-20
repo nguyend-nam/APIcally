@@ -19,6 +19,7 @@ const LoginPage = () => {
   const { push } = useRouter();
   const isSSR = useIsSSR();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const { login, isAuthenticated } = useAuthContext();
 
@@ -34,11 +35,14 @@ const LoginPage = () => {
 
   const onSubmit = async (values: { username: string; password: string }) => {
     try {
-      login(values.username, values.password);
+      setIsSubmitting(true);
+      await login(values.username, values.password);
     } catch (error) {
       notification.error({
         message: "Could not login",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -149,7 +153,12 @@ const LoginPage = () => {
                 </div>
 
                 <div className="w-full text-center mt-5">
-                  <Button label="Login" className="w-[125px]" type="submit" />
+                  <Button
+                    label="Login"
+                    className="w-[125px]"
+                    type="submit"
+                    isLoading={isSubmitting}
+                  />
                 </div>
                 {/* <div className="w-full text-center mt-5">
                   <Button

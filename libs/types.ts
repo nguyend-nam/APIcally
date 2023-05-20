@@ -103,3 +103,15 @@ export interface Project {
 
 export interface GetProjectDetailByOwnerIdAndAliasResponse
   extends BaseResponse<GetProjectDetailByOwnerIdAndAliasResponseData> {}
+
+export interface UserInfoData {
+  username: string;
+  owned: number;
+  subscribed: number;
+  bestRate: BestRate;
+}
+
+export interface BestRate {
+  stars: number;
+  alias: string;
+}

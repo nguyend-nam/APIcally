@@ -10,6 +10,7 @@ import {
   GetTokenResponse,
   RateProjectRequest,
   ScanAllProjectsResponse,
+  UserInfoData,
 } from "./types";
 
 const AUTH_BASE_API_URL =
@@ -46,6 +47,7 @@ export const GET_PATHS = {
   GET_SUBSCRIBED_PROJECTS: "projects/subscribed",
   GET_PROJECT_DETAIL_OWNERID_ALIAS: (ownerId: string, alias: string) =>
     `project/detail/${ownerId}/${alias}`,
+  GET_USER_INFO: (ownerId: string) => `user-info/${ownerId}`,
 };
 
 class Client {
@@ -195,6 +197,37 @@ class Client {
     );
   }
 
+  public getUserInfo(ownerId: string) {
+    return fetcher<BaseResponse<UserInfoData>>(
+      `${API_BASE_API_URL}/no-auth/profile/info/${ownerId}`,
+      {
+        headers: {
+          ...this.headers,
+        },
+      }
+    );
+  }
+
+  public getUserProfile() {
+    return fetcher<BaseResponse<UserInfoData>>(
+      `${API_BASE_API_URL}/v1/profile`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
+  public getUserBalance() {
+    return fetcher<BaseResponse<number>>(`${AUTH_BASE_API_URL}/v1/balance`, {
+      headers: {
+        ...this.privateHeaders,
+      },
+    });
+  }
+
+  /////
   public getProjectByAlias(alias: string) {
     return fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}`, {
       headers: {

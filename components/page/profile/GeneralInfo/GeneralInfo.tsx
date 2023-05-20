@@ -1,36 +1,42 @@
 import {
   CheckCircleTwoTone,
   CodeTwoTone,
-  // EnvironmentTwoTone,
-  // MailTwoTone,
   StarTwoTone,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Col, Divider, Row, Tooltip, Typography } from "antd";
+import { Avatar, Col, Divider, Row, Typography } from "antd";
 import { useAuthContext } from "../../../../context/auth";
 import { Button } from "../../../Button";
 import { Card } from "../../../Card";
 import cx from "classnames";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../../../constants/routes";
-// import { GitHubGradient } from "../../../GradientIcons/GitHubGradient";
-// import { LinkedInGradient } from "../../../GradientIcons/LinkedInGradient";
+import { useMemo } from "react";
+import { UserInfoData } from "../../../../libs/types";
+import { Text } from "../../../Text";
+import Link from "next/link";
 
 interface Props {
-  // username?: string;
-  fullname?: string;
   showActions?: boolean;
+  userData?: UserInfoData;
   className?: string;
 }
 
 export const GeneralInfo = ({
-  // username,
-  fullname,
   showActions = true,
+  userData,
   className,
 }: Props) => {
   const { logout, user, isAuthenticated } = useAuthContext();
-  const { push } = useRouter();
+  const router = useRouter();
+
+  const internalUserInfo = useMemo(() => {
+    return userData || user;
+  }, [user, userData]);
+
+  const isPersonal = useMemo(() => {
+    return isAuthenticated && user && router.pathname.includes(ROUTES.PROFILE);
+  }, [isAuthenticated, router.pathname, user]);
 
   return (
     <Card className={cx("relative overflow-hidden", className)} shadowSize="sm">
@@ -45,18 +51,17 @@ export const GeneralInfo = ({
           icon={<UserOutlined size={64} />}
         />
         <Typography.Title level={3} className="!mb-0 !font-medium">
-          {fullname || user?.username || "-"}
+          {isPersonal
+            ? internalUserInfo?.username || "-"
+            : router.query?.username || "-"}
         </Typography.Title>
-        {/* <Typography.Text className="text-base">
-          {username || user?.username || "-"}
-        </Typography.Text> */}
 
-        {isAuthenticated ? (
+        {isPersonal ? (
           <Button
             appearance="outline"
             label="Top up"
             className="w-full !text-base mt-4"
-            onClick={() => push(ROUTES.TOP_UP)}
+            onClick={() => router.push(ROUTES.TOP_UP)}
           />
         ) : null}
 
@@ -68,31 +73,57 @@ export const GeneralInfo = ({
           General
         </Divider>
 
-        <Row gutter={[0, 12]} className="overflow-auto">
-          <Col span={8}>
-            <div className="flex items-center gap-3 text-base">
-              <Tooltip title="Owned APIs">
+        <Row gutter={[12, 12]} className="overflow-auto">
+          <Col span={24}>
+            <div className="flex items-center justify-between gap-3 text-base">
+              <div className="flex items-center gap-2 shrink-0">
                 <CodeTwoTone twoToneColor="#2D31FA" />
-              </Tooltip>
-              <span className="!text-sm">8</span>
+                <Text className="text-sm text-slate-400 !m-0">
+                  Created APIs
+                </Text>
+              </div>
+              <span className="!text-sm text-right">
+                {internalUserInfo?.owned || 0}
+              </span>
             </div>
           </Col>
-          <Col span={8}>
-            <div className="flex items-center gap-3 text-base">
-              <Tooltip title="Subscribed APIs">
+          <Col span={24}>
+            <div className="flex items-center justify-between gap-3 text-base">
+              <div className="flex items-center gap-2 shrink-0">
                 <CheckCircleTwoTone twoToneColor="#2D31FA" />
-              </Tooltip>
-              <span className="!text-sm">3</span>
+                <Text className="text-sm text-slate-400 !m-0">
+                  Subscribed APIs
+                </Text>
+              </div>
+              <span className="!text-sm text-right">
+                {internalUserInfo?.subscribed || 0}
+              </span>
             </div>
           </Col>
-          <Col span={8}>
-            <div className="flex items-center gap-3 text-base">
-              <Tooltip title="Starred APIs">
-                <StarTwoTone twoToneColor="#2D31FA" />
-              </Tooltip>
-              <span className="!text-sm">10</span>
-            </div>
-          </Col>
+          {internalUserInfo?.bestRate && internalUserInfo?.bestRate.alias ? (
+            <Col span={24}>
+              <div className="flex items-center justify-between gap-3 text-base">
+                <div className="flex items-center gap-2 shrink-0">
+                  <StarTwoTone twoToneColor="#2D31FA" />
+                  <Text className="text-sm text-slate-400 !m-0">
+                    Starred APIs
+                  </Text>
+                </div>
+                <Link
+                  href={ROUTES.API_WORKSPACE_API_DETAIL(
+                    internalUserInfo.username,
+                    internalUserInfo?.bestRate.alias
+                  )}
+                  className="!text-sm text-right"
+                >
+                  <a>
+                    {internalUserInfo.username}/
+                    {internalUserInfo?.bestRate.alias}
+                  </a>
+                </Link>
+              </div>
+            </Col>
+          ) : null}
           {/* <Col span={24}>
             <div className="flex items-center gap-3 text-base">
               <Tooltip title="Location">
@@ -157,7 +188,7 @@ export const GeneralInfo = ({
               <Button
                 label="Settings"
                 className="w-full !text-base"
-                onClick={() => push(ROUTES.SETTINGS)}
+                onClick={() => router.push(ROUTES.SETTINGS)}
               />
               <Button
                 appearance="outline"

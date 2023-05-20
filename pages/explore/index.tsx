@@ -24,7 +24,7 @@ import { Layout } from "../../components/Layout";
 import { apiTags, apiTagTypes } from "../../constants/tagTypes";
 import { ApiRepo } from "../../components/page/home/ApiRepo";
 import { FULL_PRICE_FILTER } from "../../constants/filter";
-import { apiReposData } from "../../constants/mockData";
+// import { apiReposData } from "../../constants/mockData";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { capitalizeFirstLetter } from "../../utils";
 import {
@@ -260,7 +260,7 @@ const ExplorePage = () => {
   }, [sortCriteria, sortDirection, setSortDirection, setSortCriteria]);
 
   const apiListRenderer = useMemo(() => {
-    if (isLoading) {
+    if (isLoading || loading) {
       return <Spin size="large" />;
     }
 
@@ -280,7 +280,7 @@ const ExplorePage = () => {
           className="w-full md:w-full max-w-2xl"
         />
       ));
-  }, [apiRepos, isLoading, sortCriteria, sortDirection]);
+  }, [apiRepos, isLoading, loading, sortCriteria, sortDirection]);
 
   return (
     <>
