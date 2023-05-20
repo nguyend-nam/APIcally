@@ -1,3 +1,4 @@
+@import "react-quill/dist/quill.snow.css";
 @import "./vendor/nprogress.css";
 @import "./ant-custom.css";
 
@@ -24,6 +25,11 @@ a {
 
 .fade-in {
   animation: fadeIn 0.3s linear forwards;
+}
+
+.ql-editor {
+  min-height: 260px;
+  background-color: #fff;
 }
 
 @keyframes fadeIn {

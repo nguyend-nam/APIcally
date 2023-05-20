@@ -1,7 +1,5 @@
 import { Col, notification, Row, Table, Tag, Tooltip, Typography } from "antd";
 import dynamic from "next/dynamic";
-import ReactMarkdown from "react-markdown";
-import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { useDisclosure } from "@dwarvesf/react-hooks";
@@ -20,25 +18,16 @@ import { isAPINameFormatValid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
+import { ReactQuillProps } from "react-quill";
+import { editorModules } from "../../../constants/editor";
 
-const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
-  ssr: false,
-});
+const ReactQuill = dynamic<ReactQuillProps>(
+  () => import("react-quill").then((mod) => mod),
+  { ssr: false }
+);
 
-export const defaultMD = `# API's documentation
----
-> Block quote
-
-## Heading 2
-- list item 1
-- list item 2
-
-\`\`\`
-Code snippet
-\`\`\`
-
-![](https://picsum.photos/536/354)
-`;
+export const defaultMD =
+  "<h1>API's documentation</h1><blockquote>Block quote</blockquote><p><br></p><h2>Heading 2</h2><ul><li>list item 1</li><li>list item 2</li></ul><p><br></p><p><pre class='ql-syntax' spellcheck='false'>Code snippet</pre></p><p><img src='https://picsum.photos/536/354'/></p>";
 
 export type dataSourceType = {
   name: string;
@@ -50,10 +39,9 @@ export type dataSourceType = {
 const DocumentationPage = () => {
   const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [mDValue, setMDValue] = useState(defaultMD);
 
-  const handleEditorChange = ({ text }: { text: string }) => {
-    console.log(text); // TODO: update content for API project update
-  };
+  console.log(mDValue);
 
   const {
     isOpen: isAddInputDialogOpen,
@@ -200,23 +188,11 @@ const DocumentationPage = () => {
             Documentation
           </Typography.Title>
           <div className="border-primary border-t-4">
-            <MdEditor
-              plugins={[
-                "header",
-                "font-bold",
-                "font-italic",
-                "list-unordered",
-                "block-quote",
-                "link",
-                "image",
-                "block-code-inline",
-                "block-code-block",
-                "mode-toggle",
-              ]}
-              style={{ height: 510 }}
-              renderHTML={(text) => <ReactMarkdown source={text} />}
-              onChange={handleEditorChange}
-              defaultValue={defaultMD}
+            <ReactQuill
+              theme="snow"
+              value={mDValue}
+              onChange={setMDValue}
+              modules={editorModules}
             />
           </div>
 

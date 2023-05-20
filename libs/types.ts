@@ -78,3 +78,28 @@ export interface CreateProjectResponse
 export interface RateProjectRequest {
   stars: number;
 }
+
+export interface GetProjectDetailByOwnerIdAndAliasResponseData {
+  subscriber?: number;
+  stars?: number;
+  project: Project;
+}
+
+export interface Project {
+  documentation: string;
+  description: string;
+  ownerId: string;
+  input: string;
+  createdAt: number;
+  name: string;
+  alias: string;
+  id: string;
+  subscribeCost: number;
+  costPerRequest: number;
+  category: string;
+  fileNames: string[];
+  updatedAt: number;
+}
+
+export interface GetProjectDetailByOwnerIdAndAliasResponse
+  extends BaseResponse<GetProjectDetailByOwnerIdAndAliasResponseData> {}

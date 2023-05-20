@@ -5,6 +5,7 @@ import {
   CheckTokenResponse,
   CreateProjectRequest,
   CreateProjectResponse,
+  GetProjectDetailByOwnerIdAndAliasResponse,
   GetSubscribedProjectsResponse,
   GetTokenResponse,
   RateProjectRequest,
@@ -43,6 +44,8 @@ export const GET_PATHS = {
   SCAN_OWNED_PROJECTS_BY_USER: (ownerId: string) =>
     `projects/no-auth/${ownerId}`,
   GET_SUBSCRIBED_PROJECTS: "projects/subscribed",
+  GET_PROJECT_DETAIL_OWNERID_ALIAS: (ownerId: string, alias: string) =>
+    `project/detail/${ownerId}/${alias}`,
 };
 
 class Client {
@@ -177,6 +180,17 @@ class Client {
           ...this.privateHeaders,
         },
         body: JSON.stringify(params),
+      }
+    );
+  }
+
+  public getProjectDetailByOwnerIdAndAlias(ownerId: string, alias: string) {
+    return fetcher<GetProjectDetailByOwnerIdAndAliasResponse>(
+      `${API_BASE_API_URL}/no-auth/${ownerId}/${alias}`,
+      {
+        headers: {
+          ...this.headers,
+        },
       }
     );
   }

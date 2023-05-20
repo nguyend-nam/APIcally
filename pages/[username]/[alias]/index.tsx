@@ -14,19 +14,17 @@ import {
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import ReactMarkdown from "react-markdown";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { ApiRepo } from "../../../components/page/home/ApiRepo";
 import {
-  apiReposData,
+  // apiReposData,
   apiReposInCart,
   chartData,
 } from "../../../constants/mockData";
-import { defaultMD } from "../../api-workspace/documentation";
 import { Card } from "../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
 // import { Text } from "../../../../components/Text";
@@ -36,7 +34,10 @@ import { useAuthContext } from "../../../context/auth";
 import { CartesianAxisProps, TooltipProps } from "recharts";
 import { LineChart } from "../../../components/LineChart";
 import StarRating from "react-svg-star-rating";
-import { client } from "../../../libs/api";
+import { client, GET_PATHS } from "../../../libs/api";
+import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
+import { ReactQuillProps } from "react-quill";
+import { editorModules } from "../../../constants/editor";
 
 const CustomAxisTick = ({
   x,
@@ -102,9 +103,10 @@ const CustomTooltip = (record: TooltipProps<any, any>) => {
   return null;
 };
 
-const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
-  ssr: false,
-});
+const ReactQuill = dynamic<ReactQuillProps>(
+  () => import("react-quill").then((mod) => mod),
+  { ssr: false }
+);
 
 const APIDetailPage = () => {
   const { query, push } = useRouter();
@@ -117,9 +119,33 @@ const APIDetailPage = () => {
   const [isSubscribed] = useState(false);
   const { isAuthenticated } = useAuthContext();
 
-  const currentAPI = apiReposData.find(
-    (a) => a.alias === query.alias && a.ownerId === query.username
+  const [defaultMDValue, setDefaultMDValue] = useState("");
+
+  // const currentAPI = apiReposData.find(
+  //   (a) => a.alias === query.alias && a.ownerId === query.username
+  // );
+
+  const { data, loading } = useFetchWithCache(
+    [
+      GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
+        query.username as string,
+        query.alias as string
+      ),
+    ],
+    () =>
+      client.getProjectDetailByOwnerIdAndAlias(
+        query.username as string,
+        query.alias as string
+      )
   );
+
+  useEffect(() => {
+    if (loading) {
+      setDefaultMDValue("");
+    }
+
+    setDefaultMDValue(data?.data.project.description || "---");
+  }, [data?.data.project.description, loading]);
 
   const allAddedToCartApisRepos = useMemo(() => {
     let arr: apiRepoType[] = [];
@@ -158,6 +184,7 @@ const APIDetailPage = () => {
         message: String(error) || "Could not submit rating",
       });
     } finally {
+      setCurrRating(0);
       setIsRateSubmitting(false);
     }
   };
@@ -170,16 +197,34 @@ const APIDetailPage = () => {
     }, 1000);
   };
 
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>
+            {query?.username || "-"}/{query?.alias || "-"} | APIcally
+          </title>
+        </Head>
+
+        <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
+          <div className="flex justify-center h-40">
+            <Spin size="large" />
+          </div>
+        </Layout>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
         <title>
-          {currentAPI?.ownerId}/{currentAPI?.name} | APIcally
+          {query?.username || "-"}/{data?.data.project.name || "-"} | APIcally
         </title>
       </Head>
 
-      <Layout hasSearch pageTitle={currentAPI?.ownerId || "-"}>
-        {currentAPI === undefined ? (
+      <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
+        {data?.data === undefined ? (
           <Typography.Title level={3}>API not found</Typography.Title>
         ) : (
           <>
@@ -187,16 +232,18 @@ const APIDetailPage = () => {
               <Typography.Title level={2} className="!m-0 shrink-0">
                 <button
                   onClick={() => {
-                    if (currentAPI.ownerId) {
-                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.ownerId));
+                    if (data?.data.project.ownerId) {
+                      push(
+                        ROUTES.PROFILE_OTHER_USER(data?.data.project.ownerId)
+                      );
                     }
                   }}
                   className="font-normal text-2xl no-underline !text-black"
                 >
-                  {currentAPI?.ownerId}/
+                  {data?.data.project?.ownerId}/
                 </button>
                 <span className="text-primary text-2xl !font-semibold">
-                  {currentAPI?.name}
+                  {data?.data.project?.name}
                 </span>
               </Typography.Title>
 
@@ -227,7 +274,7 @@ const APIDetailPage = () => {
             <Row className="my-6 md:my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
                 <ApiRepo
-                  data={currentAPI}
+                  data={data?.data.project as apiRepoType}
                   isLinkActive={false}
                   isDescriptionTruncated={false}
                 />
@@ -241,13 +288,13 @@ const APIDetailPage = () => {
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    {/* {currentAPI?.subscribeStatus ? ( */}
+                    {/* {data?.data.project?.subscribeStatus ? ( */}
                     {isSubscribed ? (
                       <Spin spinning={isLoading}>
                         <div className="flex justify-between !items-start">
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
                             You{" "}
-                            {currentAPI.ownerId === "nguyend-nam"
+                            {data?.data.project.ownerId === "nguyend-nam"
                               ? "owned"
                               : "already subscribed to"}{" "}
                             this API
@@ -260,11 +307,14 @@ const APIDetailPage = () => {
                             onClick={() => {
                               setIsLoading(!isLoading);
                               setTimeout(() => {
-                                if (currentAPI.ownerId && currentAPI.alias)
+                                if (
+                                  data?.data.project.ownerId &&
+                                  data?.data.project.alias
+                                )
                                   push(
                                     ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
-                                      currentAPI.ownerId,
-                                      currentAPI.alias
+                                      data?.data.project.ownerId,
+                                      data?.data.project.alias
                                     )
                                   );
                               }, 1000);
@@ -294,14 +344,18 @@ const APIDetailPage = () => {
                         <div className="mt-4">
                           <Button
                             label={
-                              allAddedToCartApisId.includes(currentAPI.id)
+                              allAddedToCartApisId.includes(
+                                data?.data.project.id
+                              )
                                 ? "API added to cart"
                                 : "Add to cart"
                             }
                             isLoading={isAddingToCart}
                             onClick={() => {
                               if (
-                                allAddedToCartApisId.includes(currentAPI.id)
+                                allAddedToCartApisId.includes(
+                                  data?.data.project.id
+                                )
                               ) {
                                 push(ROUTES.CART);
                               } else {
@@ -364,12 +418,11 @@ const APIDetailPage = () => {
 
             <Typography.Title level={3}>Documentation</Typography.Title>
             <div className="border-primary border-t-4">
-              <MdEditor
+              <ReactQuill
+                theme="snow"
+                value={defaultMDValue}
+                modules={editorModules}
                 readOnly
-                view={{ menu: false, md: false, html: true }}
-                style={{ height: 510 }}
-                renderHTML={(text) => <ReactMarkdown source={text} />}
-                defaultValue={defaultMD}
               />
             </div>
           </>

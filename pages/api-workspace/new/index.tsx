@@ -10,7 +10,6 @@ import {
   Slider,
   Select,
 } from "antd";
-import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { useEffect, useState } from "react";

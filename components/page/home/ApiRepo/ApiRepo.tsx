@@ -81,27 +81,23 @@ export const ApiRepo = ({
           </Typography.Title>
 
           <div className="flex gap-4">
-            {data?.subscriber ? (
-              <Tooltip
-                placement={isMobile || !isStatsAlignRight ? "right" : "left"}
-                title="Subscribers"
-                className="flex flex-col items-center w-6 h-max"
-              >
-                <UserAddOutlined className="text-xl !text-indigo-400" />
-                <div className="!text-xs">{data?.subscriber}</div>
-              </Tooltip>
-            ) : null}
+            <Tooltip
+              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
+              title="Subscribers"
+              className="flex flex-col items-center w-6 h-max"
+            >
+              <UserAddOutlined className="text-xl !text-indigo-400" />
+              <div className="!text-xs">{data?.subscriber || 0}</div>
+            </Tooltip>
 
-            {data?.stars ? (
-              <Tooltip
-                placement={isMobile || !isStatsAlignRight ? "right" : "left"}
-                title="Stars"
-                className="flex flex-col items-center w-6 h-max"
-              >
-                <StarOutlined className="text-xl !text-amber-300" />
-                <div className="!text-xs">{data?.stars}</div>
-              </Tooltip>
-            ) : null}
+            <Tooltip
+              placement={isMobile || !isStatsAlignRight ? "right" : "left"}
+              title="Stars"
+              className="flex flex-col items-center w-6 h-max"
+            >
+              <StarOutlined className="text-xl !text-amber-300" />
+              <div className="!text-xs">{data?.stars || 0}</div>
+            </Tooltip>
           </div>
         </div>
 

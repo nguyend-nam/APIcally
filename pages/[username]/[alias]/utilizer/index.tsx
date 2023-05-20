@@ -2,10 +2,7 @@ import { Col, Form, Row, Table, Tag, Typography } from "antd";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import ReactMarkdown from "react-markdown";
 import { Layout } from "../../../../components/Layout";
-import { apiReposData } from "../../../../constants/mockData";
-import { defaultMD } from "../../../api-workspace/documentation";
 import { Card } from "../../../../components/Card";
 import { multipleStates, variableTypes } from "../../../../constants/python";
 import { Input } from "../../../../components/Input";
@@ -13,13 +10,18 @@ import { ColumnsType } from "antd/lib/table";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
 import { Button } from "../../../../components/Button";
 import { CaretRightOutlined } from "@ant-design/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ROUTES } from "../../../../constants/routes";
 import { APICALLY_KEY, useAuthContext } from "../../../../context/auth";
+import { ReactQuillProps } from "react-quill";
+import { useFetchWithCache } from "../../../../hooks/useFetchWithCache";
+import { client, GET_PATHS } from "../../../../libs/api";
+import { editorModules } from "../../../../constants/editor";
 
-const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
-  ssr: false,
-});
+const ReactQuill = dynamic<ReactQuillProps>(
+  () => import("react-quill").then((mod) => mod),
+  { ssr: false }
+);
 
 const defineInputType = (type: keyof typeof variableTypes) => {
   if (type === "number") return "number";
@@ -32,6 +34,29 @@ const UtilizerPage = () => {
   const isMobile = useIsMobile();
   const { isAuthenticated, logout } = useAuthContext();
   const { push } = useRouter();
+  const [defaultMDValue, setDefaultMDValue] = useState("");
+
+  const { data, loading } = useFetchWithCache(
+    [
+      GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
+        query.username as string,
+        query.alias as string
+      ),
+    ],
+    () =>
+      client.getProjectDetailByOwnerIdAndAlias(
+        query.username as string,
+        query.alias as string
+      )
+  );
+
+  useEffect(() => {
+    if (loading) {
+      setDefaultMDValue("");
+    }
+
+    setDefaultMDValue(data?.data.project.description || "---");
+  }, [data?.data.project.description, loading]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -50,9 +75,9 @@ const UtilizerPage = () => {
     }
   }, [logout]);
 
-  const currentAPI = apiReposData.find(
-    (a) => a.alias === query.alias && a.username === query.username
-  );
+  // const currentAPI = apiReposData.find(
+  //   (a) => a.alias === query.alias && a.username === query.username
+  // );
 
   const columns: ColumnsType<any> = [
     {
@@ -173,28 +198,32 @@ const UtilizerPage = () => {
   return (
     <>
       <Head>
-        <title>{currentAPI?.author} | APIcally</title>
+        <title>
+          {query?.username || "-"}/{data?.data.project.name || "-"} | APIcally
+        </title>
       </Head>
 
       {isAuthenticated ? (
-        <Layout hasSearch pageTitle={currentAPI?.author}>
-          {currentAPI === undefined ? (
+        <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
+          {data?.data === undefined ? (
             <Typography.Title level={3}>API not found</Typography.Title>
           ) : (
             <>
               <Typography.Title level={2} className="!m-0">
                 <button
                   onClick={() => {
-                    if (currentAPI.username) {
-                      push(ROUTES.PROFILE_OTHER_USER(currentAPI.username));
+                    if (data?.data.project.ownerId) {
+                      push(
+                        ROUTES.PROFILE_OTHER_USER(data?.data.project.ownerId)
+                      );
                     }
                   }}
                   className="font-normal text-2xl no-underline !text-black"
                 >
-                  {currentAPI?.author}/
+                  {data?.data.project?.ownerId}/
                 </button>
                 <span className="text-primary text-2xl !font-semibold">
-                  {currentAPI?.name}
+                  {data?.data.project?.name}
                 </span>
               </Typography.Title>
 
@@ -243,12 +272,11 @@ const UtilizerPage = () => {
 
               <Typography.Title level={3}>Documentation</Typography.Title>
               <div className="border-primary border-t-4">
-                <MdEditor
+                <ReactQuill
+                  theme="snow"
+                  value={defaultMDValue}
+                  modules={editorModules}
                   readOnly
-                  view={{ menu: false, md: false, html: true }}
-                  style={{ height: 510 }}
-                  renderHTML={(text) => <ReactMarkdown source={text} />}
-                  defaultValue={defaultMD}
                 />
               </div>
             </>
