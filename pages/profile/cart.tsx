@@ -5,16 +5,19 @@ import { Button } from "../../components/Button";
 import { Card } from "../../components/Card";
 import { Layout } from "../../components/Layout";
 import { Text } from "../../components/Text";
-import { apiRepoType } from "../explore";
+// import { apiRepoType } from "../explore";
 import { useDisclosure } from "@dwarvesf/react-hooks";
 import { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { APICALLY_KEY, useAuthContext } from "../../context/auth";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
+import { ProjectInCartItem } from "../../libs/types";
 
 const CartPage = () => {
-  const [selectedApiInCart, setSelectedApiInCart] = useState<apiRepoType[]>([]);
+  const [selectedApiInCart, setSelectedApiInCart] = useState<
+    ProjectInCartItem[]
+  >([]);
   const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
     useState(false);
   const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
@@ -167,7 +170,7 @@ const CartPage = () => {
 };
 
 export const renderSubscribeListConfirmation = (
-  apiList: apiRepoType[],
+  apiList: ProjectInCartItem[],
   func: "subscribe" | "remove"
 ) => {
   if (apiList.length === 0) return;
@@ -176,12 +179,12 @@ export const renderSubscribeListConfirmation = (
       <>
         Are you sure you want to{" "}
         {func === "subscribe" ? "subscribe to" : "remove"}{" "}
-        <b>{apiList[0].name}</b>.
+        <b>{apiList[0]?.apiId || "-"}</b>.
       </>
     );
   }
 
-  const nameList = apiList.map((a) => a.name);
+  const nameList = apiList.map((a) => a?.apiId || "-");
 
   return (
     <>
@@ -193,7 +196,7 @@ export const renderSubscribeListConfirmation = (
           {i < nameList.length - 2 ? ", " : ""}
         </>
       ))}{" "}
-      and <b>{apiList[apiList.length - 1].name}</b>.
+      and <b>{apiList[apiList.length - 1]?.apiId || "-"}</b>.
     </>
   );
 };

@@ -115,3 +115,13 @@ export interface BestRate {
   stars: number;
   alias: string;
 }
+export interface ProjectInCartItem {
+  days: number;
+  apiId: string;
+  username: string;
+  price: number;
+  total: number;
+}
+
+export interface GetProjectsInCartResponse
+  extends BaseResponse<ProjectInCartItem[]> {}

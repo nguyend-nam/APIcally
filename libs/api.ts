@@ -6,6 +6,7 @@ import {
   CreateProjectRequest,
   CreateProjectResponse,
   GetProjectDetailByOwnerIdAndAliasResponse,
+  GetProjectsInCartResponse,
   GetSubscribedProjectsResponse,
   GetTokenResponse,
   RateProjectRequest,
@@ -48,6 +49,7 @@ export const GET_PATHS = {
   GET_PROJECT_DETAIL_OWNERID_ALIAS: (ownerId: string, alias: string) =>
     `project/detail/${ownerId}/${alias}`,
   GET_USER_INFO: (ownerId: string) => `user-info/${ownerId}`,
+  GET_PROJECTS_IN_CART: "projects/cart",
 };
 
 class Client {
@@ -221,6 +223,14 @@ class Client {
 
   public getUserBalance() {
     return fetcher<BaseResponse<number>>(`${AUTH_BASE_API_URL}/v1/balance`, {
+      headers: {
+        ...this.privateHeaders,
+      },
+    });
+  }
+
+  public getProjectsInCart() {
+    return fetcher<GetProjectsInCartResponse>(`${API_BASE_API_URL}/v1/cart`, {
       headers: {
         ...this.privateHeaders,
       },
