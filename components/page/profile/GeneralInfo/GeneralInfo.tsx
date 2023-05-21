@@ -59,13 +59,16 @@ export const GeneralInfo = ({
 
         {isPersonal ? (
           <>
-            <Divider
-              className="!mt-2 !text-slate-500 !text-sm !font-normal"
-              orientation="left"
-              orientationMargin={0}
-            >
-              Balance: {formatCurrency(user?.balance || 0)}
-            </Divider>
+            <div className="!mt-2 !mb-2.5 flex flex-nowrap justify-between items-center">
+              <Divider
+                className="!text-slate-500 !text-sm !font-normal flex-1 !w-max !min-w-max !m-0"
+                orientation="left"
+                orientationMargin={0}
+              >
+                Balance:
+              </Divider>
+              <b>{formatCurrency(user?.balance || 0)}</b>
+            </div>
             <Button
               appearance="outline"
               label="Top up"

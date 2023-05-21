@@ -31,6 +31,7 @@ import {
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 import { CreateProjectRequest } from "../../../libs/types";
 import { apiTags } from "../../../constants/tagTypes";
+import { pythonInitCode1 } from "../../../constants/python";
 
 export const CREATE_API_NAME_KEY = "apically-create-api-name";
 
@@ -86,18 +87,29 @@ const APICreatePage = () => {
 
       try {
         setIsLoading(true);
-        const data = await client.createProject(transformedValues);
+        const res = await client.createProject(transformedValues);
 
-        if (data) {
-          if (data.code === 200) {
-            notification.success({ message: "API created successfully" });
-            push(
-              ROUTES.API_WORKSPACE_CODE_EDITOR(
-                user?.username || "-",
-                transformedValues.alias
-              )
-            );
-          }
+        if (res?.data) {
+          notification.success({ message: "API created successfully" });
+          push(
+            ROUTES.API_WORKSPACE_API_DETAIL(
+              user?.username || "-",
+              transformedValues.alias
+            )
+          );
+
+          const formData = new FormData();
+          const mainFile = new File([pythonInitCode1], "main.py");
+          formData.append("", mainFile, "main.py");
+
+          await client.uploadInitProjectFiles(
+            transformedValues.alias, // @ts-ignore
+            formData
+          );
+        } else {
+          notification.error({
+            message: res?.message || "Could not create API",
+          });
         }
       } catch (error: any) {
         notification.error({
@@ -138,16 +150,14 @@ const APICreatePage = () => {
                       />
                       <div className="text-base !text-slate-500 hidden md:block mr-2 py-1 px-1.5 rounded-md bg-slate-100 whitespace-nowrap">
                         <Tooltip
-                          title={user?.username || "nguyend-nam"}
+                          title={user?.username || "-"}
                           placement="bottom"
                         >
-                          {user?.username
-                            ? truncate(user?.username, 10)
-                            : "nguyend-nam"}
+                          {user?.username ? truncate(user?.username, 10) : ""}
                         </Tooltip>
                       </div>
                       <div className="text-base !text-slate-500 block md:hidden mr-0 py-1 px-1.5 rounded-md bg-slate-100 w-screen overflow-auto whitespace-nowrap">
-                        {user?.username || "nguyend-nam"}
+                        {user?.username || "-"}
                       </div>
                       <div className="hidden md:block">/</div>
                     </div>

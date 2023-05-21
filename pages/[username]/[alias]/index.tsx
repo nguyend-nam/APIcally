@@ -184,6 +184,7 @@ const APIDetailPage = () => {
       });
     } finally {
       setCurrRating(0);
+      await mutate();
       setIsRateSubmitting(false);
     }
   };
@@ -393,13 +394,20 @@ const APIDetailPage = () => {
                   isLinkActive={false}
                   isDescriptionTruncated={false}
                   subscriptionExpireNote={
-                    data?.data?.expiredDate
-                      ? `Subscription ${
-                          isSubscriptionExpired ? "expired" : "expires"
-                        } at ${dayjs(new Date(data.data.expiredDate)).format(
-                          "DD/MMM/YYYY, hh:mm:ss A"
-                        )}`
-                      : undefined
+                    data?.data?.expiredDate ? (
+                      <>
+                        Subscription{" "}
+                        {isSubscriptionExpired ? "expired" : "expires"} at{" "}
+                        <b>
+                          {dayjs(new Date(data.data.expiredDate)).format(
+                            "DD/MMM/YYYY, HH:mm:ss"
+                          )}
+                        </b>
+                      </>
+                    ) : undefined
+                  }
+                  showEditButton={
+                    user?.username === data?.data?.project?.ownerId
                   }
                 />
               </Col>

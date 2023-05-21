@@ -1,6 +1,6 @@
 import { createContext } from "@dwarvesf/react-utils";
 import { useState } from "react";
-import { pythonInitCode } from "../constants/python";
+import { pythonInitCode, pythonInitCode1 } from "../constants/python";
 import { WithChildren } from "../types/common";
 
 export interface fileObj {
@@ -10,7 +10,7 @@ export interface fileObj {
 }
 
 const defaultValue: fileObj[] = [
-  { fileName: "main.py", codeContent: pythonInitCode, language: "python" },
+  { fileName: "main.py", codeContent: pythonInitCode1, language: "python" },
 ];
 
 const [Provider, useFileListContext] = createContext<any>();

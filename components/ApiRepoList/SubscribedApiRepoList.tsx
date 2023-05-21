@@ -84,11 +84,16 @@ export const SubscribedApiRepoList = ({
               showPrice={showSummary}
               showDescription={showSummary}
               subscriptionExpireNote={
-                a.expiredDate
-                  ? `Subscription expires at ${dayjs(
-                      new Date(a.expiredDate)
-                    ).format("DD/MMM/YYYY, hh:mm:ss P")}`
-                  : undefined
+                a.expiredDate ? (
+                  <>
+                    Subscription expires at{" "}
+                    <b>
+                      {dayjs(new Date(a.expiredDate)).format(
+                        "DD/MMM/YYYY, HH:mm:ss"
+                      )}
+                    </b>
+                  </>
+                ) : undefined
               }
             />
           ))
@@ -103,11 +108,16 @@ export const SubscribedApiRepoList = ({
                 showPrice={showSummary}
                 showDescription={showSummary}
                 subscriptionExpireNote={
-                  a.expiredDate
-                    ? `Subscription expires at ${dayjs(
-                        new Date(a.expiredDate)
-                      ).format("DD/MMM/YYYY, hh:mm:ss P")}`
-                    : undefined
+                  a.expiredDate ? (
+                    <>
+                      Subscription expires at{" "}
+                      <b>
+                        {dayjs(new Date(a.expiredDate)).format(
+                          "DD/MMM/YYYY, HH:mm:ss"
+                        )}
+                      </b>
+                    </>
+                  ) : undefined
                 }
               />
             ))}

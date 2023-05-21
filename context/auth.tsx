@@ -127,11 +127,16 @@ const AuthProvider = ({ children }: WithChildren) => {
   }, []);
 
   const mutateData = async () => {
-    const userInfoRes = await client.getUserProfile();
-    const balanceRes = await client.getUserBalance();
+    try {
+      const userInfoRes = await client.getUserProfile();
+      const balanceRes = await client.getUserBalance();
 
-    if (userInfoRes?.data && balanceRes?.data !== undefined) {
-      setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
+      if (userInfoRes?.data && balanceRes?.data !== undefined) {
+        setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
+      }
+    } catch (error) {
+      notification.error({ message: error as any });
+      console.error(error);
     }
   };
 

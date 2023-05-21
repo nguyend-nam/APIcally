@@ -23,7 +23,7 @@ const CartPage = () => {
   const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
     useState(false);
   const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
-  const { isAuthenticated, logout, user } = useAuthContext();
+  const { isAuthenticated, logout, user, mutateData } = useAuthContext();
   const { replace } = useRouter();
 
   const { data, loading, mutate } = useFetchWithCache(
@@ -113,6 +113,7 @@ const CartPage = () => {
         if (index === (selectedApiInCart || []).length - 1) {
           setIsConfirmSubscribeLoading(false);
           await mutate();
+          await mutateData();
         }
       });
     }

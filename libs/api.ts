@@ -6,6 +6,7 @@ import {
   CreateProjectRequest,
   CreateProjectResponse,
   GetProjectDetailByOwnerIdAndAliasResponse,
+  GetProjectFilesContentResponse,
   GetProjectsInCartResponse,
   GetSubscribedProjectsResponse,
   GetTokenResponse,
@@ -57,6 +58,8 @@ export const GET_PATHS = {
   ) => `project/detail/${ownerId}/${alias}/with-auth`,
   GET_USER_INFO: (ownerId: string) => `user-info/${ownerId}`,
   GET_PROJECTS_IN_CART: "projects/cart",
+  GET_PROJECT_FILES_CONTENT: (ownerId: string, alias: string) =>
+    `project/${ownerId}/${alias}/content`,
 };
 
 class Client {
@@ -67,6 +70,14 @@ class Client {
   privateHeaders: HeadersInit = {
     ...this.headers,
   };
+
+  public formDataHeaders(): Headers {
+    const cloned = Object.assign({}, this.privateHeaders) as Headers;
+    // Browsers will auto-set Content-Type and other things when formData is used
+    // Content-Type must not be present for form data to work
+    delete cloned["Content-Type" as keyof Headers];
+    return cloned;
+  }
 
   public setAuthToken(token: string) {
     this.privateHeaders = {
@@ -302,6 +313,45 @@ class Client {
     );
   }
 
+  public getProjectFilesContent(alias: string) {
+    return fetcher<GetProjectFilesContentResponse>(
+      `${PYTHON_BASE_API_URL}/v1/${alias}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
+  public uploadInitProjectFiles(alias: string, files: FormData) {
+    return fetcher<GetProjectsInCartResponse>(
+      `${PYTHON_BASE_API_URL}/v1/${alias}/upload`,
+      {
+        method: "POST",
+        headers: {
+          ...this.formDataHeaders(),
+        },
+        // @ts-ignore
+        body: files,
+      }
+    );
+  }
+
+  public uploadProjectFiles(alias: string, files: FormData) {
+    return fetcher<GetProjectsInCartResponse>(
+      `${PYTHON_BASE_API_URL}/v1/${alias}/upload`,
+      {
+        method: "PUT",
+        headers: {
+          ...this.formDataHeaders(),
+        },
+        // @ts-ignore
+        body: files,
+      }
+    );
+  }
+
   /////
   public getProjectByAlias(alias: string) {
     return fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}`, {
@@ -311,17 +361,17 @@ class Client {
     });
   }
 
-  public async uploadProjectFiles(alias: string, files: FormData) {
-    console.log(this.privateHeaders);
-    return await fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}/upload`, {
-      method: "POST",
-      headers: this.privateHeaders,
-      // @ts-ignore
-      body: files,
-      redirect: "follow",
-      mode: "no-cors",
-    });
-  }
+  // public async uploadProjectFiles(alias: string, files: FormData) {
+  //   console.log(this.privateHeaders);
+  //   return await fetcher<any>(`${PYTHON_BASE_API_URL}/${alias}/upload`, {
+  //     method: "POST",
+  //     headers: this.privateHeaders,
+  //     // @ts-ignore
+  //     body: files,
+  //     redirect: "follow",
+  //     mode: "no-cors",
+  //   });
+  // }
 }
 
 const client = new Client();

@@ -17,6 +17,8 @@ import { useIsMobile } from "../../../../hooks/useIsMobile";
 import cx from "classnames";
 // import { useAuthContext } from "../../../../context/auth";
 import { apiTagTypes } from "../../../../constants/tagTypes";
+import { ReactNode } from "react";
+import { Button } from "../../../Button";
 
 export const ApiRepo = ({
   data,
@@ -30,6 +32,7 @@ export const ApiRepo = ({
   isStatsAlignRight = true,
   multiplyPrice,
   subscriptionExpireNote,
+  showEditButton = false,
 }: {
   data: apiRepoType;
   className?: string;
@@ -41,16 +44,16 @@ export const ApiRepo = ({
   isDescriptionTruncated?: boolean;
   isStatsAlignRight?: boolean;
   multiplyPrice?: number;
-  subscriptionExpireNote?: string;
+  subscriptionExpireNote?: ReactNode;
+  showEditButton?: boolean;
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
-  // const { isAuthenticated } = useAuthContext();
 
   return (
     <Card
       shadowSize="sm"
-      className={cx("bg-white p-4", className)}
+      className={cx("bg-white p-4 relative", className)}
       hasShadow={hasShadow}
     >
       {subscriptionExpireNote ? (
@@ -112,10 +115,12 @@ export const ApiRepo = ({
           </div>
         </div>
 
-        <TagsArray
-          tags={(data?.category?.split(",") as apiTagTypes[]) || []}
-          visibleTagsCount={2}
-        />
+        {data?.category ? (
+          <TagsArray
+            tags={(data?.category?.split(",") as apiTagTypes[]) || []}
+            visibleTagsCount={2}
+          />
+        ) : null}
       </div>
 
       {showOwner ? (
@@ -165,6 +170,15 @@ export const ApiRepo = ({
               }`}
           <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
         </div>
+      ) : null}
+      {showEditButton ? (
+        <Button
+          label="Edit API"
+          onClick={() => {
+            push(ROUTES.API_WORKSPACE_CODE_EDITOR(data.ownerId, data.alias));
+          }}
+          className="absolute bottom-4 right-4"
+        />
       ) : null}
     </Card>
   );

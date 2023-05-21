@@ -125,3 +125,8 @@ export interface RemoveProjectFromCartResponseDataItem {
   apiId: string;
   username: string;
 }
+
+export interface GetProjectFilesContentResponse {
+  content: string;
+  filenames: string[];
+}

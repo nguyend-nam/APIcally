@@ -19,21 +19,14 @@ import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 
 const CodeEditorPageInner = () => {
-  const { fileList } = useFileListContext() as { fileList: fileObj[] };
+  const { fileList, setFileList } = useFileListContext() as {
+    fileList: fileObj[];
+    setFileList: (files: fileObj[]) => void;
+  };
   const filesData = useMemo(() => new FormData(), []);
   const { user, isAuthenticated, logout } = useAuthContext();
 
-  const { push, query, isReady, replace } = useRouter();
-
-  const { data, error } = useFetchWithCache(
-    [
-      GET_PATHS.GET_PROJECT_BY_ALIAS(
-        user?.username || "-",
-        query.alias as string
-      ),
-    ],
-    () => client.getProjectByAlias(query.alias as string)
-  );
+  const { push, query, replace } = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,34 +45,43 @@ const CodeEditorPageInner = () => {
     }
   }, [logout]);
 
+  const { data, loading } = useFetchWithCache(
+    [
+      GET_PATHS.GET_PROJECT_FILES_CONTENT(
+        user?.username || "-",
+        query.alias as string
+      ),
+    ],
+    () => client.getProjectFilesContent(query.alias as string)
+  );
+
   useEffect(() => {
-    if (isReady) {
-      if (
-        !query.alias ||
-        !query.username ||
-        typeof query.alias !== "string" ||
-        typeof query.username !== "string"
-      ) {
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (!isAPINameFormatValid(query.alias as string)) {
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (error?.message === "Project not found") {
-        notification.error({
-          message:
-            "You don't have access to that project, or it has been deleted or does not exist",
-        });
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (data && data.code !== 200) {
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
+    if (loading) {
+      return;
     }
-  }, [push, query, isReady, data, error]);
+
+    const projectFilesList: fileObj[] = [];
+
+    (data?.filenames || []).forEach((file) => {
+      if (file === "main.py") {
+        const projectFile: fileObj = {
+          fileName: file,
+          codeContent: data?.content || "",
+          language: "python",
+        };
+        projectFilesList.push(projectFile);
+      } else {
+        const projectFile: fileObj = {
+          fileName: file,
+          codeContent: "",
+          language: "",
+        };
+        projectFilesList.push(projectFile);
+      }
+    });
+
+    setFileList(projectFilesList);
+  }, [data?.content, data?.filenames, loading, setFileList]);
 
   const onSubmit = async (alias: string) => {
     try {
@@ -93,17 +95,6 @@ const CodeEditorPageInner = () => {
         filesData.append("", newFile, mainFile.fileName);
 
         const data = await client.uploadProjectFiles(alias, filesData);
-
-        // const requestOptions = {
-        //   method: "POST",
-        //   body: filesData,
-        //   redirect: "follow",
-        // };
-
-        // fetch(`http://localhost:5000/v1/${alias}/upload`, requestOptions)
-        //   .then((response) => response.text())
-        //   .then((result) => console.log(result))
-        //   .catch((error) => console.log("error", error));
 
         if (data) {
           if (data.code === 200) {
@@ -129,8 +120,8 @@ const CodeEditorPageInner = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setValue(fileList[currentFile].codeContent);
-    setLanguage(fileList[currentFile].language);
+    setValue(fileList[currentFile]?.codeContent || "");
+    setLanguage(fileList[currentFile]?.language || "");
   }, [currentFile, fileList]);
 
   const renderCodeEditor = useMemo(() => {
@@ -143,6 +134,20 @@ const CodeEditorPageInner = () => {
       />
     );
   }, [currentFile, language, value]);
+
+  if (typeof query.username !== "string" || typeof query.alias !== "string") {
+    return (
+      <>
+        <Head>
+          <title>API workspace | APIcally</title>
+        </Head>
+
+        <Layout contentClassName="!p-0 !max-w-[100%]" hasFooter={false}>
+          -
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>
@@ -161,7 +166,7 @@ const CodeEditorPageInner = () => {
             <div className="w-full">
               <FileHeader
                 className="sticky top-0 z-30"
-                currentFileName={fileList[currentFile].fileName}
+                currentFileName={fileList[currentFile]?.fileName || ""}
               />
               <div className="p-4 grid grid-cols-12 gap-4">
                 <div className="col-span-12 min-h-[550px]">
