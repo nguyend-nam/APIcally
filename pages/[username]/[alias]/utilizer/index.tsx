@@ -37,17 +37,30 @@ const UtilizerPage = () => {
   const [defaultMDValue, setDefaultMDValue] = useState("");
 
   const { data, loading } = useFetchWithCache(
-    [
-      GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
-        query.username as string,
-        query.alias as string
-      ),
-    ],
-    () =>
-      client.getProjectDetailByOwnerIdAndAlias(
-        query.username as string,
-        query.alias as string
-      )
+    isAuthenticated
+      ? [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH(
+            query.username as string,
+            query.alias as string
+          ),
+        ]
+      : [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
+            query.username as string,
+            query.alias as string
+          ),
+        ],
+    isAuthenticated
+      ? () =>
+          client.getProjectDetailByOwnerIdAndAliasWithAuth(
+            query.username as string,
+            query.alias as string
+          )
+      : () =>
+          client.getProjectDetailByOwnerIdAndAlias(
+            query.username as string,
+            query.alias as string
+          )
   );
 
   useEffect(() => {
@@ -55,8 +68,8 @@ const UtilizerPage = () => {
       setDefaultMDValue("");
     }
 
-    setDefaultMDValue(data?.data.project.description || "---");
-  }, [data?.data.project.description, loading]);
+    setDefaultMDValue(data?.data.project.documentation || "---");
+  }, [data?.data.project.documentation, loading]);
 
   useEffect(() => {
     if (!isAuthenticated) {

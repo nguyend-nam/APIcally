@@ -28,6 +28,8 @@ export const ApiRepo = ({
   isLinkActive = true,
   isDescriptionTruncated = true,
   isStatsAlignRight = true,
+  multiplyPrice,
+  subscriptionExpireNote,
 }: {
   data: apiRepoType;
   className?: string;
@@ -38,6 +40,8 @@ export const ApiRepo = ({
   isLinkActive?: boolean;
   isDescriptionTruncated?: boolean;
   isStatsAlignRight?: boolean;
+  multiplyPrice?: number;
+  subscriptionExpireNote?: string;
 }) => {
   const { push } = useRouter();
   const isMobile = useIsMobile();
@@ -49,6 +53,13 @@ export const ApiRepo = ({
       className={cx("bg-white p-4", className)}
       hasShadow={hasShadow}
     >
+      {subscriptionExpireNote ? (
+        <div className="mb-2">
+          <Typography.Text className="!m-0 inline items-center text-base !text-orange-500">
+            {subscriptionExpireNote}
+          </Typography.Text>
+        </div>
+      ) : null}
       <div>
         <div
           className={cx(
@@ -139,7 +150,19 @@ export const ApiRepo = ({
               : "from-green-500 to-emerald-300"
           }`}
         >
-          {data?.subscribeCost ? formatCurrency(data?.subscribeCost) : "Free"}
+          {data?.subscribeCost
+            ? `${formatCurrency(data?.subscribeCost)}${
+                multiplyPrice
+                  ? ` x ${multiplyPrice} ${
+                      multiplyPrice > 1 ? "days" : "day"
+                    } = ${formatCurrency(data?.subscribeCost * multiplyPrice)}`
+                  : ""
+              }`
+            : `Free${
+                multiplyPrice
+                  ? ` x ${multiplyPrice} ${multiplyPrice > 1 ? "days" : "day"}`
+                  : ""
+              }`}
           <CaretLeftOutlined className="!text-white text-5xl -translate-y-3 md:-translate-y-2.5 absolute -right-4" />
         </div>
       ) : null}

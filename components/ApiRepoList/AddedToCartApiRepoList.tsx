@@ -5,29 +5,25 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { Button } from "../Button";
 import { ROUTES } from "../../constants/routes";
 import { useRouter } from "next/router";
-// import { apiRepoType } from "../../pages/explore";
 import { ApiCheckboxGroup } from "../ApiCheckboxGroup";
 import cx from "classnames";
-import { useFetchWithCache } from "../../hooks/useFetchWithCache";
-import { client, GET_PATHS } from "../../libs/api";
-import { ProjectInCartItem } from "../../libs/types";
+import { GetProjectsInCartResponse, ProjectInCartItem } from "../../libs/types";
 
 interface Props {
+  data?: GetProjectsInCartResponse;
+  loading: boolean;
   className?: string;
   setSelectedApiInCart: Dispatch<SetStateAction<ProjectInCartItem[]>>;
 }
 
 export const AddedToCartApiRepoList = ({
+  data,
+  loading,
   className,
   setSelectedApiInCart,
 }: Props) => {
   const { push } = useRouter();
   const [checkedList, setCheckedList] = useState<Record<string, string[]>>({});
-
-  const { data, loading } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECTS_IN_CART],
-    () => client.getProjectsInCart()
-  );
 
   const allAddedToCartApisRepos = useMemo(() => {
     if (loading) {
@@ -116,11 +112,14 @@ const groupProjectsInCartByUsername = (
   const groupedItems: { [username: string]: ProjectInCartItem[] } = {};
 
   for (const item of projects) {
-    const { username } = item;
-    if (groupedItems[username]) {
-      groupedItems[username].push(item);
-    } else {
-      groupedItems[username] = [item];
+    const { apiId } = item;
+    const username = apiId.split("/")?.[0];
+    if (username) {
+      if (groupedItems[username]) {
+        groupedItems[username].push(item);
+      } else {
+        groupedItems[username] = [item];
+      }
     }
   }
 

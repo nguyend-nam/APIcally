@@ -1,4 +1,4 @@
-import { Modal, Typography } from "antd";
+import { Modal, notification, Typography } from "antd";
 import Head from "next/head";
 import { AddedToCartApiRepoList } from "../../components/ApiRepoList/AddedToCartApiRepoList";
 import { Button } from "../../components/Button";
@@ -13,6 +13,8 @@ import { APICALLY_KEY, useAuthContext } from "../../context/auth";
 import { useRouter } from "next/router";
 import { ROUTES } from "../../constants/routes";
 import { ProjectInCartItem } from "../../libs/types";
+import { client, GET_PATHS } from "../../libs/api";
+import { useFetchWithCache } from "../../hooks/useFetchWithCache";
 
 const CartPage = () => {
   const [selectedApiInCart, setSelectedApiInCart] = useState<
@@ -21,8 +23,13 @@ const CartPage = () => {
   const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
     useState(false);
   const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, user } = useAuthContext();
   const { replace } = useRouter();
+
+  const { data, loading, mutate } = useFetchWithCache(
+    [GET_PATHS.GET_PROJECTS_IN_CART],
+    () => client.getProjectsInCart()
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,6 +59,98 @@ const CartPage = () => {
     onOpen: openRemoveApisConfirmDialog,
     onClose: closeRemoveApisConfirmDialog,
   } = useDisclosure();
+
+  useEffect(() => {
+    if (!(selectedApiInCart || []).length) {
+      closeSubscribeApisConfirmDialog();
+      closeRemoveApisConfirmDialog();
+    }
+  }, [
+    closeRemoveApisConfirmDialog,
+    closeSubscribeApisConfirmDialog,
+    selectedApiInCart,
+  ]);
+
+  const subscribeToProjectsSubmit = async () => {
+    let totalPrice = 0;
+    selectedApiInCart.forEach((a) => {
+      totalPrice += a.price * a.days;
+    });
+
+    if (user?.balance !== undefined && user?.balance < totalPrice) {
+      notification.error({
+        message: "Your balance is not enough",
+      });
+      return;
+    } else {
+      setIsConfirmSubscribeLoading(true);
+      (selectedApiInCart || []).forEach(async (api, index) => {
+        try {
+          const res = await client.subscribeToAProject(
+            api.apiId.split("/")?.[0] || "-",
+            api.apiId.split("/")?.[1] || "-",
+            api.days
+          );
+
+          if (!res?.data) {
+            notification.error({
+              message: `Could not subscribe to ${
+                (selectedApiInCart || []).length > 1 ? "APIs" : "API"
+              }`,
+            });
+          }
+        } catch (error) {
+          notification.error({
+            message:
+              (error as any) ||
+              `Could not subscribe to ${
+                (selectedApiInCart || []).length > 1 ? "APIs" : "API"
+              }`,
+          });
+          console.error(error);
+        }
+
+        if (index === (selectedApiInCart || []).length - 1) {
+          setIsConfirmSubscribeLoading(false);
+          await mutate();
+        }
+      });
+    }
+  };
+
+  const removeProjectsFromCartSubmit = async () => {
+    setIsConfirmRemoveLoading(true);
+    (selectedApiInCart || []).forEach(async (api, index) => {
+      try {
+        const res = await client.removeProjectFromCart(
+          api.apiId.split("/")?.[0] || "-",
+          api.apiId.split("/")?.[1] || "-"
+        );
+
+        if (!res?.data) {
+          notification.error({
+            message: `Could not remove ${
+              (selectedApiInCart || []).length > 1 ? "APIs" : "API"
+            }`,
+          });
+        }
+      } catch (error) {
+        notification.error({
+          message:
+            (error as any) ||
+            `Could not remove ${
+              (selectedApiInCart || []).length > 1 ? "APIs" : "API"
+            }`,
+        });
+        console.error(error);
+      }
+
+      if (index === (selectedApiInCart || []).length - 1) {
+        setIsConfirmRemoveLoading(false);
+        await mutate();
+      }
+    });
+  };
 
   return (
     <>
@@ -93,6 +192,8 @@ const CartPage = () => {
             </div>
             <AddedToCartApiRepoList
               setSelectedApiInCart={setSelectedApiInCart}
+              data={data}
+              loading={loading}
             />
           </Card>
         </Layout>
@@ -115,13 +216,7 @@ const CartPage = () => {
               key="subscribe"
               label="Subscribe"
               isLoading={isConfirmSubscribeLoading}
-              onClick={() => {
-                setIsConfirmSubscribeLoading(true);
-                setTimeout(() => {
-                  closeSubscribeApisConfirmDialog();
-                  setIsConfirmSubscribeLoading(false);
-                }, 1000);
-              }}
+              onClick={subscribeToProjectsSubmit}
             />,
           ]}
           centered
@@ -149,13 +244,7 @@ const CartPage = () => {
               key="remove"
               label="Remove"
               isLoading={isConfirmRemoveLoading}
-              onClick={() => {
-                setIsConfirmRemoveLoading(true);
-                setTimeout(() => {
-                  closeRemoveApisConfirmDialog();
-                  setIsConfirmRemoveLoading(false);
-                }, 1000);
-              }}
+              onClick={removeProjectsFromCartSubmit}
             />,
           ]}
           centered

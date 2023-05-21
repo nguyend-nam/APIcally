@@ -1,6 +1,7 @@
 import { Checkbox } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAuthContext } from "../../context/auth";
 import { useFetchWithCache } from "../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../libs/api";
 import { ProjectInCartItem } from "../../libs/types";
@@ -52,6 +53,7 @@ export const ApiCheckboxGroup = (props: Props) => {
               apiId={a.apiId}
               username={a.apiId.split("/")?.[0] || ""}
               alias={a.apiId.split("/")?.[1] || ""}
+              days={a.days}
               checkedList={checkedList}
             />
           );
@@ -80,12 +82,18 @@ const CheckBoxItem = (props: {
   alias: string;
   checkedList: CheckboxValueType[];
   apiId: string;
+  days: number;
 }) => {
-  const { username, alias, checkedList, apiId } = props;
+  const { username, alias, checkedList, apiId, days } = props;
+  const { isAuthenticated } = useAuthContext();
 
   const { data, loading } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(username, alias)],
-    () => client.getProjectDetailByOwnerIdAndAlias(username, alias)
+    isAuthenticated
+      ? [GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH(username, alias)]
+      : [GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(username, alias)],
+    isAuthenticated
+      ? () => client.getProjectDetailByOwnerIdAndAliasWithAuth(username, alias)
+      : () => client.getProjectDetailByOwnerIdAndAlias(username, alias)
   );
 
   if (loading) {
@@ -102,6 +110,7 @@ const CheckBoxItem = (props: {
         hasShadow={false}
         className="border border-slate-200"
         showOwner={false}
+        multiplyPrice={days}
       />
     </Checkbox>
   );

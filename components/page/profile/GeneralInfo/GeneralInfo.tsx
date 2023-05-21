@@ -15,6 +15,7 @@ import { useMemo } from "react";
 import { UserInfoData } from "../../../../libs/types";
 import { Text } from "../../../Text";
 import Link from "next/link";
+import { formatCurrency } from "../../../../utils/currency";
 
 interface Props {
   showActions?: boolean;
@@ -57,12 +58,21 @@ export const GeneralInfo = ({
         </Typography.Title>
 
         {isPersonal ? (
-          <Button
-            appearance="outline"
-            label="Top up"
-            className="w-full !text-base mt-4"
-            onClick={() => router.push(ROUTES.TOP_UP)}
-          />
+          <>
+            <Divider
+              className="!mt-2 !text-slate-500 !text-sm !font-normal"
+              orientation="left"
+              orientationMargin={0}
+            >
+              Balance: {formatCurrency(user?.balance || 0)}
+            </Divider>
+            <Button
+              appearance="outline"
+              label="Top up"
+              className="w-full !text-base"
+              onClick={() => router.push(ROUTES.TOP_UP)}
+            />
+          </>
         ) : null}
 
         <Divider
@@ -106,7 +116,7 @@ export const GeneralInfo = ({
                 <div className="flex items-center gap-2 shrink-0">
                   <StarTwoTone twoToneColor="#2D31FA" />
                   <Text className="text-sm text-slate-400 !m-0">
-                    Starred APIs
+                    Highest rated
                   </Text>
                 </div>
                 <Link
@@ -114,9 +124,8 @@ export const GeneralInfo = ({
                     internalUserInfo.username,
                     internalUserInfo?.bestRate.alias
                   )}
-                  className="!text-sm text-right"
                 >
-                  <a>
+                  <a className="!text-sm text-right">
                     {internalUserInfo.username}/
                     {internalUserInfo?.bestRate.alias}
                   </a>

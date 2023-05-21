@@ -22,6 +22,8 @@ export interface CheckTokenData {
 export interface CheckTokenResponse extends BaseResponse<CheckTokenData> {}
 
 export interface APIProjectItem {
+  isAddedToCart?: boolean;
+  expiredDate?: number;
   documentation: string;
   description: string;
   ownerId: string;
@@ -81,24 +83,11 @@ export interface RateProjectRequest {
 
 export interface GetProjectDetailByOwnerIdAndAliasResponseData {
   subscriber?: number;
+  isAddedToCart?: boolean;
+  expiredDate?: number;
   stars?: number;
-  project: Project;
-}
-
-export interface Project {
-  documentation: string;
-  description: string;
-  ownerId: string;
-  input: string;
-  createdAt: number;
-  name: string;
-  alias: string;
-  id: string;
-  subscribeCost: number;
-  costPerRequest: number;
-  category: string;
-  fileNames: string[];
-  updatedAt: number;
+  project: APIProjectItem;
+  yourRate: number;
 }
 
 export interface GetProjectDetailByOwnerIdAndAliasResponse
@@ -125,3 +114,14 @@ export interface ProjectInCartItem {
 
 export interface GetProjectsInCartResponse
   extends BaseResponse<ProjectInCartItem[]> {}
+
+export interface SubscribeToAProjectResponseData {
+  expiredDate: number;
+  executionToken: string;
+}
+
+export interface RemoveProjectFromCartResponseDataItem {
+  days: number;
+  apiId: string;
+  username: string;
+}

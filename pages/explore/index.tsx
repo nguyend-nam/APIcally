@@ -47,16 +47,8 @@ export type Statistic = {
 };
 
 export interface apiRepoType {
-  // id?: string;
-  // subscribeStatus?: boolean;
-  // name?: string;
-  // alias?: string;
-  // author?: string;
-  // username?: string;
-  // description?: string;
-  // statistics?: Statistic;
-  // tags?: apiTagTypes[];
-
+  isAddedToCart?: boolean;
+  expiredDate?: number;
   documentation: string;
   description: string;
   ownerId: string;
@@ -91,8 +83,12 @@ const ExplorePage = () => {
   const { isAuthenticated } = useAuthContext();
 
   const { data, loading } = useFetchWithCache(
-    [GET_PATHS.SCAN_ALL_PROJECTS],
-    () => client.scanAllProjects()
+    isAuthenticated
+      ? [GET_PATHS.SCAN_ALL_PROJECTS_WITH_AUTH]
+      : [GET_PATHS.SCAN_ALL_PROJECTS],
+    isAuthenticated
+      ? () => client.scanAllProjectsWithAuth()
+      : () => client.scanAllProjects()
   );
 
   const [apiRepos, setApiRepos] = useState<apiRepoType[] | []>(
@@ -204,11 +200,11 @@ const ExplorePage = () => {
             return true;
           }
 
-          const has = true;
-          // let has = false;
-          // if (a.subscribeStatus) {
-          // has = true;
-          // }
+          console.log(a);
+          let has = false;
+          if (a?.expiredDate !== undefined) {
+            has = true;
+          }
           return has;
         });
 

@@ -10,7 +10,9 @@ import {
   GetSubscribedProjectsResponse,
   GetTokenResponse,
   RateProjectRequest,
+  RemoveProjectFromCartResponseDataItem,
   ScanAllProjectsResponse,
+  SubscribeToAProjectResponseData,
   UserInfoData,
 } from "./types";
 
@@ -43,11 +45,16 @@ export const GET_PATHS = {
     `/${ownerId}/get/project/${alias}`,
   UPLOAD_PROJECT_FILES: (ownerId: string) => `/${ownerId}/post/project/upload`,
   SCAN_ALL_PROJECTS: "projects/no-auth",
+  SCAN_ALL_PROJECTS_WITH_AUTH: "projects/no-auth/with-auth",
   SCAN_OWNED_PROJECTS_BY_USER: (ownerId: string) =>
     `projects/no-auth/${ownerId}`,
   GET_SUBSCRIBED_PROJECTS: "projects/subscribed",
   GET_PROJECT_DETAIL_OWNERID_ALIAS: (ownerId: string, alias: string) =>
     `project/detail/${ownerId}/${alias}`,
+  GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH: (
+    ownerId: string,
+    alias: string
+  ) => `project/detail/${ownerId}/${alias}/with-auth`,
   GET_USER_INFO: (ownerId: string) => `user-info/${ownerId}`,
   GET_PROJECTS_IN_CART: "projects/cart",
 };
@@ -139,6 +146,14 @@ class Client {
     });
   }
 
+  public scanAllProjectsWithAuth() {
+    return fetcher<ScanAllProjectsResponse>(`${API_BASE_API_URL}/no-auth`, {
+      headers: {
+        ...this.privateHeaders,
+      },
+    });
+  }
+
   public scanOnwedProjectsOfUser(ownerId: string) {
     return fetcher<ScanAllProjectsResponse>(
       `${API_BASE_API_URL}/no-auth/${ownerId}`,
@@ -199,6 +214,33 @@ class Client {
     );
   }
 
+  public subscribeToAProject(ownerId: string, alias: string, days: number) {
+    return fetcher<BaseResponse<SubscribeToAProjectResponseData>>(
+      `${API_BASE_API_URL}/v1/subscribe`,
+      {
+        method: "POST",
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify({ ownerId, alias, days }),
+      }
+    );
+  }
+
+  public getProjectDetailByOwnerIdAndAliasWithAuth(
+    ownerId: string,
+    alias: string
+  ) {
+    return fetcher<GetProjectDetailByOwnerIdAndAliasResponse>(
+      `${API_BASE_API_URL}/no-auth/${ownerId}/${alias}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
   public getUserInfo(ownerId: string) {
     return fetcher<BaseResponse<UserInfoData>>(
       `${API_BASE_API_URL}/no-auth/profile/info/${ownerId}`,
@@ -229,12 +271,35 @@ class Client {
     });
   }
 
+  public addProjectToCart(ownerId: string, alias: string, days: number) {
+    return fetcher<BaseResponse<any>>(`${API_BASE_API_URL}/v1/cart`, {
+      method: "POST",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ ownerId, alias, days }),
+    });
+  }
+
   public getProjectsInCart() {
     return fetcher<GetProjectsInCartResponse>(`${API_BASE_API_URL}/v1/cart`, {
       headers: {
         ...this.privateHeaders,
       },
     });
+  }
+
+  public removeProjectFromCart(ownerId: string, alias: string) {
+    return fetcher<BaseResponse<RemoveProjectFromCartResponseDataItem[]>>(
+      `${API_BASE_API_URL}/v1/cart`,
+      {
+        method: "DELETE",
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify({ ownerId, alias }),
+      }
+    );
   }
 
   /////

@@ -77,3 +77,8 @@
 .ant-slider-handle {
   border-color: #2d31fa !important;
 }
+
+.ant-radio-button.ant-radio-button-checked {
+  background-color: #2d31fa !important;
+  color: #fff !important;
+}

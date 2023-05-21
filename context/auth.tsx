@@ -21,6 +21,7 @@ const [Provider, useAuthContext] = createContext<{
   login: (username: string, password: string) => void;
   logout: () => void;
   user?: UserInfo;
+  mutateData: () => Promise<void>;
 }>();
 
 export const REFRESH_TOKEN_THRESHOLD_SECS = 9 * 60;
@@ -125,6 +126,15 @@ const AuthProvider = ({ children }: WithChildren) => {
     client.clearAuthToken();
   }, []);
 
+  const mutateData = async () => {
+    const userInfoRes = await client.getUserProfile();
+    const balanceRes = await client.getUserBalance();
+
+    if (userInfoRes?.data && balanceRes?.data !== undefined) {
+      setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
+    }
+  };
+
   return (
     <Provider
       value={{
@@ -132,6 +142,7 @@ const AuthProvider = ({ children }: WithChildren) => {
         login,
         logout,
         user,
+        mutateData,
       }}
     >
       {children}

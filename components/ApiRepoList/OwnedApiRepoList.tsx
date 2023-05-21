@@ -59,7 +59,7 @@ export const OwnedApiRepoList = ({
     );
   }
 
-  if (!data || (data?.data || []).length === 0) {
+  if (!data || (displayedApiRepos || []).length === 0) {
     return (
       <div className={cx("h-[350px] flex flex-col justify-center", className)}>
         <Empty

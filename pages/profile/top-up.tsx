@@ -16,7 +16,7 @@ export type stepTypes = "main" | "change-password";
 
 const UserTopUpPage = () => {
   const { replace, push } = useRouter();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, mutateData } = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ const UserTopUpPage = () => {
         notification.success({
           message: "Top up successfully",
         });
+        await mutateData();
         push(ROUTES.PROFILE);
       }
     } catch (error: any) {
@@ -99,7 +100,6 @@ const UserTopUpPage = () => {
                         id="amount-input"
                         fullWidth
                         placeholder="Enter top up amount..."
-                        max={100}
                         min={0}
                         step={0.1}
                         className="!ring-2 !ring-info"

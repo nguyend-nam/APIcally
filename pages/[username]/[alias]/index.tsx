@@ -2,9 +2,9 @@ import {
   Col,
   Divider,
   // Form,
-  // Modal,
+  Modal,
   notification,
-  // Radio,
+  Radio,
   Row,
   // Select,
   Spin,
@@ -19,15 +19,15 @@ import { Layout } from "../../../components/Layout";
 import { ApiRepo } from "../../../components/page/home/ApiRepo";
 import {
   // apiReposData,
-  apiReposInCart,
+  // apiReposInCart,
   chartData,
 } from "../../../constants/mockData";
 import { Card } from "../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState } from "react";
-// import { useDisclosure } from "@dwarvesf/react-hooks";
+import { useDisclosure } from "@dwarvesf/react-hooks";
 // import { Input } from "../../../../components/Input";
-// import { Text } from "../../../../components/Text";
+import { Text } from "../../../components/Text";
 import { ROUTES } from "../../../constants/routes";
 import { apiRepoType } from "../../explore";
 import { useAuthContext } from "../../../context/auth";
@@ -38,6 +38,9 @@ import { client, GET_PATHS } from "../../../libs/api";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { ReactQuillProps } from "react-quill";
 import { editorModules } from "../../../constants/editor";
+import { subscriptionPlans } from "../../../constants/subscription";
+import cx from "classnames";
+import dayjs from "dayjs";
 
 const CustomAxisTick = ({
   x,
@@ -116,27 +119,36 @@ const APIDetailPage = () => {
   const [currRating, setCurrRating] = useState(0);
   const [isRateSubmitting, setIsRateSubmitting] = useState(false);
 
-  const [isSubscribed] = useState(false);
-  const { isAuthenticated, user } = useAuthContext();
+  const [subsPlan, setSubsPlan] = useState(1);
 
+  const { isAuthenticated, user } = useAuthContext();
   const [defaultMDValue, setDefaultMDValue] = useState("");
 
-  // const currentAPI = apiReposData.find(
-  //   (a) => a.alias === query.alias && a.ownerId === query.username
-  // );
-
-  const { data, loading } = useFetchWithCache(
-    [
-      GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
-        query.username as string,
-        query.alias as string
-      ),
-    ],
-    () =>
-      client.getProjectDetailByOwnerIdAndAlias(
-        query.username as string,
-        query.alias as string
-      )
+  const { data, loading, mutate } = useFetchWithCache(
+    isAuthenticated
+      ? [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH(
+            query.username as string,
+            query.alias as string
+          ),
+        ]
+      : [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
+            query.username as string,
+            query.alias as string
+          ),
+        ],
+    isAuthenticated
+      ? () =>
+          client.getProjectDetailByOwnerIdAndAliasWithAuth(
+            query.username as string,
+            query.alias as string
+          )
+      : () =>
+          client.getProjectDetailByOwnerIdAndAlias(
+            query.username as string,
+            query.alias as string
+          )
   );
 
   useEffect(() => {
@@ -144,33 +156,20 @@ const APIDetailPage = () => {
       setDefaultMDValue("");
     }
 
-    setDefaultMDValue(data?.data.project.description || "---");
-  }, [data?.data.project.description, loading]);
+    setDefaultMDValue(data?.data.project.documentation || "---");
+  }, [data?.data.project.documentation, loading]);
 
-  const allAddedToCartApisRepos = useMemo(() => {
-    let arr: apiRepoType[] = [];
-    apiReposInCart.forEach((r) => {
-      arr = [...arr, ...r.apis];
-    });
-
-    return arr;
-  }, []);
-
-  const allAddedToCartApisId = useMemo(() => {
-    return allAddedToCartApisRepos.map((a) => a.id);
-  }, [allAddedToCartApisRepos]);
-
-  // const {
-  //   isOpen: isSubscribeDialogOpen,
-  //   onOpen: openSubscribeDialog,
-  //   onClose: closeSubscribeDialog,
-  // } = useDisclosure();
+  const {
+    isOpen: isSubscribeDialogOpen,
+    onOpen: openSubscribeDialog,
+    onClose: closeSubscribeDialog,
+  } = useDisclosure();
 
   const onRatingSubmit = async () => {
     try {
       setIsRateSubmitting(true);
       const res = await client.rateProject(
-        query.ownerId as string,
+        query.username as string,
         query.alias as string,
         { stars: currRating }
       );
@@ -189,13 +188,119 @@ const APIDetailPage = () => {
     }
   };
 
-  const onAddToCart = () => {
-    setIsAddingToCart(true);
-    setTimeout(() => {
-      notification.success({ message: "API added to cart!" });
+  const onAddToCart = async () => {
+    try {
+      setIsAddingToCart(true);
+      const res = await client.addProjectToCart(
+        query.username as string,
+        query.alias as string,
+        subsPlan
+      );
+      if (res?.data) {
+        await mutate();
+        notification.success({
+          message: "API added to cart!",
+        });
+        closeSubscribeDialog();
+      }
+      // await login(values.username, values.password);
+    } catch (error) {
+      notification.error({
+        message: "Could not add API to cart",
+      });
+    } finally {
       setIsAddingToCart(false);
-    }, 1000);
+    }
   };
+
+  const isSubscriptionExpired = useMemo(() => {
+    if (!isAuthenticated || loading) {
+      return false;
+    }
+
+    const subsExpiry = new Date(data?.data?.expiredDate || "");
+    const today = new Date();
+
+    return subsExpiry < today;
+  }, [data?.data?.expiredDate, isAuthenticated, loading]);
+
+  const renderAuthMessage = useMemo(() => {
+    if (!isAuthenticated || loading) {
+      return "";
+    }
+    if (data?.data.project.ownerId === user?.username) {
+      return "You owned this API";
+    }
+    if (data?.data?.expiredDate) {
+      if (isSubscriptionExpired) {
+        return "Your subscription expired";
+      }
+      return "You already subscribed to this API";
+    }
+  }, [
+    data?.data?.expiredDate,
+    data?.data.project.ownerId,
+    isAuthenticated,
+    isSubscriptionExpired,
+    loading,
+    user?.username,
+  ]);
+
+  const renderAuthActions = useMemo(() => {
+    const startUsingBtn = (
+      <Button
+        label="Start using"
+        onClick={() => {
+          setIsLoading(!isLoading);
+          setTimeout(() => {
+            if (data?.data.project.ownerId && data?.data.project.alias)
+              push(
+                ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
+                  data?.data.project.ownerId,
+                  data?.data.project.alias
+                )
+              );
+          }, 1000);
+        }}
+      />
+    );
+
+    const extendSubsBtn = (
+      <Button
+        label="Extend subscription"
+        appearance="outline"
+        onClick={openSubscribeDialog}
+      />
+    );
+    if (!isAuthenticated || loading) {
+      return null;
+    }
+    if (data?.data.project.ownerId === user?.username) {
+      return startUsingBtn;
+    }
+    if (data?.data?.expiredDate) {
+      if (isSubscriptionExpired) {
+        return extendSubsBtn;
+      }
+      return (
+        <>
+          {startUsingBtn}
+          {extendSubsBtn}
+        </>
+      );
+    }
+  }, [
+    data?.data?.expiredDate,
+    data?.data.project.alias,
+    data?.data.project.ownerId,
+    isAuthenticated,
+    isLoading,
+    isSubscriptionExpired,
+    loading,
+    openSubscribeDialog,
+    push,
+    user?.username,
+  ]);
 
   if (loading) {
     return (
@@ -249,7 +354,8 @@ const APIDetailPage = () => {
 
               {isAuthenticated &&
               user?.username &&
-              user?.username !== data.data.project.ownerId ? (
+              user?.username !== data?.data?.project?.ownerId &&
+              data?.data?.expiredDate ? (
                 <div className="w-full flex items-center gap-2">
                   <div className="relative w-full">
                     <div className="!m-0 w-[120px] h-max -rotate-90 flex justify-center items-center absolute !right-0 !-bottom-[60px]">
@@ -257,6 +363,7 @@ const APIDetailPage = () => {
                         handleOnClick={(rating) => setCurrRating(rating)}
                         starClassName="rotate-90"
                         size={24}
+                        initialRating={data.data.yourRate || 0}
                       />
                     </div>
                   </div>
@@ -276,9 +383,24 @@ const APIDetailPage = () => {
             <Row className="my-6 md:my-8" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
                 <ApiRepo
-                  data={data?.data.project as apiRepoType}
+                  data={
+                    {
+                      ...data?.data.project,
+                      stars: data?.data?.stars || 0,
+                      subscriber: data?.data?.subscriber || 0,
+                    } as apiRepoType
+                  }
                   isLinkActive={false}
                   isDescriptionTruncated={false}
+                  subscriptionExpireNote={
+                    data?.data?.expiredDate
+                      ? `Subscription ${
+                          isSubscriptionExpired ? "expired" : "expires"
+                        } at ${dayjs(new Date(data.data.expiredDate)).format(
+                          "DD/MMM/YYYY, hh:mm:ss A"
+                        )}`
+                      : undefined
+                  }
                 />
               </Col>
               {isAuthenticated ? (
@@ -290,45 +412,26 @@ const APIDetailPage = () => {
                       backgroundImage: `url(/img/api-status-bg.png)`,
                     }}
                   >
-                    {/* {data?.data.project?.subscribeStatus ? ( */}
-                    {isSubscribed ? (
+                    {data?.data?.expiredDate ||
+                    data?.data.project.ownerId === user?.username ? (
                       <Spin spinning={isLoading}>
                         <div className="flex justify-between !items-start">
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
-                            You{" "}
-                            {data?.data.project.ownerId === user?.username
-                              ? "owned"
-                              : "already subscribed to"}{" "}
-                            this API
+                            {renderAuthMessage}
                           </Typography.Text>
                           <CheckCircleOutlined className="!text-success text-lg mr-1 mt-[5px]" />
                         </div>
                         <div className="flex gap-2 flex-wrap mt-4">
-                          <Button
-                            label="Start using"
-                            onClick={() => {
-                              setIsLoading(!isLoading);
-                              setTimeout(() => {
-                                if (
-                                  data?.data.project.ownerId &&
-                                  data?.data.project.alias
-                                )
-                                  push(
-                                    ROUTES.API_WORKSPACE_API_DETAIL_UTILIZER(
-                                      data?.data.project.ownerId,
-                                      data?.data.project.alias
-                                    )
-                                  );
-                              }, 1000);
-                            }}
-                          />
+                          {renderAuthActions}
                         </div>
                       </Spin>
                     ) : (
                       <div className="h-full flex flex-col justify-between">
                         <div className="flex justify-between !items-start">
                           <Typography.Text className="text-lg !m-0 !text-gray-600">
-                            You haven&rsquo;t subscribed to this API yet
+                            {data?.data?.isAddedToCart
+                              ? "API is already added to cart"
+                              : "You haven't subscribed to this API yet"}
                           </Typography.Text>
                           <Button
                             appearance="link"
@@ -346,22 +449,16 @@ const APIDetailPage = () => {
                         <div className="mt-4">
                           <Button
                             label={
-                              allAddedToCartApisId.includes(
-                                data?.data.project.id
-                              )
-                                ? "API added to cart"
+                              data?.data?.isAddedToCart
+                                ? "Go to cart"
                                 : "Add to cart"
                             }
                             isLoading={isAddingToCart}
                             onClick={() => {
-                              if (
-                                allAddedToCartApisId.includes(
-                                  data?.data.project.id
-                                )
-                              ) {
+                              if (data?.data?.isAddedToCart) {
                                 push(ROUTES.CART);
                               } else {
-                                onAddToCart();
+                                openSubscribeDialog();
                               }
                             }}
                           />
@@ -388,7 +485,6 @@ const APIDetailPage = () => {
                       <div className="mt-4">
                         <Button
                           label="Login"
-                          isLoading={isAddingToCart}
                           onClick={() => {
                             push(ROUTES.LOGIN);
                           }}
@@ -430,7 +526,8 @@ const APIDetailPage = () => {
           </>
         )}
       </Layout>
-      {/* {isSubscribeDialogOpen && (
+
+      {isSubscribeDialogOpen && (
         <Modal
           open={isSubscribeDialogOpen}
           onCancel={closeSubscribeDialog}
@@ -444,135 +541,49 @@ const APIDetailPage = () => {
             />,
             <Button
               key="subscribe"
-              label="Subscribe"
-              onClick={() => undefined}
+              label="Add to cart"
+              isLoading={isAddingToCart}
+              onClick={onAddToCart}
             />,
           ]}
           centered
         >
-          <Text as="h2" className="text-lg">
-            Enter payment detail
+          <Text as="h2" className="text-md md:text-lg">
+            Please choose subscription plan for this project
           </Text>
-          <Row className="flex items-center" gutter={[12, 0]}>
-            <Col span={24}>
-              <label htmlFor="card-input" className="text-lg text-primary mr-4">
-                Card number
-              </label>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="card" className="!m-0">
-                <Input
-                  type="text"
-                  id="card-input"
-                  placeholder="Enter card number..."
-                  className="mt-1 mb-4"
-                />
-              </Form.Item>
-            </Col>
 
-            <Col span={24}>
-              <label
-                htmlFor="address-input"
-                className="text-lg text-primary mr-4"
-              >
-                Address
-              </label>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="address" className="!m-0">
-                <Input
-                  type="text"
-                  id="address-input"
-                  placeholder="Enter address..."
-                  className="mb-4"
-                />
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
-              <label
-                htmlFor="country-input"
-                className="text-lg text-primary mr-4"
-              >
-                Country
-              </label>
-            </Col>
-            <Col span={24}>
-              <Form.Item name="country" className="!m-0 !mb-4">
-                <Select
-                  style={{ width: "100%" }}
-                  placeholder="Select country..."
-                  defaultValue="vietnam"
-                  options={[
-                    { value: "vietnam", label: "Vietnam" },
-                    { value: "us", label: "United State" },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <label htmlFor="city-input" className="text-lg text-primary mr-4">
-                City
-              </label>
-            </Col>
-
-            <Col span={12}>
-              <label htmlFor="code-input" className="text-lg text-primary mr-4">
-                Zip code
-              </label>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item name="city" className="!m-0 !mb-4">
-                <Select
-                  style={{ width: "100%" }}
-                  placeholder="Select city..."
-                  options={[]}
-                />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item name="code" className="!m-0 !mb-4">
-                <Input
-                  type="text"
-                  id="code-input"
-                  placeholder="Enter zip code..."
-                />
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
-              <label htmlFor="bank-input" className="text-lg text-primary mr-4">
-                Bank
-              </label>
-            </Col>
-
-            <Col span={24}>
-              <Form.Item name="bank" className="!m-0">
-                <Select
-                  style={{ width: "100%" }}
-                  placeholder="Select bank..."
-                  options={[]}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Text as="h2" className="text-lg mt-4">
-            Choose plan
-          </Text>
-          <Radio.Group value="annually">
-            <Radio value="annually" className="!text-lg">
-              Annually
-            </Radio>
-            <Radio value="monthly" className="!text-lg">
-              Monthly
-            </Radio>
-          </Radio.Group>
+          <div className="w-full flex justify-center">
+            <Radio.Group
+              defaultValue={subsPlan}
+              className="!flex w-full flex-col md:flex-row items-center"
+              buttonStyle="solid"
+              onChange={(e) => setSubsPlan(e.target.value)}
+            >
+              {subscriptionPlans.map((plan) => {
+                return (
+                  <Radio.Button
+                    key={plan.label}
+                    value={plan.days}
+                    className="flex-1 !h-full !w-full !flex flex-col items-center !p-2 md:!p-4"
+                  >
+                    <Text
+                      className={cx("text-lg md:text-2xl font-semibold !mb-2", {
+                        "text-slate-600": subsPlan !== plan.days,
+                        "text-white": subsPlan === plan.days,
+                      })}
+                    >
+                      {plan.label}
+                    </Text>
+                    <div className="text-center text-sm md:text-base">
+                      ({plan.days} {plan.days > 1 ? "days" : "day"})
+                    </div>
+                  </Radio.Button>
+                );
+              })}
+            </Radio.Group>
+          </div>
         </Modal>
-      )} */}
+      )}
     </>
   );
 };
