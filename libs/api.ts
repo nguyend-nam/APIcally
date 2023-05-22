@@ -325,31 +325,25 @@ class Client {
   }
 
   public uploadInitProjectFiles(alias: string, files: FormData) {
-    return fetcher<GetProjectsInCartResponse>(
-      `${PYTHON_BASE_API_URL}/v1/${alias}/upload`,
-      {
-        method: "POST",
-        headers: {
-          ...this.formDataHeaders(),
-        },
-        // @ts-ignore
-        body: files,
-      }
-    );
+    return fetcher<any>(`${PYTHON_BASE_API_URL}/v1/${alias}/upload`, {
+      method: "POST",
+      headers: {
+        ...this.formDataHeaders(),
+      },
+      // @ts-ignore
+      body: files,
+    });
   }
 
   public uploadProjectFiles(alias: string, files: FormData) {
-    return fetcher<GetProjectsInCartResponse>(
-      `${PYTHON_BASE_API_URL}/v1/${alias}/upload`,
-      {
-        method: "PUT",
-        headers: {
-          ...this.formDataHeaders(),
-        },
-        // @ts-ignore
-        body: files,
-      }
-    );
+    return fetcher<any>(`${PYTHON_BASE_API_URL}/v1/${alias}/upload`, {
+      method: "PUT",
+      headers: {
+        ...this.formDataHeaders(),
+      },
+      // @ts-ignore
+      body: files,
+    });
   }
 
   /////

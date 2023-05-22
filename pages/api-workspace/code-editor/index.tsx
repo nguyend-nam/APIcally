@@ -12,7 +12,7 @@ import { Layout } from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { ROUTES } from "../../../constants/routes";
-import { isAPINameFormatValid } from "../../../utils";
+// import { isAPINameFormatValid } from "../../../utils";
 import { client, GET_PATHS } from "../../../libs/api";
 import { notification } from "antd";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
@@ -23,10 +23,9 @@ const CodeEditorPageInner = () => {
     fileList: fileObj[];
     setFileList: (files: fileObj[]) => void;
   };
-  const filesData = useMemo(() => new FormData(), []);
   const { user, isAuthenticated, logout } = useAuthContext();
 
-  const { push, query, replace } = useRouter();
+  const { query, replace } = useRouter();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -45,7 +44,7 @@ const CodeEditorPageInner = () => {
     }
   }, [logout]);
 
-  const { data, loading } = useFetchWithCache(
+  const { data, loading, mutate } = useFetchWithCache(
     [
       GET_PATHS.GET_PROJECT_FILES_CONTENT(
         user?.username || "-",
@@ -84,31 +83,29 @@ const CodeEditorPageInner = () => {
   }, [data?.content, data?.filenames, loading, setFileList]);
 
   const onSubmit = async (alias: string) => {
+    if (!alias) {
+      return;
+    }
+
     try {
       setIsLoading(true);
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        const fileToUpload = new File([file.codeContent], file.fileName);
+        formData.append("", fileToUpload, file.fileName);
+      });
 
-      const mainFile = fileList.find((file) => file.fileName === "main.py");
-      console.log(filesData);
+      const res = await client.uploadProjectFiles(alias, formData);
 
-      if (mainFile) {
-        const newFile = new Blob([mainFile.codeContent]);
-        filesData.append("", newFile, mainFile.fileName);
-
-        const data = await client.uploadProjectFiles(alias, filesData);
-
-        if (data) {
-          if (data.code === 200) {
-            notification.success({ message: "Files uploaded successfully" });
-            // push(
-            //   ROUTES.API_WORKSPACE_DOCUMENTATION(ownerId, query.alias as string)
-            // );
-          }
-        }
+      await mutate();
+      if (res === "Upload files successfully") {
+        notification.success({ message: "Files uploaded successfully" });
       }
     } catch (error: any) {
-      notification.error({
-        message: error.message || "Could not upload files",
-      });
+      console.log(error);
+      // notification.error({
+      //   message: error.message || "Could not upload files",
+      // });
     } finally {
       setIsLoading(false);
     }

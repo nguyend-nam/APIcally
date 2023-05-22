@@ -82,7 +82,7 @@ const APICreatePage = () => {
         input: "-",
         subscribeCost: subscribeFee,
         costPerRequest: requestFee,
-        category: categories,
+        category: categories.length ? categories : "other",
       };
 
       try {

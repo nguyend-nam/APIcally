@@ -11,16 +11,14 @@ export const multipleStates = {
 };
 
 export const modelFileExtensions = [
+  "pkl",
   "gz",
   "tgz",
   "tf",
+  "ckpt",
   "pb",
-  "pth",
-  "pt",
-  "h5",
   "hdf5",
-  "onnx",
-  "pkl",
+  "txt",
 ];
 
 export const pythonInitCode = `"""Required import-----------------------------------------"""
