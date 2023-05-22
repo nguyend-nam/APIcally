@@ -9,6 +9,7 @@ import {
   GetProjectDetailByOwnerIdAndAliasResponse,
   GetProjectFilesContentResponse,
   GetProjectsInCartResponse,
+  GetProjectSubscriberResponse,
   GetSubscribedProjectsResponse,
   GetTokenResponse,
   RateProjectRequest,
@@ -62,6 +63,7 @@ export const GET_PATHS = {
   GET_PROJECTS_IN_CART: "projects/cart",
   GET_PROJECT_FILES_CONTENT: (ownerId: string, alias: string) =>
     `project/${ownerId}/${alias}/content`,
+  GET_PROJECT_SUBSCRIBERS: (alias: string) => `project/subscriber/${alias}`,
 };
 
 class Client {
@@ -351,6 +353,17 @@ class Client {
   public getBalanceLog(period?: loggingTypes) {
     return fetcher<GetBalanceLogData[]>(
       `${API_BASE_API_URL}/v1/log${period ? `?period=${period}` : ""}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
+  public getSubscribersOfProject(alias: string) {
+    return fetcher<GetProjectSubscriberResponse>(
+      `${API_BASE_API_URL}/v1/subscriber/${alias}`,
       {
         headers: {
           ...this.privateHeaders,

@@ -1,6 +1,5 @@
 import {
   Col,
-  Divider,
   // Form,
   Modal,
   notification,
@@ -17,11 +16,6 @@ import { useRouter } from "next/router";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
 import { ApiRepo } from "../../../components/page/home/ApiRepo";
-import {
-  // apiReposData,
-  // apiReposInCart,
-  chartData,
-} from "../../../constants/mockData";
 import { Card } from "../../../components/Card";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState } from "react";
@@ -31,8 +25,6 @@ import { Text } from "../../../components/Text";
 import { ROUTES } from "../../../constants/routes";
 import { apiRepoType } from "../../explore";
 import { useAuthContext } from "../../../context/auth";
-import { CartesianAxisProps, TooltipProps } from "recharts";
-import { LineChart } from "../../../components/LineChart";
 import StarRating from "react-svg-star-rating";
 import { client, GET_PATHS } from "../../../libs/api";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
@@ -41,70 +33,7 @@ import { editorModules } from "../../../constants/editor";
 import { subscriptionPlans } from "../../../constants/subscription";
 import cx from "classnames";
 import dayjs from "dayjs";
-
-const CustomAxisTick = ({
-  x,
-  y,
-  payload,
-  dy,
-  dx,
-}: CartesianAxisProps & {
-  payload?: any;
-}) => {
-  return (
-    <g
-      transform={`translate(${x},${y})`}
-      style={{
-        fontWeight: 400,
-        fontSize: 13,
-      }}
-    >
-      <text
-        role="button"
-        x={0}
-        y={0}
-        dy={dy}
-        dx={dx}
-        textAnchor="middle"
-        fill="#555"
-        style={{ fontWeight: 400 }}
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
-};
-
-const CustomTooltip = (record: TooltipProps<any, any>) => {
-  if (record.active && record.payload?.length) {
-    return (
-      <Card shadowSize="md">
-        <div className="p-3 pb-2">
-          <strong>{record.label}</strong>
-        </div>
-        <Divider className="!m-0" />
-        <div className="p-3 pt-2">
-          {record.payload.map((item) => {
-            return (
-              <span key={item.dataKey}>
-                <span>Utilizations count: </span>
-                {item.payload.trend === null ? (
-                  <strong>{item?.value}</strong>
-                ) : (
-                  <>
-                    <strong>{item?.value}</strong>{" "}
-                  </>
-                )}
-              </span>
-            );
-          })}
-        </div>
-      </Card>
-    );
-  }
-
-  return null;
-};
+import { ProjectSubscriber } from "../../../components/page/api-workspace/ProjectSubscriber";
 
 const ReactQuill = dynamic<ReactQuillProps>(
   () => import("react-quill").then((mod) => mod),
@@ -307,9 +236,7 @@ const APIDetailPage = () => {
     return (
       <>
         <Head>
-          <title>
-            {query?.username || "-"}/{query?.alias || "-"} | APIcally
-          </title>
+          <title>API detail | APIcally</title>
         </Head>
 
         <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
@@ -325,7 +252,10 @@ const APIDetailPage = () => {
     <>
       <Head>
         <title>
-          {query?.username || "-"}/{data?.data.project.name || "-"} | APIcally
+          {query?.username && data?.data
+            ? `${query?.username || "-"}/${data?.data.project.name || "-"}`
+            : "API detail"}{" "}
+          | APIcally
         </title>
       </Head>
 
@@ -504,24 +434,6 @@ const APIDetailPage = () => {
               )}
             </Row>
 
-            <Typography.Title level={3}>Utilizations Count</Typography.Title>
-            <Card
-              className="px-2 py-4 md:px-4 md:py-6 mb-6 md:mb-8 overflow-auto"
-              shadowSize="sm"
-            >
-              <LineChart
-                width="100%"
-                height={200}
-                minWidth={600}
-                dataset={chartData}
-                lineDataKeys="usage"
-                xAxisDataKey="date"
-                xAxisTick={<CustomAxisTick dy={16} />}
-                yAxisTick={<CustomAxisTick dy={5} dx={-5} />}
-                customToolTip={<CustomTooltip />}
-              />
-            </Card>
-
             <Typography.Title level={3}>Documentation</Typography.Title>
             <div className="border-primary border-t-4">
               <ReactQuill
@@ -531,6 +443,18 @@ const APIDetailPage = () => {
                 readOnly
               />
             </div>
+
+            {!loading &&
+            isAuthenticated &&
+            user &&
+            data?.data.project.ownerId === user?.username ? (
+              <>
+                <Typography.Title level={3} className="mt-6 md:mt-8">
+                  Subscribers
+                </Typography.Title>
+                <ProjectSubscriber alias={query.alias as string} />
+              </>
+            ) : null}
           </>
         )}
       </Layout>

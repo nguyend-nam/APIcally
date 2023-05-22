@@ -139,3 +139,11 @@ export interface GetBalanceLogData {
   message?: string;
   subject: string;
 }
+
+export interface ProjectSubscriberData {
+  expiredDate: number;
+  username: string;
+}
+
+export interface GetProjectSubscriberResponse
+  extends BaseResponse<ProjectSubscriberData[]> {}
