@@ -5,6 +5,7 @@ import {
   CheckTokenResponse,
   CreateProjectRequest,
   CreateProjectResponse,
+  GetBalanceLogData,
   GetProjectDetailByOwnerIdAndAliasResponse,
   GetProjectFilesContentResponse,
   GetProjectsInCartResponse,
@@ -16,6 +17,7 @@ import {
   SubscribeToAProjectResponseData,
   UserInfoData,
 } from "./types";
+import { loggingTypes } from "../pages/profile";
 
 const AUTH_BASE_API_URL =
   process.env.AUTH_BASE_API_URL || "http://localhost:4000";
@@ -344,6 +346,17 @@ class Client {
       // @ts-ignore
       body: files,
     });
+  }
+
+  public getBalanceLog(period?: loggingTypes) {
+    return fetcher<GetBalanceLogData[]>(
+      `${API_BASE_API_URL}/v1/log${period ? `?period=${period}` : ""}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
   }
 
   /////

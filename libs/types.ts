@@ -130,3 +130,12 @@ export interface GetProjectFilesContentResponse {
   content: string;
   filenames: string[];
 }
+
+export interface GetBalanceLogData {
+  date?: number;
+  time?: string;
+  amount: number;
+  id?: string;
+  message?: string;
+  subject: string;
+}
