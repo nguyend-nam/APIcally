@@ -16,6 +16,10 @@
   background-color: #fff !important;
 }
 
+.primary-border > .ant-select-selector {
+  border: 1px solid #2d31fa !important;
+}
+
 .small-text > .ant-select-selector > .ant-select-selection-item {
   font-size: 16px !important;
 }

@@ -1,4 +1,13 @@
-import { Col, notification, Row, Table, Tag, Tooltip, Typography } from "antd";
+import {
+  Col,
+  notification,
+  Row,
+  Spin,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import dynamic from "next/dynamic";
 import { Button } from "../../../components/Button";
 import { Layout } from "../../../components/Layout";
@@ -8,13 +17,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "antd/lib/form/Form";
 import { DefineInput } from "../../../components/page/api-workspace/DefineInput";
 import { DeleteFilled } from "@ant-design/icons";
-import { multipleStates, variableTypes } from "../../../constants/python";
+import { variableTypes } from "../../../constants/python";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
 import { CREATE_API_NAME_KEY } from "../new";
-import { isAPINameFormatValid } from "../../../utils";
+// import { isAPINameFormatValid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
@@ -32,16 +41,13 @@ export const defaultMD =
 export type dataSourceType = {
   name: string;
   type: string;
-  multipleState: string;
-  size?: number;
 };
 
 const DocumentationPage = () => {
   const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
+  const [dataSourceStr, setDataSourceStr] = useState<string>("");
+  console.log(dataSourceStr);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [mDValue, setMDValue] = useState(defaultMD);
-
-  console.log(mDValue);
 
   const {
     isOpen: isAddInputDialogOpen,
@@ -49,7 +55,7 @@ const DocumentationPage = () => {
     onClose: closeAddInputDialog,
   } = useDisclosure();
 
-  const { push, query, isReady, replace } = useRouter();
+  const { push, query, replace } = useRouter();
   const { isAuthenticated, logout } = useAuthContext();
 
   useEffect(() => {
@@ -69,39 +75,52 @@ const DocumentationPage = () => {
     }
   }, [logout]);
 
-  const { data, error } = useFetchWithCache(
-    [GET_PATHS.GET_PROJECT_BY_ALIAS("nguyend-nam", query.alias as string)],
-    () => client.getProjectByAlias(query.alias as string)
+  const { data, loading } = useFetchWithCache(
+    isAuthenticated
+      ? [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH(
+            query.username as string,
+            query.alias as string
+          ),
+        ]
+      : [
+          GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS(
+            query.username as string,
+            query.alias as string
+          ),
+        ],
+    isAuthenticated
+      ? () =>
+          client.getProjectDetailByOwnerIdAndAliasWithAuth(
+            query.username as string,
+            query.alias as string
+          )
+      : () =>
+          client.getProjectDetailByOwnerIdAndAlias(
+            query.username as string,
+            query.alias as string
+          )
   );
+  const [mDValue, setMDValue] = useState(defaultMD);
 
   useEffect(() => {
-    if (isReady) {
-      if (
-        !query.alias ||
-        !query.username ||
-        typeof query.alias !== "string" ||
-        typeof query.username !== "string"
-      ) {
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (!isAPINameFormatValid(query.alias as string)) {
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (error?.message === "Project not found") {
-        notification.error({
-          message:
-            "You don't have access to that project or it has been deleted",
-        });
-        push(ROUTES.API_WORKSPACE_CREATE);
-      }
-
-      if (data && data.code !== 200) {
-        push(ROUTES.API_WORKSPACE_CREATE);
+    if (!loading) {
+      if (data?.data?.project?.documentation) {
+        setMDValue(data?.data?.project?.documentation);
       }
     }
-  }, [push, query, isReady, data, error]);
+  }, [data?.data?.project?.documentation, loading]);
+
+  useEffect(() => {
+    if (dataSource.length) {
+      const checkedValuesObj: Record<string, string> = {};
+      dataSource.forEach((data) => {
+        checkedValuesObj[data.name] = data.type;
+      });
+
+      setDataSourceStr(JSON.stringify(checkedValuesObj));
+    }
+  }, [dataSource]);
 
   const [form] = useForm();
 
@@ -121,19 +140,19 @@ const DocumentationPage = () => {
         <Tag>{variableTypes[type]}</Tag>
       ),
     },
-    {
-      title: "Multiple state",
-      key: "multipleState",
-      dataIndex: "multipleState",
-      render: (type: keyof typeof multipleStates) => (
-        <Tag>{multipleStates[type]}</Tag>
-      ),
-    },
-    {
-      title: "Size",
-      key: "size",
-      dataIndex: "size",
-    },
+    // {
+    //   title: "Multiple state",
+    //   key: "multipleState",
+    //   dataIndex: "multipleState",
+    //   render: (type: keyof typeof multipleStates) => (
+    //     <Tag>{multipleStates[type]}</Tag>
+    //   ),
+    // },
+    // {
+    //   title: "Size",
+    //   key: "size",
+    //   dataIndex: "size",
+    // },
     {
       title: "",
       fixed: "right",
@@ -173,10 +192,31 @@ const DocumentationPage = () => {
     );
   }, [dataSource]); // eslint-disable-line
 
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>API detail | APIcally</title>
+        </Head>
+
+        <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
+          <div className="flex justify-center h-40">
+            <Spin size="large" />
+          </div>
+        </Layout>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
-        <title>API workspace | APIcally</title>
+        <title>
+          {query?.username && data?.data
+            ? `${query?.username || "-"}/${data?.data.project.name || "-"}`
+            : "API detail"}{" "}
+          | APIcally
+        </title>
       </Head>
 
       {isAuthenticated ? (

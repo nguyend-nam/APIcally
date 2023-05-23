@@ -55,6 +55,19 @@ const CodeEditorPageInner = () => {
   );
 
   useEffect(() => {
+    if (
+      typeof query.username === "string" &&
+      user &&
+      user?.username !== query.username
+    ) {
+      notification.error({
+        message: "You don't have access to edit this API",
+      });
+      replace(ROUTES.HOME);
+    }
+  }, [query.username, replace, user]);
+
+  useEffect(() => {
     if (loading) {
       return;
     }

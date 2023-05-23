@@ -7,7 +7,7 @@ import {
   notification,
   FormInstance,
 } from "antd";
-import { multipleStates, variableTypes } from "../../../../constants/python";
+import { variableTypes } from "../../../../constants/python";
 import { dataSourceType } from "../../../../pages/api-workspace/documentation";
 import { checkPythonVarNameFormat } from "../../../../utils";
 import { Button } from "../../../Button";
@@ -51,13 +51,14 @@ export const DefineInput = (props: Props) => {
         onFinish={(values: dataSourceType) => {
           const exist = dataSource.find((d) => d.name === values.name);
           const valid = checkPythonVarNameFormat(values.name);
-          const validSize = !(
-            values.multipleState === "none" &&
-            values.size &&
-            values.size > 1
-          );
+          // const validSize = !(
+          //   values.multipleState === "none" &&
+          //   values.size &&
+          //   values.size > 1
+          // );
 
-          if (!exist && valid && validSize) {
+          // if (!exist && valid && validSize) {
+          if (!exist && valid) {
             setDataSource([...dataSource, values]);
             onCancel();
             form.resetFields();
@@ -68,11 +69,11 @@ export const DefineInput = (props: Props) => {
             if (!valid) {
               notification.error({ message: "Invalid variable name!" });
             }
-            if (!validSize) {
-              notification.error({
-                message: "Multiple state of 'None' should have size of 1!",
-              });
-            }
+            // if (!validSize) {
+            //   notification.error({
+            //     message: "Multiple state of 'None' should have size of 1!",
+            //   });
+            // }
           }
         }}
       >
@@ -121,7 +122,7 @@ export const DefineInput = (props: Props) => {
           </Col>
         </Row>
 
-        <Row className="flex items-center mt-4">
+        {/* <Row className="flex items-center mt-4">
           <Col span={8}>
             <label className="text-lg text-primary mr-4">Multiple state</label>
           </Col>
@@ -165,7 +166,7 @@ export const DefineInput = (props: Props) => {
               />
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
       </Form>
     </Modal>
   );

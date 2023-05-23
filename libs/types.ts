@@ -147,3 +147,5 @@ export interface ProjectSubscriberData {
 
 export interface GetProjectSubscriberResponse
   extends BaseResponse<ProjectSubscriberData[]> {}
+
+export interface GetExecutionTokenResponse extends BaseResponse<string> {}

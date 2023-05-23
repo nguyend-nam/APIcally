@@ -1,8 +1,8 @@
 export const variableTypes = {
   number: "Number",
-  object: "Object",
+  // object: "Object",
   string: "String",
-  bool: "Boolean",
+  // bool: "Boolean",
 };
 
 export const multipleStates = {

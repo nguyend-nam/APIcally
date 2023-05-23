@@ -6,6 +6,7 @@ import {
   CreateProjectRequest,
   CreateProjectResponse,
   GetBalanceLogData,
+  GetExecutionTokenResponse,
   GetProjectDetailByOwnerIdAndAliasResponse,
   GetProjectFilesContentResponse,
   GetProjectsInCartResponse,
@@ -64,6 +65,8 @@ export const GET_PATHS = {
   GET_PROJECT_FILES_CONTENT: (ownerId: string, alias: string) =>
     `project/${ownerId}/${alias}/content`,
   GET_PROJECT_SUBSCRIBERS: (alias: string) => `project/subscriber/${alias}`,
+  GET_EXECUTE_TOKEN: (ownerId: string, alias: string) =>
+    `execute-token/${ownerId}/${alias}`,
 };
 
 class Client {
@@ -368,6 +371,57 @@ class Client {
         headers: {
           ...this.privateHeaders,
         },
+      }
+    );
+  }
+
+  public getExecutionToken(ownerId: string, alias: string) {
+    return fetcher<GetExecutionTokenResponse>(
+      `${API_BASE_API_URL}/v1/subscribe/token/${ownerId}/${alias}`,
+      {
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
+  public changeExecutionToken(ownerId: string, alias: string) {
+    return fetcher<GetExecutionTokenResponse>(
+      `${API_BASE_API_URL}/v1/subscribe/token/${ownerId}/${alias}`,
+      {
+        method: "POST",
+        headers: {
+          ...this.privateHeaders,
+        },
+      }
+    );
+  }
+
+  public executeProject(
+    ownerId: string,
+    alias: string,
+    executeToken: string,
+    input?: any
+  ) {
+    return fetcher<any>(`${API_BASE_API_URL}/execute/${ownerId}/${alias}`, {
+      method: "POST",
+      headers: {
+        ...this.privateHeaders,
+      },
+      body: JSON.stringify({ sessionToken: executeToken, input }),
+    });
+  }
+
+  public updateProject(alias: string, params: Partial<CreateProjectRequest>) {
+    return fetcher<CreateProjectResponse>(
+      `${API_BASE_API_URL}/v1/project/${alias}`,
+      {
+        method: "PATCH",
+        headers: {
+          ...this.privateHeaders,
+        },
+        body: JSON.stringify(params),
       }
     );
   }

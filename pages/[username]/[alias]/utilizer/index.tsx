@@ -1,22 +1,71 @@
-import { Col, Form, Row, Table, Tag, Typography } from "antd";
+import {
+  Col,
+  Form,
+  notification,
+  Row,
+  Select,
+  Spin,
+  Table,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Layout } from "../../../../components/Layout";
 import { Card } from "../../../../components/Card";
-import { multipleStates, variableTypes } from "../../../../constants/python";
+import { variableTypes } from "../../../../constants/python";
 import { Input } from "../../../../components/Input";
 import { ColumnsType } from "antd/lib/table";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
 import { Button } from "../../../../components/Button";
-import { CaretRightOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import {
+  CaretRightOutlined,
+  CopyOutlined,
+  RedoOutlined,
+} from "@ant-design/icons";
+import { useEffect, useMemo, useState } from "react";
 import { ROUTES } from "../../../../constants/routes";
 import { APICALLY_KEY, useAuthContext } from "../../../../context/auth";
 import { ReactQuillProps } from "react-quill";
 import { useFetchWithCache } from "../../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../../libs/api";
 import { editorModules } from "../../../../constants/editor";
+import { useClipboard } from "@dwarvesf/react-hooks";
+import {
+  codeSnippetOptions,
+  codeSnippetRequest,
+  codeSnippetTypes,
+} from "../../../../constants/execute";
+
+function syntaxHighlight(json: string) {
+  if (typeof json != "string") {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  json = json
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return json.replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+    function (match) {
+      let cls = "number";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = "key";
+        } else {
+          cls = "string";
+        }
+      } else if (/true|false/.test(match)) {
+        cls = "boolean";
+      } else if (/null/.test(match)) {
+        cls = "null";
+      }
+      return '<span class="' + cls + '">' + match + "</span>";
+    }
+  );
+}
 
 const ReactQuill = dynamic<ReactQuillProps>(
   () => import("react-quill").then((mod) => mod),
@@ -25,8 +74,7 @@ const ReactQuill = dynamic<ReactQuillProps>(
 
 const defineInputType = (type: keyof typeof variableTypes) => {
   if (type === "number") return "number";
-  if (type === "bool") return "checkbox";
-  if (type === "string" || type === "object") return "text";
+  if (type === "string") return "text";
 };
 
 const UtilizerPage = () => {
@@ -35,6 +83,16 @@ const UtilizerPage = () => {
   const { isAuthenticated, logout } = useAuthContext();
   const { push } = useRouter();
   const [defaultMDValue, setDefaultMDValue] = useState("");
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [executeResult, setExecuteResult] = useState<string>("");
+  const [requestType, setRequestType] = useState<codeSnippetTypes>("cURL");
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      replace(ROUTES.LOGIN);
+    }
+  }, [isAuthenticated, replace]);
 
   const { data, loading } = useFetchWithCache(
     isAuthenticated
@@ -63,19 +121,38 @@ const UtilizerPage = () => {
           )
   );
 
+  const {
+    data: executeTokenData,
+    loading: executeTokenLoading,
+    mutate: mutateExecuteToken,
+  } = useFetchWithCache(
+    [
+      GET_PATHS.GET_EXECUTE_TOKEN(
+        query.username as string,
+        query.alias as string
+      ),
+    ],
+    () =>
+      client.getExecutionToken(query.username as string, query.alias as string)
+  );
+
+  const { onCopy, hasCopied } = useClipboard(
+    executeTokenLoading ? "" : executeTokenData?.data || ""
+  );
+
   useEffect(() => {
-    if (loading) {
+    if (hasCopied) {
+      notification.success({ message: "Copied execute token to clipboard" });
+    }
+  }, [hasCopied]);
+
+  useEffect(() => {
+    if (loading || executeTokenLoading) {
       setDefaultMDValue("");
     }
 
     setDefaultMDValue(data?.data.project.documentation || "---");
-  }, [data?.data.project.documentation, loading]);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      replace(ROUTES.LOGIN);
-    }
-  }, [isAuthenticated, replace]);
+  }, [data?.data.project.documentation, executeTokenLoading, loading]);
 
   useEffect(() => {
     const value =
@@ -88,9 +165,64 @@ const UtilizerPage = () => {
     }
   }, [logout]);
 
-  // const currentAPI = apiReposData.find(
-  //   (a) => a.alias === query.alias && a.username === query.username
-  // );
+  const onRegenerateClick = async () => {
+    try {
+      setIsRegenerating(true);
+      const res = await client.changeExecutionToken(
+        query.username as string,
+        query.alias as string
+      );
+
+      if (res?.data) {
+        notification.success({
+          message: "Execute token re-generated successfully",
+        });
+        await mutateExecuteToken();
+      } else {
+        notification.error({
+          message: "Could not re-generate execute token",
+        });
+      }
+    } catch (error: any) {
+      notification.error({
+        message: error || "Could not re-generate execute token",
+      });
+      console.log(error);
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
+
+  const onExecuteClick = async () => {
+    if (loading || executeTokenLoading || !executeTokenData) {
+      return;
+    }
+
+    try {
+      setIsExecuting(true);
+      const res = await client.executeProject(
+        query.username as string,
+        query.alias as string,
+        executeTokenData.data,
+        {}
+      );
+
+      if (res?.data) {
+        setExecuteResult(syntaxHighlight(JSON.stringify(res)));
+      } else {
+        notification.error({
+          message: "Could not execute project",
+        });
+      }
+    } catch (error: any) {
+      notification.error({
+        message: error || "Could not execute project",
+      });
+      console.log(error);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
 
   const columns: ColumnsType<any> = [
     {
@@ -109,78 +241,27 @@ const UtilizerPage = () => {
       ),
     },
     {
-      title: "Multiple state",
-      key: "multipleState",
-      dataIndex: "multipleState",
-      render: (type: keyof typeof multipleStates) => (
-        <Tag>{multipleStates[type]}</Tag>
-      ),
-    },
-    {
-      title: "Size",
-      key: "size",
-      dataIndex: "size",
-      render: (value) => (value ? value : 1),
-    },
-    {
       title: "Input value",
       fixed: "right",
       // eslint-disable-next-line
-      render: (value, _record, index) =>
-        !value?.size ? (
-          <Form>
-            <Form.Item
-              rules={
-                value.type === "object"
-                  ? [
-                      {
-                        pattern: /\\{\s*title.*\\/,
-                        message: "Please input accurate object format",
-                      },
-                    ]
-                  : []
-              }
-              className="!m-0"
-            >
-              <Input
-                type={defineInputType(value.type)}
-                id="name-input"
-                className="!text-base float-right max-w-[150px] md:max-w-[200px]"
-                placeholder={`Input ${value.name}...`}
-                onChange={(e) => console.log(value.name, e.target.value)}
-              />
-            </Form.Item>
-          </Form>
-        ) : (
-          <Form>
-            <div className="flex flex-col gap-2">
-              {new Array(value.size).fill(1).map((a, i) => (
-                <Form.Item
-                  key={`${a}${i}`}
-                  rules={
-                    value.type === "object"
-                      ? [
-                          {
-                            pattern: /\\{\s*title.*\\}/,
-                            message: "Please input accurate object format",
-                          },
-                        ]
-                      : []
-                  }
-                  className="!m-0"
-                >
-                  <Input
-                    type={defineInputType(value.type)}
-                    id="name-input"
-                    className="!text-base float-right max-w-[150px] md:max-w-[200px]"
-                    placeholder={`Input ${value.name}...`}
-                    onChange={(e) => console.log(value.name, e.target.value)}
-                  />
-                </Form.Item>
-              ))}
-            </div>
-          </Form>
-        ),
+      render: (value, _record) => (
+        <Form>
+          <div className="flex flex-col gap-2">
+            {new Array(value.size).fill(1).map((a, i) => (
+              <Form.Item key={`${a}${i}`} rules={[]} className="!m-0">
+                <Input
+                  type={defineInputType(value.type)}
+                  id="name-input"
+                  className="!text-base float-right max-w-[150px] md:max-w-[200px]"
+                  placeholder={`Input ${value.name}...`}
+                  onChange={(e) => console.log(value.name, e.target.value)}
+                />
+              </Form.Item>
+            ))}
+          </div>
+        </Form>
+      ),
+      // ),
     },
   ];
 
@@ -188,31 +269,85 @@ const UtilizerPage = () => {
     {
       name: "co2",
       type: "number",
-      multipleState: "none",
     },
     {
       name: "o3",
       type: "number",
-      multipleState: "array",
-      size: 2,
-    },
-    {
-      name: "hasNo3",
-      type: "bool",
-      multipleState: "none",
-    },
-    {
-      name: "area",
-      type: "object",
-      multipleState: "none",
     },
   ];
+
+  const requestRender = useMemo(() => {
+    if (loading || executeTokenLoading || !executeTokenData) {
+      return "";
+    }
+    return codeSnippetRequest(
+      requestType,
+      query.username as string,
+      query.alias as string,
+      executeTokenData.data,
+      {}
+    );
+  }, [
+    executeTokenData,
+    executeTokenLoading,
+    loading,
+    query.alias,
+    query.username,
+    requestType,
+  ]);
+
+  const { onCopy: onRequestCopy, hasCopied: hasRequestCopied } = useClipboard(
+    loading || executeTokenLoading || !executeTokenData
+      ? ""
+      : codeSnippetRequest(
+          requestType,
+          query.username as string,
+          query.alias as string,
+          executeTokenData.data,
+          {}
+        )
+  );
+
+  const renderCopyButton = useMemo(() => {
+    return (
+      <Button
+        label={
+          hasRequestCopied ? (
+            "Has copied"
+          ) : (
+            <CopyOutlined className="text-lg absolute top-1.5 left-1.5" />
+          )
+        }
+        className="!backdrop-blur-md !bg-white/20 absolute right-4 top-4 min-w-[32px] h-[32px] block !m-0 ring-1 !ring-white"
+        onClick={onRequestCopy}
+      />
+    );
+  }, [hasRequestCopied, onRequestCopy]);
+
+  if (loading || executeTokenLoading) {
+    return (
+      <>
+        <Head>
+          <title>API detail | APIcally</title>
+        </Head>
+
+        <Layout hasSearch pageTitle={(query?.username as string) || "-"}>
+          <div className="flex justify-center h-40">
+            <Spin size="large" />
+          </div>
+        </Layout>
+      </>
+    );
+  }
 
   return (
     <>
       <Head>
         <title>
-          {query?.username || "-"}/{data?.data.project.name || "-"} | APIcally
+          {query?.username && data?.data
+            ? `${query?.username || "-"}/${data?.data.project.name || "-"}`
+            : "API detail"}{" "}
+          | APIcally
         </title>
       </Head>
 
@@ -241,9 +376,49 @@ const UtilizerPage = () => {
               </Typography.Title>
 
               <Row className="my-6 md:my-8" gutter={[16, 16]}>
+                <Col span={24}>
+                  <div className="flex justify-end">
+                    <div className="flex flex-col">
+                      <div className="flex gap-4 justify-between items-center">
+                        <Tooltip
+                          title="Re-generate execute token"
+                          placement="left"
+                        >
+                          <Button
+                            label={
+                              <RedoOutlined className="text-lg absolute top-1.5 left-1.5" />
+                            }
+                            className="min-w-[30px] h-[30px] relative block !m-0"
+                            isLoading={isRegenerating}
+                            onClick={onRegenerateClick}
+                          />
+                        </Tooltip>
+                        <Card
+                          className="p-2.5 gap-2 flex !bg-slate-50"
+                          hasShadow={false}
+                        >
+                          <Typography.Text className="!m-0 text-base md:text-lg !text-slate-500">
+                            {executeTokenData?.data}
+                          </Typography.Text>
+                          <Button
+                            appearance="link"
+                            label={
+                              <CopyOutlined className="text-lg absolute top-1.5 left-1.5" />
+                            }
+                            className="min-w-[30px] h-[30px] relative block !m-0"
+                            onClick={onCopy}
+                          />
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
                 <Col span={24} lg={{ span: 12 }}>
                   <Card className="p-4" shadowSize="sm">
-                    <Typography.Title level={3} className="!m-0 !mb-4">
+                    <Typography.Title
+                      level={3}
+                      className="!text-xl md:!text-2xl !m-0 !mb-2 md:!mb-4"
+                    >
                       Provide inputs
                     </Typography.Title>
                     <Card hasShadow={false}>
@@ -263,7 +438,10 @@ const UtilizerPage = () => {
                     shadowSize="sm"
                   >
                     <div className="flex justify-between items-center mb-4">
-                      <Typography.Title level={3} className="!m-0">
+                      <Typography.Title
+                        level={3}
+                        className="!text-xl md:!text-2xl !m-0"
+                      >
                         Output
                       </Typography.Title>
                       <Button
@@ -271,13 +449,57 @@ const UtilizerPage = () => {
                           <CaretRightOutlined className="text-lg absolute top-1.5 left-1.5" />
                         }
                         className="w-[30px] h-[30px] relative block !m-0"
+                        onClick={onExecuteClick}
                       />
                     </div>
                     <Card
                       hasShadow={false}
                       className="grow !bg-slate-700 p-4 !h-full"
                     >
-                      <code className="text-white">&#123;output&#125;</code>
+                      {isExecuting ? (
+                        <Spin />
+                      ) : (
+                        <pre
+                          className="text-white"
+                          dangerouslySetInnerHTML={{ __html: executeResult }}
+                        />
+                      )}
+                    </Card>
+                  </Card>
+                </Col>
+
+                <Col span={24}>
+                  <Card
+                    className="p-4 min-h-[200px] flex flex-col"
+                    shadowSize="sm"
+                  >
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+                      <Typography.Title
+                        level={3}
+                        className="!text-xl md:!text-2xl !m-0"
+                      >
+                        Execute Requests
+                      </Typography.Title>
+                      <Select
+                        value={requestType}
+                        onChange={setRequestType}
+                        className="white-bg primary-border small-text"
+                        style={{ width: 160 }}
+                        options={Object.entries(codeSnippetOptions).map(
+                          (k) => ({
+                            value: k[0],
+                            label: k[1],
+                          })
+                        )}
+                      />
+                    </div>
+
+                    <Card
+                      hasShadow={false}
+                      className="grow !bg-slate-700 p-4 !h-full !text-white relative"
+                    >
+                      {renderCopyButton}
+                      <pre>{requestRender}</pre>
                     </Card>
                   </Card>
                 </Col>
