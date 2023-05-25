@@ -87,7 +87,10 @@ const OtherUserPage = () => {
     ),
   };
 
-  return (
+  return isAuthenticated &&
+    query?.username &&
+    user?.username &&
+    query.username === user.username ? null : (
     <>
       <Head>
         <title>

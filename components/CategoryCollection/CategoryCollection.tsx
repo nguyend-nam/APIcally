@@ -26,10 +26,10 @@ export const CategoryCollection = () => {
   const CategoryButton = ({ t }: { t: { key: apiTagTypes; img: string } }) => {
     return (
       <Button
-        className="!ml-0 !min-w-[140px] md:!min-w-[170px] !bg-white !text-slate-700 !p-3 md:!p-4 hover:shadow"
+        className="!ml-0 !min-w-[120px] !rounded-none md:!min-w-[150px] !bg-white !text-slate-700 !p-2.5 md:!p-3 hover:shadow-md"
         label={
-          <div className="flex flex-col gap-2 items-center !text-sm md:!text-base">
-            <div className="h-16 w-16 p-0 rounded-full flex justify-center items-center bg-indigo-50/50 border-2 border-indigo-50">
+          <div className="flex flex-col gap-2 items-center font-normal !text-sm">
+            <div className="h-12 w-12 p-0 rounded-full flex justify-center items-center bg-indigo-50/50 border-2 border-indigo-50">
               <img src={`/img/category/${t.img}.png`} className="h-full" />
             </div>
             {apiTags[t.key as apiTagTypes]}
@@ -44,12 +44,12 @@ export const CategoryCollection = () => {
 
   return (
     <div className="overflow-auto max-w-full !pb-4">
-      <div className="flex flex-nowrap gap-2">
+      <div className="flex flex-nowrap gap-[2px]">
         {categories.slice(0, categories.length / 2).map((t) => (
           <CategoryButton key={t.key} t={t} />
         ))}
       </div>
-      <div className="flex flex-nowrap gap-2 mt-2">
+      <div className="flex flex-nowrap gap-[2px] mt-[2px]">
         {categories.slice(categories.length / 2).map((t) => (
           <CategoryButton key={t.key} t={t} />
         ))}

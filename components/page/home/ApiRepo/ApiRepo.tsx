@@ -58,7 +58,7 @@ export const ApiRepo = ({
     >
       {subscriptionExpireNote ? (
         <div className="mb-2">
-          <Typography.Text className="!m-0 inline items-center text-base !text-orange-500">
+          <Typography.Text className="!m-0 inline items-center !text-sm !text-orange-500">
             {subscriptionExpireNote}
           </Typography.Text>
         </div>
@@ -72,10 +72,10 @@ export const ApiRepo = ({
         >
           <Typography.Title
             level={4}
-            className="!m-0 inline items-center !text-lg md:!text-xl"
+            className="!m-0 inline items-center !text-lg"
           >
             <a
-              className="!text-primary inline items-center"
+              className="!text-indigo-600 inline items-center"
               onClick={() => {
                 if (data?.ownerId && data?.alias && isLinkActive) {
                   push(
@@ -84,7 +84,7 @@ export const ApiRepo = ({
                 }
               }}
             >
-              <BookOutlined className="text-base -translate-y-[5px] !text-gray-400 mr-1" />
+              <BookOutlined className="text-base -translate-y-[4px] !text-gray-400 mr-1" />
               {data?.name}
             </a>
             {/* {data?.subscribeStatus && isAuthenticated ? (
@@ -129,7 +129,7 @@ export const ApiRepo = ({
             onClick={() =>
               push(ROUTES.PROFILE_OTHER_USER(data?.ownerId as string))
             }
-            className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-700"
+            className="!font-medium absolute !text-sm md:!text-base bg-white pr-2 !text-slate-600 hover:!text-indigo-600"
           >
             {data?.ownerId}
           </button>

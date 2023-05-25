@@ -1,11 +1,12 @@
 // import { apiReposData } from "../../constants/mockData";
 import { subscribersAscSorter } from "../../utils/sort";
 import { Card } from "../Card";
+import { Text } from "../Text";
 import { ApiRepo } from "../page/home/ApiRepo";
 import cx from "classnames";
 import { useFetchWithCache } from "../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../libs/api";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { apiRepoType } from "../../pages/explore";
 
 export const rankColor = [
@@ -43,7 +44,7 @@ const RankRender = ({ rank }: { rank: number }) => {
       <Card
         borderRadius="none"
         className={cx(
-          "pt-2 text-center text-2xl !h-10 !w-10 z-20 font-semibold absolute top-0 !ml-[250px] md:!ml-[310px] border-x-[3px] border-primary border-double",
+          "pt-1.5 text-center text-xl !h-8 !w-8 z-20 font-semibold absolute top-0 !ml-[250px] md:!ml-[310px] border-x-[3px] border-primary border-double",
           rankColor[rank - 1]?.bg,
           {
             [rankColor[rank - 1].text!]: rankColor[rank - 1]?.text,
@@ -56,7 +57,7 @@ const RankRender = ({ rank }: { rank: number }) => {
       </Card>
       <div
         className={cx(
-          "border-[20px] border-b-transparent border-x-transparent z-20 absolute !top-10 !ml-[250px] md:!ml-[310px]",
+          "border-[16px] border-b-transparent border-x-transparent z-20 absolute !top-8 !ml-[250px] md:!ml-[310px]",
           rankColor[rank - 1]?.border
         )}
       />
@@ -72,22 +73,39 @@ export const TopSubscribedAPIs = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-36 !bg-primary">
+      <div className="w-full h-36 !bg-info">
         <div className="flex items-center justify-center text-white">
           <Spin size="large" />
         </div>
       </div>
     );
   }
+
+  if ((data?.data || []).length === 0) {
+    return (
+      <div className="w-full h-36 !bg-info relative">
+        <div className="flex items-center justify-center text-white">
+          <Empty
+            description={
+              <Text as="div" className="text-base">
+                No API found
+              </Text>
+            }
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full overflow-auto">
-      <div className="flex gap-4 items-stretch">
+      <div className="flex gap-2 md:gap-4 items-stretch">
         {data?.data
           .sort(subscribersAscSorter)
           .slice(0, 5)
           .map((d, i) => (
             <div
-              className={cx("relative p-1 flex", rankColor[i]?.bgGradient)}
+              className={cx("relative p-[3px] flex", rankColor[i]?.bgGradient)}
               key={d.id}
             >
               <RankRender rank={i + 1} />
@@ -97,6 +115,7 @@ export const TopSubscribedAPIs = () => {
                 isStatsAlignRight={false}
                 showDescription={false}
                 showPrice={false}
+                hasShadow={false}
               />
             </div>
           ))}

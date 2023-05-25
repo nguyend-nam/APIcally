@@ -72,7 +72,7 @@ export const SubscribedApiRepoList = ({
 
   return (
     <div
-      className={cx("h-[350px] overflow-auto space-y-4 p-1 pb-2", className)}
+      className={cx("h-[350px] overflow-auto space-y-2 p-1 pb-2", className)}
     >
       {showOwnedAPIs && user
         ? displayedApiRepos.map((a) => (

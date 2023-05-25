@@ -138,6 +138,7 @@ export interface GetBalanceLogData {
   id?: string;
   message?: string;
   subject: string;
+  balance?: number;
 }
 
 export interface ProjectSubscriberData {

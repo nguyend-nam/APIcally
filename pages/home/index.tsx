@@ -14,6 +14,7 @@ import { OwnedApiRepoList } from "../../components/ApiRepoList/OwnedApiRepoList"
 import { CategoryCollection } from "../../components/CategoryCollection";
 import { TopSubscribedAPIs } from "../../components/TopSubscribedAPIs";
 import { useAuthContext } from "../../context/auth";
+import { CheckCircleFilled, CodeFilled } from "@ant-design/icons";
 
 const HomePage = () => {
   const { push } = useRouter();
@@ -30,32 +31,32 @@ const HomePage = () => {
       </Head>
 
       <Layout hasSearch>
-        <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
+        <Typography.Title level={3} className="!text-lg md:!text-xl !mb-1">
           Categories
         </Typography.Title>
-        <div className="mb-4">
+        <div className="mb-4 text-sm font-normal">
           From AI to e-commerce, from healthcare to economics and many more...
         </div>
-        <div className="mb-6">
+        <div className="mb-8">
           <CategoryCollection />
         </div>
 
         <Card
           hasShadow={false}
           borderRadius="none"
-          className="mb-6 p-4 md:p-8 relative -mx-4 md:-mx-0"
+          className="mb-8 p-2 md:p-4 relative -mx-4 md:-mx-0"
         >
           <div
             className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right bg-primary"
-            style={{ backgroundImage: `url(/img/top-apis-bg.png)` }}
+            // style={{ backgroundImage: `url(/img/top-apis-bg.png)` }}
           />
           <Typography.Title
             level={3}
-            className="!text-xl md:!text-2xl relative !text-white !mb-2"
+            className="!text-lg md:!text-xl relative !text-white !mb-1"
           >
             Top Subscribed APIs
           </Typography.Title>
-          <div className="mb-4 relative text-white">
+          <div className="mb-4 relative text-white text-sm font-normal">
             Top 5 most subscribed APIs of all time
           </div>
           <TopSubscribedAPIs />
@@ -63,21 +64,21 @@ const HomePage = () => {
 
         {isAuthenticated ? (
           <>
-            <Typography.Title
-              level={3}
-              className="!text-xl md:!text-2xl !mb-2 !font-semibold"
-            >
+            <Typography.Title level={3} className="!text-lg md:!text-xl !mb-1">
               Personal
             </Typography.Title>
-            <div className="mb-4">
+            <div className="mb-4 text-sm font-normal">
               APIs that you have created or subscribed to
             </div>
             <Row gutter={[20, 20]}>
               <Col span={24} md={{ span: 12 }}>
-                <Card shadowSize="sm" className="p-4">
-                  <Text as="h2" className="text-lg">
-                    Recently created
-                  </Text>
+                <Card hasShadow={false} className="p-4">
+                  <div className="flex gap-2 items-center mb-2">
+                    <CodeFilled className="!text-primary" />
+                    <Text className="!text-base md:!text-lg font-medium !m-0">
+                      Recently created
+                    </Text>
+                  </div>
                   <Input
                     type="text"
                     id="home-owned-search-input"
@@ -92,10 +93,13 @@ const HomePage = () => {
                 </Card>
               </Col>
               <Col span={24} md={{ span: 12 }}>
-                <Card shadowSize="sm" className="p-4">
-                  <Text as="h2" className="text-lg">
-                    Subscribed APIs
-                  </Text>
+                <Card hasShadow={false} className="p-4">
+                  <div className="flex gap-2 items-center mb-2">
+                    <CheckCircleFilled className="!text-primary" />
+                    <Text className="!text-base md:!text-lg font-medium !m-0">
+                      Subscribed APIs
+                    </Text>
+                  </div>
                   <Input
                     type="text"
                     id="home-subscribed-search-input"
@@ -115,16 +119,17 @@ const HomePage = () => {
 
         <Text
           as="h2"
-          className="mt-8 md:mt-12 mb-4 text-2xl md:text-3xl font-semibold text-primary"
+          className="mt-8 mb-4 text-xl md:text-2xl font-semibold text-primary"
         >
           Work with APIcally
         </Text>
-        <Row gutter={[20, 20]}>
+        <Row gutter={[2, 2]}>
           <Col span={24} md={{ span: 12 }}>
             <Card
               hasShadow={false}
               className="hover:shadow"
               style={{ transition: "0.2s" }}
+              borderRadius="none"
             >
               <div
                 role="button"
@@ -138,7 +143,7 @@ const HomePage = () => {
                   preview={false}
                   src="img/developer-art.png"
                 />
-                <Text className="pt-4 text-lg mb-0">Create APIs</Text>
+                <Text className="pt-4 text-base mb-0">Create APIs</Text>
               </div>
             </Card>
           </Col>
@@ -147,6 +152,7 @@ const HomePage = () => {
               hasShadow={false}
               className="hover:shadow"
               style={{ transition: "0.2s" }}
+              borderRadius="none"
             >
               <div
                 role="button"
@@ -160,7 +166,7 @@ const HomePage = () => {
                   preview={false}
                   src="img/explore-art.png"
                 />
-                <Text className="pt-4 text-lg mb-0">Explore APIs</Text>
+                <Text className="pt-4 text-base mb-0">Explore APIs</Text>
               </div>
             </Card>
           </Col>
@@ -169,6 +175,7 @@ const HomePage = () => {
               hasShadow={false}
               className="hover:shadow"
               style={{ transition: "0.2s" }}
+              borderRadius="none"
             >
               <div
                 role="button"
@@ -182,7 +189,9 @@ const HomePage = () => {
                   preview={false}
                   src="img/utilize-art.png"
                 />
-                <Text className="pt-4 text-lg mb-0">Subscribe and utilize</Text>
+                <Text className="pt-4 text-base mb-0">
+                  Subscribe and utilize
+                </Text>
               </div>
             </Card>
           </Col>
