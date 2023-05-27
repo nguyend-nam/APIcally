@@ -15,6 +15,7 @@ import { ROUTES } from "../../constants/routes";
 import { ProjectInCartItem } from "../../libs/types";
 import { client, GET_PATHS } from "../../libs/api";
 import { useFetchWithCache } from "../../hooks/useFetchWithCache";
+import { formatCurrency } from "../../utils/currency";
 
 const CartPage = () => {
   const [selectedApiInCart, setSelectedApiInCart] = useState<
@@ -23,6 +24,7 @@ const CartPage = () => {
   const [isConfirmSubscribeLoading, setIsConfirmSubscribeLoading] =
     useState(false);
   const [isConfirmRemoveLoading, setIsConfirmRemoveLoading] = useState(false);
+  const [totalPayment, setTotalPayment] = useState(0);
   const { isAuthenticated, logout, user, mutateData } = useAuthContext();
   const { replace } = useRouter();
 
@@ -71,13 +73,17 @@ const CartPage = () => {
     selectedApiInCart,
   ]);
 
-  const subscribeToProjectsSubmit = async () => {
+  useEffect(() => {
     let totalPrice = 0;
     selectedApiInCart.forEach((a) => {
       totalPrice += a.price * a.days;
     });
 
-    if (user?.balance !== undefined && user?.balance < totalPrice) {
+    setTotalPayment(totalPrice);
+  }, [selectedApiInCart]);
+
+  const subscribeToProjectsSubmit = async () => {
+    if (user?.balance !== undefined && user?.balance < totalPayment) {
       notification.error({
         message: "Your balance is not enough",
       });
@@ -161,12 +167,15 @@ const CartPage = () => {
 
       {isAuthenticated ? (
         <Layout>
-          <Typography.Title level={3} className="!text-xl md:!text-2xl !mb-2">
+          <Typography.Title level={3} className="!text-lg md:!text-xl !mb-1">
             Cart
           </Typography.Title>
           <div className="mb-4">APIs added to cart</div>
           <Card shadowSize="sm" className="p-4 md:p-6">
-            <div className="flex flex-row items-center justify-start md:justify-end mb-4 gap-2">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between mb-4 gap-2">
+              <Typography.Text className="!text-base md:!text-lg">
+                Total payment: <b>{formatCurrency(totalPayment)}</b>
+              </Typography.Text>
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <Button
                   label={

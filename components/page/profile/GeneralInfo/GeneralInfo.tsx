@@ -40,12 +40,18 @@ export const GeneralInfo = ({
   }, [isAuthenticated, router.pathname, user]);
 
   return (
-    <Card className={cx("relative overflow-hidden", className)} shadowSize="sm">
+    <Card
+      className={cx(
+        "relative overflow-hidden !border !border-slate-200",
+        className
+      )}
+      hasShadow={false}
+    >
       <div
         className="h-32 bg-cover bg-right"
         style={{ backgroundImage: `url(/img/cart-checkbox-all-bg.png)` }}
       />
-      <Card className="p-4 md:p-6">
+      <Card className="p-4 md:p-6 !bg-transparent">
         <Avatar
           size={92}
           className="!absolute top-10 md:top-[39px] border-4 border-white !bg-slate-300"
@@ -58,28 +64,20 @@ export const GeneralInfo = ({
         </Typography.Title>
 
         {isPersonal ? (
-          <>
-            <div className="!mt-2 !mb-2.5 flex flex-nowrap justify-between items-center">
-              <Divider
-                className="!text-slate-500 !text-sm !font-normal flex-1 !w-max !min-w-max !m-0"
-                orientation="left"
-                orientationMargin={0}
-              >
-                Balance:
-              </Divider>
-              <b>{formatCurrency(user?.balance || 0)}</b>
-            </div>
-            <Button
-              appearance="outline"
-              label="Top up"
-              className="w-full !text-base"
-              onClick={() => router.push(ROUTES.TOP_UP)}
-            />
-          </>
+          <div className="!mt-2 !mb-0 flex gap-4 flex-nowrap justify-between items-center">
+            <Divider
+              className="!text-slate-500 !text-sm !font-normal flex-1 !w-max !min-w-max !m-0"
+              orientation="left"
+              orientationMargin={0}
+            >
+              Balance
+            </Divider>
+            <b>{formatCurrency(user?.balance || 0)}</b>
+          </div>
         ) : null}
 
         <Divider
-          className="!my-4 !mt-6 !text-slate-500 !text-sm !font-normal"
+          className="!my-4 !text-slate-500 !text-sm !font-normal"
           orientation="left"
           orientationMargin={0}
         >
@@ -198,9 +196,9 @@ export const GeneralInfo = ({
 
             <div className="flex gap-3 flex-col md:flex-row">
               <Button
-                label="Settings"
+                label="Top up"
                 className="w-full !text-base"
-                onClick={() => router.push(ROUTES.SETTINGS)}
+                onClick={() => router.push(ROUTES.TOP_UP)}
               />
               <Button
                 appearance="outline"

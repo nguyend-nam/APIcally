@@ -208,7 +208,9 @@ const UtilizerPage = () => {
       );
 
       if (res?.data) {
-        setExecuteResult(syntaxHighlight(JSON.stringify(res)));
+        setExecuteResult(
+          syntaxHighlight(JSON.stringify(typeof res === "object" ? res : {}))
+        );
       } else {
         notification.error({
           message: "Could not execute project",
@@ -313,12 +315,12 @@ const UtilizerPage = () => {
       <Button
         label={
           hasRequestCopied ? (
-            "Has copied"
+            "Request copied"
           ) : (
-            <CopyOutlined className="text-lg absolute top-1.5 left-1.5" />
+            <CopyOutlined className="text-lg" />
           )
         }
-        className="!backdrop-blur-md !bg-white/20 absolute right-4 top-4 min-w-[32px] h-[32px] block !m-0 ring-1 !ring-white"
+        className="!backdrop-blur-md !bg-white/20 flex items-center absolute right-4 top-4 min-w-[32px] h-[32px] !m-0 ring-1 !ring-white"
         onClick={onRequestCopy}
       />
     );
@@ -375,37 +377,33 @@ const UtilizerPage = () => {
                 </span>
               </Typography.Title>
 
-              <Row className="my-6 md:my-8" gutter={[16, 16]}>
+              <Row className="my-4 md:my-6" gutter={[16, 16]}>
                 <Col span={24}>
                   <div className="flex justify-end">
                     <div className="flex flex-col">
-                      <div className="flex gap-4 justify-between items-center">
-                        <Tooltip
-                          title="Re-generate execute token"
-                          placement="left"
-                        >
-                          <Button
-                            label={
-                              <RedoOutlined className="text-lg absolute top-1.5 left-1.5" />
-                            }
-                            className="min-w-[30px] h-[30px] relative block !m-0"
-                            isLoading={isRegenerating}
-                            onClick={onRegenerateClick}
-                          />
-                        </Tooltip>
+                      <div className="flex gap-2.5 justify-between items-center">
+                        <Button
+                          appearance="outline"
+                          label={<RedoOutlined className="text-lg" />}
+                          className="min-w-max !px-1.5 h-[30px] flex items-center !m-0"
+                          isLoading={isRegenerating}
+                          onClick={onRegenerateClick}
+                        />
                         <Card
-                          className="p-2.5 gap-2 flex !bg-slate-50"
+                          className="p-0.5 !border !border-slate-300 gap-2 flex items-center !bg-slate-50"
                           hasShadow={false}
                         >
-                          <Typography.Text className="!m-0 text-base md:text-lg !text-slate-500">
-                            {executeTokenData?.data}
-                          </Typography.Text>
+                          <pre className="!m-0">
+                            <Typography.Text className="!m-0 !ml-2 text-sm !text-slate-500">
+                              <Tooltip title="Execute token">
+                                {executeTokenData?.data}
+                              </Tooltip>
+                            </Typography.Text>
+                          </pre>
                           <Button
                             appearance="link"
-                            label={
-                              <CopyOutlined className="text-lg absolute top-1.5 left-1.5" />
-                            }
-                            className="min-w-[30px] h-[30px] relative block !m-0"
+                            label={<CopyOutlined className="text-lg" />}
+                            className="!px-1.5 h-[30px] flex items-center !m-0"
                             onClick={onCopy}
                           />
                         </Card>
@@ -417,7 +415,7 @@ const UtilizerPage = () => {
                   <Card className="p-4" shadowSize="sm">
                     <Typography.Title
                       level={3}
-                      className="!text-xl md:!text-2xl !m-0 !mb-2 md:!mb-4"
+                      className="!text-lg md:!text-xl !m-0 !mb-2 md:!mb-4"
                     >
                       Provide inputs
                     </Typography.Title>
@@ -440,15 +438,13 @@ const UtilizerPage = () => {
                     <div className="flex justify-between items-center mb-4">
                       <Typography.Title
                         level={3}
-                        className="!text-xl md:!text-2xl !m-0"
+                        className="!text-lg md:!text-xl !m-0"
                       >
                         Output
                       </Typography.Title>
                       <Button
-                        label={
-                          <CaretRightOutlined className="text-lg absolute top-1.5 left-1.5" />
-                        }
-                        className="w-[30px] h-[30px] relative block !m-0"
+                        label={<CaretRightOutlined className="text-lg" />}
+                        className="!px-1.5 !h-[30px] flex items-center !m-0"
                         onClick={onExecuteClick}
                       />
                     </div>
@@ -476,7 +472,7 @@ const UtilizerPage = () => {
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
                       <Typography.Title
                         level={3}
-                        className="!text-xl md:!text-2xl !m-0"
+                        className="!text-lg md:!text-xl !m-0"
                       >
                         Execute Requests
                       </Typography.Title>
@@ -505,7 +501,9 @@ const UtilizerPage = () => {
                 </Col>
               </Row>
 
-              <Typography.Title level={3}>Documentation</Typography.Title>
+              <Typography.Title level={3} className="!text-lg md:!text-xl">
+                Documentation
+              </Typography.Title>
               <div className="border-primary border-t-4">
                 <ReactQuill
                   theme="snow"

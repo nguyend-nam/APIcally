@@ -44,7 +44,7 @@ const HomePage = () => {
         <Card
           hasShadow={false}
           borderRadius="none"
-          className="mb-8 p-2 md:p-4 relative -mx-4 md:-mx-0"
+          className="mb-8 p-4 relative -mx-4 md:-mx-0"
         >
           <div
             className="w-full h-full bg-cover top-0 right-0 pointer-events-none absolute bg-right bg-primary"

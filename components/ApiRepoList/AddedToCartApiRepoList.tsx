@@ -93,7 +93,12 @@ export const AddedToCartApiRepoList = ({
   }
 
   return (
-    <div className={cx("h-[600px] overflow-auto space-y-4 pb-2", className)}>
+    <div
+      className={cx(
+        "h-max max-h-[600px] overflow-auto space-y-4 pb-2",
+        className
+      )}
+    >
       {groupProjectsInCartByUsername(data?.data || []).map((r) => (
         <ApiCheckboxGroup
           key={r.username}

@@ -311,7 +311,7 @@ const APIDetailPage = () => {
                 </div>
               ) : null}
             </div>
-            <Row className="my-6 md:my-8" gutter={[16, 16]}>
+            <Row className="my-4 md:my-6" gutter={[16, 16]}>
               <Col span={24} md={{ span: 16 }}>
                 <ApiRepo
                   data={
@@ -391,7 +391,6 @@ const APIDetailPage = () => {
                                 ? "Go to cart"
                                 : "Add to cart"
                             }
-                            isLoading={isAddingToCart}
                             onClick={() => {
                               if (data?.data?.isAddedToCart) {
                                 push(ROUTES.CART);
@@ -434,7 +433,9 @@ const APIDetailPage = () => {
               )}
             </Row>
 
-            <Typography.Title level={3}>Documentation</Typography.Title>
+            <Typography.Title level={3} className="!text-lg md:!text-xl">
+              Documentation
+            </Typography.Title>
             <div className="border-primary border-t-4">
               <ReactQuill
                 theme="snow"

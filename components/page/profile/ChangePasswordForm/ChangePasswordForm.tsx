@@ -38,7 +38,7 @@ export const ChangePasswordForm = () => {
   };
 
   return (
-    <div className="w-full p-4 sm:p-8 flex flex-col gap-4 justify-between bg-slate-50/50">
+    <div className="w-full p-4 flex flex-col gap-4 justify-between bg-slate-50/50">
       <Form className="mb-2" onFinish={onSubmit}>
         <label htmlFor="old-password-input" className="text-lg text-primary">
           Old password

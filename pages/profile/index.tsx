@@ -6,8 +6,6 @@ import {
   Radio,
   Row,
   Spin,
-  Tabs,
-  TabsProps,
   Typography,
 } from "antd";
 import Head from "next/head";
@@ -35,8 +33,11 @@ import {
   DollarCircleOutlined,
   FileDoneOutlined,
 } from "@ant-design/icons";
+import { Button } from "../../components/Button";
+import { UserSettings } from "../../components/page/profile/SettingsView";
 
 export type tabTypes = "owned" | "subscribed";
+export type mainTabTypes = "general" | "apis" | "settings";
 export type loggingTypes = "day" | "month" | "year";
 
 const CustomXAxisTick = ({
@@ -94,7 +95,7 @@ const CustomYAxisTick = ({
         y={0}
         dy={dy}
         dx={dx}
-        textAnchor="middle"
+        textAnchor="end"
         fill="#555"
         style={{ fontWeight: 400 }}
       >
@@ -141,6 +142,8 @@ const CustomTooltip = (record: TooltipProps<any, any>) => {
 const UserPage = () => {
   const [searchQuerySubscribed, setSearchQuerySubscribed] =
     useState<string>("");
+  const [activeMainTabKey, setActiveMainTabKey] =
+    useState<mainTabTypes>("general");
   const [activeTabKey, setActiveTabKey] = useState<tabTypes>("owned");
   const [activeLoggingKey, setActiveLoggingKey] = useState<loggingTypes>("day");
   const isMobile = useIsMobile();
@@ -243,7 +246,7 @@ const UserPage = () => {
           <Typography.Title level={3} className="!m-0 !text-lg md:!text-xl">
             Balance log
           </Typography.Title>
-          <div className="flex justify-center">
+          <div className="flex justify-end w-full md:w-max">
             <Radio.Group
               defaultValue={activeLoggingKey}
               className="!flex !h-max flex-row items-center"
@@ -286,24 +289,24 @@ const UserPage = () => {
             <LineChart
               width="100%"
               height={240}
-              minWidth={600}
+              minWidth={400}
               dataset={balanceLogData}
               lineDataKeys="amount"
               xAxisDataKey="time"
               xAxisTick={<CustomXAxisTick dy={16} />}
-              yAxisTick={<CustomYAxisTick dy={5} dx={-10} />}
+              yAxisTick={<CustomYAxisTick dy={5} dx={3} />}
               customToolTip={<CustomTooltip />}
             />
           )}
         </Card>
-
+        {/* 
         <Typography.Title
           level={3}
           className="!m-0 !text-lg md:!text-xl !mt-6 !mb-4"
         >
           History
-        </Typography.Title>
-        <Card className="p-0 !bg-transparent" hasShadow={false}>
+        </Typography.Title> */}
+        <Card className="p-0 !bg-transparent mt-4 md:mt-8" hasShadow={false}>
           {historyLoading ? (
             <div className="h-[200px] w-full flex justify-center items-center">
               <Spin size="large" />
@@ -375,19 +378,6 @@ const UserPage = () => {
     historyLoading,
   ]);
 
-  const generalItems: TabsProps["items"] = [
-    {
-      key: "general",
-      label: <Text className="!m-0 !-mt-2 text-base">General</Text>,
-      children: generalTabContent,
-    },
-    {
-      key: "apis",
-      label: <Text className="!m-0 !-mt-2 text-base">APIs</Text>,
-      children: apisTabContent,
-    },
-  ];
-
   return (
     <>
       <Head>
@@ -395,18 +385,39 @@ const UserPage = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout contentClassName="!max-w-[1040px]">
-          <Row gutter={[20, 20]}>
+        <Layout contentClassName="!max-w-[1100px]">
+          <Row gutter={[32, 20]}>
             <Col span={24} xl={{ span: 8 }}>
               <GeneralInfo className="block md:sticky md:top-[96px]" />
             </Col>
             <Col span={24} xl={{ span: 16 }}>
-              <Tabs
-                defaultActiveKey="general"
-                tabBarStyle={{ borderBottom: "1px solid #DDD" }}
-                items={generalItems}
-                centered
-              />
+              <div className="flex gap-2 pb-2 border-b border-slate-200 md:border-slate-300 mt-4 md:mt-0 mb-4 md:mb-8">
+                <Button
+                  label="General"
+                  onClick={() => setActiveMainTabKey("general")}
+                  borderRadius="full"
+                  appearance={
+                    activeMainTabKey === "general" ? "primary" : "link"
+                  }
+                />
+                <Button
+                  label="APIs"
+                  onClick={() => setActiveMainTabKey("apis")}
+                  borderRadius="full"
+                  appearance={activeMainTabKey === "apis" ? "primary" : "link"}
+                />
+                <Button
+                  label="Settings"
+                  onClick={() => setActiveMainTabKey("settings")}
+                  borderRadius="full"
+                  appearance={
+                    activeMainTabKey === "settings" ? "primary" : "link"
+                  }
+                />
+              </div>
+              {activeMainTabKey === "general" ? generalTabContent : null}
+              {activeMainTabKey === "apis" ? apisTabContent : null}
+              {activeMainTabKey === "settings" ? <UserSettings /> : null}
             </Col>
           </Row>
         </Layout>

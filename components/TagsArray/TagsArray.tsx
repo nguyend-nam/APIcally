@@ -11,7 +11,7 @@ interface Props {
 const CustomTag = (props: WithChildren) => {
   const { children } = props;
   return (
-    <Tag className="!rounded-lg !m-0 !text-slate-400 !bg-slate-50 !border-1.5 !border-slate-300">
+    <Tag className="!rounded-lg !m-0 !text-indigo-400 !bg-gray-50 !border-1.5 !border-indigo-200">
       {children}
     </Tag>
   );

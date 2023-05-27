@@ -104,8 +104,9 @@ const OtherUserPage = () => {
         pageTitle={
           data?.data?.username ? `${data?.data?.username}'s profile` : "-"
         }
+        contentClassName="!max-w-[1100px]"
       >
-        <Row gutter={[20, 20]}>
+        <Row gutter={[32, 20]}>
           <Col span={24} xl={{ span: 8 }}>
             <GeneralInfo
               showActions={false}
@@ -115,7 +116,7 @@ const OtherUserPage = () => {
           </Col>
           <Col span={24} xl={{ span: 16 }}>
             <AntCard
-              className="!border-none shadow !rounded-r-lg !rounded-bl-lg"
+              className="!border-none !rounded-r-lg !rounded-bl-lg"
               headStyle={{ padding: isMobile ? "0 16px" : "0 24px" }}
               bodyStyle={{ padding: isMobile ? 16 : 24 }}
               tabList={tabList}
