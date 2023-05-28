@@ -104,7 +104,7 @@ const OtherUserPage = () => {
         pageTitle={
           data?.data?.username ? `${data?.data?.username}'s profile` : "-"
         }
-        contentClassName="!max-w-[1100px]"
+        contentClassName="!max-w-[1050px]"
       >
         <Row gutter={[32, 20]}>
           <Col span={24} xl={{ span: 8 }}>

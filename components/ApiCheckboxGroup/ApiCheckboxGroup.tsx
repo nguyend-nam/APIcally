@@ -1,4 +1,4 @@
-import { Checkbox } from "antd";
+import { Checkbox, Spin } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "../../context/auth";
@@ -6,6 +6,7 @@ import { useFetchWithCache } from "../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../libs/api";
 import { ProjectInCartItem } from "../../libs/types";
 import { apiRepoType } from "../../pages/explore";
+import { Card } from "../Card";
 import { ApiRepo } from "../page/home/ApiRepo";
 
 interface Props {
@@ -97,7 +98,14 @@ const CheckBoxItem = (props: {
   );
 
   if (loading) {
-    return null;
+    return (
+      <Card
+        hasShadow={false}
+        className="!h-[180px] p-4 !mx-4 !mt-4 flex justify-center items-center border border-slate-200"
+      >
+        <Spin size="large" />
+      </Card>
+    );
   }
   return (
     <Checkbox

@@ -67,13 +67,13 @@ const RankRender = ({ rank }: { rank: number }) => {
 
 export const TopSubscribedAPIs = () => {
   const { data, loading } = useFetchWithCache(
-    [GET_PATHS.SCAN_ALL_PROJECTS],
+    [GET_PATHS.SCAN_ALL_PROJECTS, "top-subscribed"],
     () => client.scanAllProjects()
   );
 
   if (loading) {
     return (
-      <div className="w-full h-36 !bg-info">
+      <div className="w-full h-36 !bg-primary">
         <div className="flex items-center justify-center text-white">
           <Spin size="large" />
         </div>
@@ -83,7 +83,7 @@ export const TopSubscribedAPIs = () => {
 
   if ((data?.data || []).length === 0) {
     return (
-      <div className="w-full h-36 !bg-info relative">
+      <div className="w-full h-36 !bg-primary relative">
         <div className="flex items-center justify-center text-white">
           <Empty
             description={

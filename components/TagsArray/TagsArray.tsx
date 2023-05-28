@@ -8,7 +8,7 @@ interface Props {
   visibleTagsCount?: number;
 }
 
-const CustomTag = (props: WithChildren) => {
+export const CustomTag = (props: WithChildren) => {
   const { children } = props;
   return (
     <Tag className="!rounded-lg !m-0 !text-indigo-400 !bg-gray-50 !border-1.5 !border-indigo-200">

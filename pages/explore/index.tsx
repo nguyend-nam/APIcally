@@ -1,6 +1,7 @@
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
+  CloseOutlined,
   DownOutlined,
   LineOutlined,
   UpOutlined,
@@ -39,6 +40,10 @@ import cx from "classnames";
 import { useAuthContext } from "../../context/auth";
 import { useFetchWithCache } from "../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../libs/api";
+import { CustomTag } from "../../components/TagsArray";
+import { ROUTES } from "../../constants/routes";
+import { LazyLoad } from "../../components/LazyLoad";
+import { Card } from "../../components/Card";
 
 export type Statistic = {
   subscribes?: number;
@@ -78,14 +83,14 @@ const sorters = {
 };
 
 const ExplorePage = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const isMobile = useIsMobile();
   const { isAuthenticated } = useAuthContext();
 
   const { data, loading } = useFetchWithCache(
     isAuthenticated
-      ? [GET_PATHS.SCAN_ALL_PROJECTS_WITH_AUTH]
-      : [GET_PATHS.SCAN_ALL_PROJECTS],
+      ? [GET_PATHS.SCAN_ALL_PROJECTS_WITH_AUTH, "explore"]
+      : [GET_PATHS.SCAN_ALL_PROJECTS, "explore"],
     isAuthenticated
       ? () => client.scanAllProjectsWithAuth()
       : () => client.scanAllProjects()
@@ -269,16 +274,38 @@ const ExplorePage = () => {
 
     return apiRepos
       .sort(sorters[currentSorter as keyof typeof sorters])
+      .filter((a) => {
+        if (query?.query && typeof query.query === "string") {
+          return (
+            a.alias.includes(query.query) ||
+            a.description.includes(query.query) ||
+            a.ownerId.includes(query.query)
+          );
+        }
+        return true;
+      })
       .reverse()
       .map((a) => (
-        <ApiRepo
+        <LazyLoad
           key={a.alias}
-          data={a}
-          className="w-full md:w-full max-w-2xl"
-          hasShadow={false}
-        />
+          className="w-full"
+          suspense={
+            <Card
+              hasShadow={false}
+              className="!h-[210px] p-4 !mx-4 !mt-4 flex justify-center items-center border border-slate-200"
+            >
+              <Spin size="large" />
+            </Card>
+          }
+        >
+          <ApiRepo
+            data={a}
+            className="w-full md:w-full max-w-2xl"
+            hasShadow={false}
+          />
+        </LazyLoad>
       ));
-  }, [apiRepos, isLoading, loading, sortCriteria, sortDirection]);
+  }, [apiRepos, isLoading, loading, query, sortCriteria, sortDirection]);
 
   return (
     <>
@@ -454,11 +481,35 @@ const ExplorePage = () => {
           </div>
 
           <div className="p-4 md:p-8 pb-0 w-full max-w-2xl mx-auto">
-            {query.query && (apiRepos || []).length ? (
+            {query?.query && (apiRepos || []).length ? (
               <div className="text-slate-500 text-sm">
-                Showing {(apiRepos || []).length} results for &quot;
-                {query.query}
-                &quot;
+                Showing{" "}
+                {
+                  (apiRepos || []).filter((a) => {
+                    if (query?.query && typeof query.query === "string") {
+                      return (
+                        a.alias.includes(query.query) ||
+                        a.description.includes(query.query) ||
+                        a.ownerId.includes(query.query)
+                      );
+                    }
+                    return true;
+                  }).length
+                }{" "}
+                results for{" "}
+                <Button
+                  appearance="link"
+                  className="!p-0"
+                  onClick={() => push(ROUTES.EXPLORE())}
+                  label={
+                    <CustomTag>
+                      <div className="flex items-center gap-1">
+                        &quot;{query.query}&quot;
+                        <CloseOutlined />
+                      </div>
+                    </CustomTag>
+                  }
+                />
               </div>
             ) : (
               <div className="text-slate-500 text-sm">

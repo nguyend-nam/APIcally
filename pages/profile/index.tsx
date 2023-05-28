@@ -385,7 +385,7 @@ const UserPage = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout contentClassName="!max-w-[1100px]">
+        <Layout contentClassName="!max-w-[1050px]">
           <Row gutter={[32, 20]}>
             <Col span={24} xl={{ span: 8 }}>
               <GeneralInfo className="block md:sticky md:top-[96px]" />

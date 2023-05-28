@@ -7,7 +7,7 @@ import {
   Form,
   Tooltip,
   notification,
-  Slider,
+  // Slider,
   Select,
 } from "antd";
 import { Button } from "../../../components/Button";
@@ -26,7 +26,7 @@ import { client } from "../../../libs/api";
 import { Alert } from "../../../components/Alert";
 import {
   FULL_PRICE_FILTER,
-  REQUEST_PRICE_RANGE,
+  // REQUEST_PRICE_RANGE,
 } from "../../../constants/filter";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 import { CreateProjectRequest } from "../../../libs/types";
@@ -41,7 +41,7 @@ const APICreatePage = () => {
     FULL_PRICE_FILTER[0]
   );
   const { user, isAuthenticated, logout } = useAuthContext();
-  const [requestFee, setRequestFee] = useState<number>(REQUEST_PRICE_RANGE[0]);
+  // const [requestFee, setRequestFee] = useState<number>(REQUEST_PRICE_RANGE[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState("");
 
@@ -81,7 +81,7 @@ const APICreatePage = () => {
         documentation: "-",
         input: "-",
         subscribeCost: subscribeFee,
-        costPerRequest: requestFee,
+        costPerRequest: 0,
         category: categories.length ? categories : "other",
       };
 
@@ -242,14 +242,14 @@ const APICreatePage = () => {
                   />
                 </Col>
 
-                <Col span={24} md={{ span: 12 }} className="mb-6">
+                <Col span={24} className="mb-6">
                   <label
                     className="!m-0 !text-sm font-normal"
                     htmlFor="api-price-input"
                   >
                     Subscribe fee (per day)
                   </label>
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <Slider
                       value={subscribeFee}
                       max={FULL_PRICE_FILTER[1]}
@@ -257,7 +257,7 @@ const APICreatePage = () => {
                       onChange={setSubscribeFee}
                       step={1}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="flex gap-2 items-center w-full">
                     <Input
@@ -278,7 +278,7 @@ const APICreatePage = () => {
                   </div>
                 </Col>
 
-                <Col span={24} md={{ span: 12 }} className="mb-6">
+                {/* <Col span={24} md={{ span: 12 }} className="mb-6">
                   <label
                     className="!m-0 !text-sm font-normal"
                     htmlFor="api-request-price-input"
@@ -312,7 +312,7 @@ const APICreatePage = () => {
                     />
                     <span className="text-base">$</span>
                   </div>
-                </Col>
+                </Col> */}
 
                 <Col span={24}>
                   <Alert
