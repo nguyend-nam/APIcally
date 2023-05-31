@@ -433,6 +433,18 @@ const APIDetailPage = () => {
               )}
             </Row>
 
+            {!loading &&
+            isAuthenticated &&
+            user &&
+            data?.data.project.ownerId === user?.username ? (
+              <div className="mb-6 md:mb-8">
+                <Typography.Title level={3} className="!text-lg md:!text-xl">
+                  Subscribers
+                </Typography.Title>
+                <ProjectSubscriber alias={query.alias as string} />
+              </div>
+            ) : null}
+
             <Typography.Title level={3} className="!text-lg md:!text-xl">
               Documentation
             </Typography.Title>
@@ -444,18 +456,6 @@ const APIDetailPage = () => {
                 readOnly
               />
             </div>
-
-            {!loading &&
-            isAuthenticated &&
-            user &&
-            data?.data.project.ownerId === user?.username ? (
-              <>
-                <Typography.Title level={3} className="mt-6 md:mt-8">
-                  Subscribers
-                </Typography.Title>
-                <ProjectSubscriber alias={query.alias as string} />
-              </>
-            ) : null}
           </>
         )}
       </Layout>

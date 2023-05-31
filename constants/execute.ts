@@ -21,7 +21,7 @@ export const codeSnippetRequest = (
   input: any
 ) => {
   if (requestType === "cURL") {
-    return `curl --location 'localhost:3001/execute/${ownerId}/${alias}' \
+    return `curl --location 'http://localhost:3001/execute/${ownerId}/${alias}' \
 --header 'Content-Type: application/json' \
 --data '{
     "sessionToken": "${sessionToken}",
@@ -35,7 +35,7 @@ export const codeSnippetRequest = (
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'localhost:3001/execute/${ownerId}/${alias}',
+    CURLOPT_URL => 'http://localhost:3001/execute/${ownerId}/${alias}',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -48,7 +48,7 @@ curl_setopt_array($curl, array(
     "input": ${JSON.stringify(input)}
 }',
     CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json'
+      'Content-Type: application/json'
     ),
 ));
 
@@ -58,39 +58,38 @@ curl_close($curl);
 echo $response;`;
   }
   if (requestType === "jsFetch") {
-    return `var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+    return `const fetch = require("isomorphic-unfetch");
 
 var raw = JSON.stringify({
-    "sessionToken": "${sessionToken}",
-    "input": ${JSON.stringify(input)}
+  sessionToken: "${sessionToken}",
+  input: ${JSON.stringify(input)},
 });
 
 var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: raw,
+  redirect: "follow",
 };
 
-fetch("localhost:3001/execute/${ownerId}/${alias}", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));`;
+fetch("http://localhost:3001/execute/${ownerId}/${alias}", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.log("error", error));`;
   }
   if (requestType === "nodeAxios") {
     return `const axios = require('axios');
 let data = JSON.stringify({
     "sessionToken": "${sessionToken}",
-    "input": ${JSON.stringify(input)}
+    "input": ${JSON.stringify(input)},
 });
 
 let config = {
     method: 'post',
     maxBodyLength: Infinity,
-    url: 'localhost:3001/execute/${ownerId}/${alias}',
+    url: 'http://localhost:3001/execute/${ownerId}/${alias}',
     headers: { 
-    'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
     data : data
 };
@@ -106,7 +105,7 @@ axios.request(config)
   return `import requests
 import json
 
-url = "localhost:3001/execute/${ownerId}/${alias}"
+url = "http://localhost:3001/execute/${ownerId}/${alias}"
 
 payload = json.dumps({
     "sessionToken": "${sessionToken}",

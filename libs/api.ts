@@ -407,7 +407,7 @@ class Client {
     return fetcher<any>(`${API_BASE_API_URL}/execute/${ownerId}/${alias}`, {
       method: "POST",
       headers: {
-        ...this.privateHeaders,
+        ...this.headers,
       },
       body: JSON.stringify({ sessionToken: executeToken, input }),
     });

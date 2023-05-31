@@ -12,7 +12,7 @@ import {
   Checkbox,
   Slider,
   Spin,
-  Input as AntInput,
+  // Input as AntInput,
   Empty,
   Select,
 } from "antd";
@@ -292,7 +292,7 @@ const ExplorePage = () => {
           suspense={
             <Card
               hasShadow={false}
-              className="!h-[210px] p-4 !mx-4 !mt-4 flex justify-center items-center border border-slate-200"
+              className="!h-[210px] p-4 !mt-4 flex justify-center items-center"
             >
               <Spin size="large" />
             </Card>
@@ -430,7 +430,7 @@ const ExplorePage = () => {
                 </>
               ) : null}
 
-              {isAuthenticated ? (
+              {/* {isAuthenticated ? (
                 <>
                   <Typography.Title
                     level={4}
@@ -446,7 +446,7 @@ const ExplorePage = () => {
                   </Typography.Title>
                   <Divider className="!my-0" />
                 </>
-              ) : null}
+              ) : null} */}
 
               <div className="p-4 flex flex-row md:flex-col gap-2">
                 <Button

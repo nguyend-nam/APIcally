@@ -4,6 +4,8 @@ import {
   StarOutlined,
   // CheckCircleOutlined,
   CaretLeftOutlined,
+  CodeOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { truncate } from "@dwarvesf/react-utils";
 import { Divider, Tooltip, Typography } from "antd";
@@ -172,13 +174,32 @@ export const ApiRepo = ({
         </div>
       ) : null}
       {showEditButton ? (
-        <Button
-          label="Edit API"
-          onClick={() => {
-            push(ROUTES.API_WORKSPACE_CODE_EDITOR(data.ownerId, data.alias));
-          }}
-          className="absolute bottom-4 right-4"
-        />
+        <div className="absolute bottom-4 right-4 flex gap-2">
+          <Tooltip title="Edit API">
+            <Button
+              label={<CodeOutlined />}
+              onClick={() => {
+                push(
+                  ROUTES.API_WORKSPACE_CODE_EDITOR(data.ownerId, data.alias)
+                );
+              }}
+              className="flex items-center !px-2 !h-[32px]"
+              appearance="outline"
+            />
+          </Tooltip>
+          <Tooltip title="Edit documentation">
+            <Button
+              label={<EditOutlined />}
+              onClick={() => {
+                push(
+                  ROUTES.API_WORKSPACE_DOCUMENTATION(data.ownerId, data.alias)
+                );
+              }}
+              className="flex items-center !px-2 !h-[32px]"
+              appearance="outline"
+            />
+          </Tooltip>
+        </div>
       ) : null}
     </Card>
   );

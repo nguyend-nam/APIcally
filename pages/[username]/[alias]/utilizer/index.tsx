@@ -23,9 +23,11 @@ import { Button } from "../../../../components/Button";
 import {
   CaretRightOutlined,
   CopyOutlined,
+  PlusOutlined,
   RedoOutlined,
+  RetweetOutlined,
 } from "@ant-design/icons";
-import { useEffect, useMemo, useState } from "react";
+import { createRef, useEffect, useMemo, useState } from "react";
 import { ROUTES } from "../../../../constants/routes";
 import { APICALLY_KEY, useAuthContext } from "../../../../context/auth";
 import { ReactQuillProps } from "react-quill";
@@ -38,34 +40,38 @@ import {
   codeSnippetRequest,
   codeSnippetTypes,
 } from "../../../../constants/execute";
+import { ImageUpload } from "../../../../components/page/api-workspace/ImageUpload";
+import { dataSourceType } from "../../../api-workspace/documentation";
 
-function syntaxHighlight(json: string) {
-  if (typeof json != "string") {
-    json = JSON.stringify(json, undefined, 2);
-  }
-  json = json
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-  return json.replace(
-    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
-    function (match) {
-      let cls = "number";
-      if (/^"/.test(match)) {
-        if (/:$/.test(match)) {
-          cls = "key";
-        } else {
-          cls = "string";
-        }
-      } else if (/true|false/.test(match)) {
-        cls = "boolean";
-      } else if (/null/.test(match)) {
-        cls = "null";
-      }
-      return '<span class="' + cls + '">' + match + "</span>";
-    }
-  );
-}
+// function syntaxHighlight(json: string) {
+//   if (typeof json != "string") {
+//     json = JSON.stringify(json, undefined, 2);
+//   }
+//   json = json
+//     .replace(/&/g, "&amp;")
+//     .replace(/</g, "&lt;")
+//     .replace(/>/g, "&gt;");
+//   return json.replace(
+//     /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+//     function (match) {
+//       let cls = "number";
+//       if (/^"/.test(match)) {
+//         if (/:$/.test(match)) {
+//           cls = "key";
+//         } else {
+//           cls = "string";
+//         }
+//       } else if (/true|false/.test(match)) {
+//         cls = "boolean";
+//       } else if (/null/.test(match)) {
+//         cls = "null";
+//       }
+//       return '<span class="' + cls + '">' + match + "</span>";
+//     }
+//   );
+// }
+
+export type executeTab = "json" | "images";
 
 const ReactQuill = dynamic<ReactQuillProps>(
   () => import("react-quill").then((mod) => mod),
@@ -82,11 +88,22 @@ const UtilizerPage = () => {
   const isMobile = useIsMobile();
   const { isAuthenticated, logout } = useAuthContext();
   const { push } = useRouter();
+  const [currentExeTab, setCurrentExeTab] = useState<executeTab>("json");
   const [defaultMDValue, setDefaultMDValue] = useState("");
+
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
+
+  const [dataToExecute, setDataToExecute] = useState<Record<string, any>>({});
+
   const [executeResult, setExecuteResult] = useState<string>("");
   const [requestType, setRequestType] = useState<codeSnippetTypes>("cURL");
+
+  const fileInputRef = createRef<HTMLInputElement>();
+
+  const [banners, setBanners] = useState<File[]>([]);
+
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -204,18 +221,10 @@ const UtilizerPage = () => {
         query.username as string,
         query.alias as string,
         executeTokenData.data,
-        {}
+        dataToExecute
       );
 
-      if (res?.data) {
-        setExecuteResult(
-          syntaxHighlight(JSON.stringify(typeof res === "object" ? res : {}))
-        );
-      } else {
-        notification.error({
-          message: "Could not execute project",
-        });
-      }
+      setExecuteResult(JSON.stringify(typeof res === "object" ? res : {}));
     } catch (error: any) {
       notification.error({
         message: error || "Could not execute project",
@@ -249,17 +258,20 @@ const UtilizerPage = () => {
       render: (value, _record) => (
         <Form>
           <div className="flex flex-col gap-2">
-            {new Array(value.size).fill(1).map((a, i) => (
-              <Form.Item key={`${a}${i}`} rules={[]} className="!m-0">
-                <Input
-                  type={defineInputType(value.type)}
-                  id="name-input"
-                  className="!text-base float-right max-w-[150px] md:max-w-[200px]"
-                  placeholder={`Input ${value.name}...`}
-                  onChange={(e) => console.log(value.name, e.target.value)}
-                />
-              </Form.Item>
-            ))}
+            <Form.Item key={`${value.name}`} rules={[]} className="!m-0">
+              <Input
+                type={defineInputType(value.type)}
+                id="name-input"
+                className="!text-base float-right max-w-[150px] md:max-w-[200px]"
+                placeholder={`Input ${value.name}...`}
+                onChange={(e) => {
+                  const newObj = {};
+                  Object.assign(newObj, { [value.name]: e.target.value });
+
+                  setDataToExecute(newObj as any);
+                }}
+              />
+            </Form.Item>
           </div>
         </Form>
       ),
@@ -267,16 +279,24 @@ const UtilizerPage = () => {
     },
   ];
 
-  const dataSource = [
-    {
-      name: "co2",
-      type: "number",
-    },
-    {
-      name: "o3",
-      type: "number",
-    },
-  ];
+  const dataSource = useMemo(() => {
+    if (!loading) {
+      if (data?.data?.project?.input && data?.data?.project?.input !== "-") {
+        const parsed = JSON.parse(data?.data?.project?.input);
+
+        const dataSourceValue: dataSourceType[] = [];
+
+        Object.entries(parsed).map((value) => {
+          dataSourceValue.push({
+            name: value[0] as string,
+            type: value[1] as string,
+          } as dataSourceType);
+        });
+
+        return dataSourceValue;
+      }
+    }
+  }, [data?.data?.project?.input, loading]);
 
   const requestRender = useMemo(() => {
     if (loading || executeTokenLoading || !executeTokenData) {
@@ -287,9 +307,10 @@ const UtilizerPage = () => {
       query.username as string,
       query.alias as string,
       executeTokenData.data,
-      {}
+      dataToExecute
     );
   }, [
+    dataToExecute,
     executeTokenData,
     executeTokenLoading,
     loading,
@@ -306,7 +327,7 @@ const UtilizerPage = () => {
           query.username as string,
           query.alias as string,
           executeTokenData.data,
-          {}
+          dataToExecute
         )
   );
 
@@ -411,25 +432,86 @@ const UtilizerPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col span={24} lg={{ span: 12 }}>
-                  <Card className="p-4" shadowSize="sm">
-                    <Typography.Title
-                      level={3}
-                      className="!text-lg md:!text-xl !m-0 !mb-2 md:!mb-4"
-                    >
-                      Provide inputs
-                    </Typography.Title>
-                    <Card hasShadow={false}>
-                      <Table
-                        rowKey="name"
-                        columns={columns}
-                        dataSource={dataSource}
-                        scroll={{ x: "max-content" }}
-                        pagination={false}
-                      />
+
+                {currentExeTab === "json" ? (
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Card className="p-4" shadowSize="sm">
+                      <div className="flex h-[30px] gap-2 items-center !mb-2 md:!mb-4">
+                        <Button
+                          className="flex items-center !px-1"
+                          label={<RetweetOutlined />}
+                          onClick={() => {
+                            setCurrentExeTab("images");
+                          }}
+                        />
+                        <Typography.Title
+                          level={3}
+                          className="!text-lg md:!text-xl !m-0"
+                        >
+                          Provide inputs
+                        </Typography.Title>
+                      </div>
+                      <Card hasShadow={false}>
+                        <Table
+                          rowKey="name"
+                          columns={columns}
+                          dataSource={dataSource}
+                          scroll={{ x: "max-content" }}
+                          pagination={false}
+                        />
+                      </Card>
                     </Card>
-                  </Card>
-                </Col>
+                  </Col>
+                ) : (
+                  <Col span={24} lg={{ span: 12 }}>
+                    <Card className="p-4" shadowSize="sm">
+                      <div className="flex justify-between items-center gap-4">
+                        <div className="flex gap-2 items-center">
+                          <Button
+                            className="flex items-center !px-1"
+                            label={<RetweetOutlined />}
+                            onClick={() => {
+                              setCurrentExeTab("json");
+                            }}
+                          />
+                          <Typography.Title
+                            level={3}
+                            className="!text-lg md:!text-xl !m-0"
+                          >
+                            Upload images
+                          </Typography.Title>
+                        </div>
+
+                        <Button
+                          disabled={isUploading || isExecuting}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            if (fileInputRef?.current) {
+                              // clear the current value of the file input since we use
+                              // the onChange to trigger upload inside the ImageUpload
+                              if (fileInputRef?.current?.value) {
+                                fileInputRef.current.value = "";
+                              }
+                              fileInputRef?.current?.click();
+                            }
+                          }}
+                          label={<PlusOutlined />}
+                          className="!px-1.5 !h-[30px] flex items-center"
+                        />
+                      </div>
+                      <Card hasShadow={false}>
+                        <ImageUpload
+                          fileInputRef={fileInputRef}
+                          setBanners={setBanners}
+                          setIsUploading={setIsUploading}
+                          isUploading={isUploading}
+                          disabled={isExecuting || isUploading}
+                          className="mt-4"
+                        />
+                      </Card>
+                    </Card>
+                  </Col>
+                )}
                 <Col span={24} lg={{ span: 12 }}>
                   <Card
                     className="p-4 min-h-[200px] flex flex-col"

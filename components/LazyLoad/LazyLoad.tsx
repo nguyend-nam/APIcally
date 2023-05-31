@@ -10,7 +10,10 @@ interface Props extends WithChildren<any> {
 export const LazyLoad = ({ children, suspense, className }: Props) => {
   const lazyLoadRef = useRef() as LegacyRef<HTMLDivElement>;
   const { inViewport, enterCount } = useInViewport(
-    lazyLoadRef as RefObject<HTMLElement>
+    lazyLoadRef as RefObject<HTMLElement>,
+    {
+      threshold: 0.5,
+    }
   );
 
   return (

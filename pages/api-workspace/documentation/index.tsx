@@ -22,13 +22,14 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Card } from "../../../components/Card";
 import { ROUTES } from "../../../constants/routes";
-import { CREATE_API_NAME_KEY } from "../new";
+// import { CREATE_API_NAME_KEY } from "../new";
 // import { isAPINameFormatValid } from "../../../utils";
 import { useFetchWithCache } from "../../../hooks/useFetchWithCache";
 import { client, GET_PATHS } from "../../../libs/api";
 import { APICALLY_KEY, useAuthContext } from "../../../context/auth";
 import { ReactQuillProps } from "react-quill";
 import { editorModules } from "../../../constants/editor";
+import { CreateProjectRequest } from "../../../libs/types";
 
 const ReactQuill = dynamic<ReactQuillProps>(
   () => import("react-quill").then((mod) => mod),
@@ -46,7 +47,7 @@ export type dataSourceType = {
 const DocumentationPage = () => {
   const [dataSource, setDataSource] = useState<dataSourceType[]>([]);
   const [dataSourceStr, setDataSourceStr] = useState<string>("");
-  console.log(dataSourceStr);
+  const [mDValue, setMDValue] = useState(defaultMD);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -56,7 +57,7 @@ const DocumentationPage = () => {
   } = useDisclosure();
 
   const { push, query, replace } = useRouter();
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated, logout, user } = useAuthContext();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -75,7 +76,7 @@ const DocumentationPage = () => {
     }
   }, [logout]);
 
-  const { data, loading } = useFetchWithCache(
+  const { data, loading, mutate } = useFetchWithCache(
     isAuthenticated
       ? [
           GET_PATHS.GET_PROJECT_DETAIL_OWNERID_ALIAS_WITH_AUTH(
@@ -101,11 +102,32 @@ const DocumentationPage = () => {
             query.alias as string
           )
   );
-  const [mDValue, setMDValue] = useState(defaultMD);
 
   useEffect(() => {
     if (!loading) {
-      if (data?.data?.project?.documentation) {
+      if (data?.data?.project?.input && data?.data?.project?.input !== "-") {
+        const parsed = JSON.parse(data?.data?.project?.input);
+
+        const dataSourceValue: dataSourceType[] = [];
+
+        Object.entries(parsed).map((value) => {
+          dataSourceValue.push({
+            name: value[0] as string,
+            type: value[1] as string,
+          } as dataSourceType);
+        });
+
+        setDataSource(dataSourceValue);
+      }
+    }
+  }, [data?.data?.project?.input, loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      if (
+        data?.data?.project?.documentation &&
+        data?.data?.project?.documentation !== "-"
+      ) {
         setMDValue(data?.data?.project?.documentation);
       }
     }
@@ -123,6 +145,35 @@ const DocumentationPage = () => {
   }, [dataSource]);
 
   const [form] = useForm();
+
+  const onSubmit = async (alias: string) => {
+    try {
+      setIsLoading(true);
+
+      const transformedValues: Partial<CreateProjectRequest> = {
+        documentation: mDValue,
+        input: dataSourceStr,
+      };
+
+      const res = await client.updateProject(alias, transformedValues);
+
+      if (res?.data) {
+        notification.success({ message: "API updated successfully" });
+        await mutate();
+        push(ROUTES.API_WORKSPACE_API_DETAIL(user?.username || "-", alias));
+      } else {
+        notification.error({
+          message: res?.message || "Could update create API",
+        });
+      }
+    } catch (error: any) {
+      notification.error({
+        message: error.message || "Could update create API",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const columns: ColumnsType<any> = [
     {
@@ -267,14 +318,7 @@ const DocumentationPage = () => {
           <Button
             label="Submit"
             onClick={() => {
-              setIsLoading(true);
-              setTimeout(() => {
-                notification.success({
-                  message: "Algorithm successfully submitted!",
-                });
-                push(ROUTES.PROFILE);
-              }, 1000);
-              window.localStorage.removeItem(CREATE_API_NAME_KEY);
+              onSubmit(query.alias as string);
             }}
             className="mt-8"
             isLoading={isLoading}

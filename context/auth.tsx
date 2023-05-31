@@ -46,8 +46,6 @@ const AuthProvider = ({ children }: WithChildren) => {
       setAuthToken(newAccessToken);
       await client.setAuthToken(newAccessToken);
 
-      console.log(newAccessToken);
-
       try {
         const userInfoRes = await client.getUserProfile();
         const balanceRes = await client.getUserBalance();
