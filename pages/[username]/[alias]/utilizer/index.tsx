@@ -298,6 +298,26 @@ const UtilizerPage = () => {
     }
   }, [data?.data?.project?.input, loading]);
 
+  const isDataToExecuteFilled = useMemo(() => {
+    if (!dataSource) {
+      return false;
+    }
+
+    for (let i = 0; i < (dataSource || []).length; i++) {
+      if (!(dataSource[i].name in dataToExecute)) {
+        return false;
+      }
+
+      if (!dataToExecute[dataSource[i].name]) {
+        return false;
+      }
+    }
+
+    return true;
+  }, [dataSource, dataToExecute]);
+
+  console.log(isDataToExecuteFilled);
+
   const requestRender = useMemo(() => {
     if (loading || executeTokenLoading || !executeTokenData) {
       return "";
@@ -517,18 +537,21 @@ const UtilizerPage = () => {
                     className="p-4 min-h-[200px] flex flex-col"
                     shadowSize="sm"
                   >
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex !h-[30px] justify-between items-center mb-4">
                       <Typography.Title
                         level={3}
                         className="!text-lg md:!text-xl !m-0"
                       >
                         Output
                       </Typography.Title>
-                      <Button
-                        label={<CaretRightOutlined className="text-lg" />}
-                        className="!px-1.5 !h-[30px] flex items-center !m-0"
-                        onClick={onExecuteClick}
-                      />
+                      {isDataToExecuteFilled ? (
+                        <Button
+                          label={<CaretRightOutlined className="text-lg" />}
+                          className="!px-1.5 !h-[30px] flex items-center !m-0"
+                          onClick={onExecuteClick}
+                          // disabled={!isDataToExecuteFilled}
+                        />
+                      ) : null}
                     </div>
                     <Card
                       hasShadow={false}

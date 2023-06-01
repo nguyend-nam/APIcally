@@ -92,8 +92,6 @@ const AuthProvider = ({ children }: WithChildren) => {
           const userInfoRes = await client.getUserProfile();
           const balanceRes = await client.getUserBalance();
 
-          console.log(userInfoRes, balanceRes);
-
           if (userInfoRes?.data && balanceRes?.data !== undefined) {
             setUser({ ...userInfoRes.data, balance: balanceRes?.data || 0 });
           } else {
