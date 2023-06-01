@@ -81,7 +81,7 @@ const APICreatePage = () => {
         documentation: "-",
         input: "-",
         subscribeCost: subscribeFee,
-        costPerRequest: 0,
+        costPerRequest: 0.1,
         category: categories.length ? categories : "other",
       };
 

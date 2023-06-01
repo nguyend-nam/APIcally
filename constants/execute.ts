@@ -26,8 +26,7 @@ export const codeSnippetRequest = (
 --data '{
     "sessionToken": "${sessionToken}",
     "input": ${JSON.stringify(input)}
-}'
-  `;
+}'`;
   }
   if (requestType === "phpCURL") {
     return `<?php

@@ -538,7 +538,7 @@ const UtilizerPage = () => {
                         <Spin />
                       ) : (
                         <pre
-                          className="text-white"
+                          className="text-white pb-2"
                           dangerouslySetInnerHTML={{ __html: executeResult }}
                         />
                       )}
@@ -574,10 +574,10 @@ const UtilizerPage = () => {
 
                     <Card
                       hasShadow={false}
-                      className="grow !bg-slate-700 p-4 !h-full !text-white relative"
+                      className="grow !bg-slate-700 !p-4 !pb-2 !h-full !text-white relative"
                     >
                       {renderCopyButton}
-                      <pre>{requestRender}</pre>
+                      <pre className="pb-2">{requestRender}</pre>
                     </Card>
                   </Card>
                 </Col>
