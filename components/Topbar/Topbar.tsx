@@ -1,4 +1,5 @@
 import {
+  LeftOutlined,
   ExportOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -20,12 +21,14 @@ export const Topbar = ({
   title,
   extraLeft,
   isMenuOpen,
+  backHref,
 }: {
   className?: string;
   onClick?: () => void;
   title?: string;
   extraLeft?: ReactNode;
   isMenuOpen: boolean;
+  backHref?: string;
 }) => {
   const { pathname, push } = useRouter();
   const { logout, isAuthenticated } = useAuthContext();
@@ -38,7 +41,15 @@ export const Topbar = ({
       )}
     >
       <div className="flex justify-between w-full gap-2 items-center">
-        <div className="flex flex-col md:flex-row items-start text-lg md:text-xl">
+        <div className="flex gap-2 items-center text-lg md:text-xl">
+          {backHref ? (
+            <Button
+              appearance="link"
+              label={<LeftOutlined />}
+              onClick={() => push(backHref)}
+              className="flex items-center !p-0"
+            />
+          ) : null}
           {title || formatPathname(pathname)}
         </div>
         <div className="flex gap-2 md:gap-4">

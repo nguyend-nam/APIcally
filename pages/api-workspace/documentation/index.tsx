@@ -271,7 +271,15 @@ const DocumentationPage = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout>
+        <Layout
+          pageTitle={`Edit ${query.username}/${query.alias}`}
+          backHref={
+            typeof query.username === "string" &&
+            typeof query.alias === "string"
+              ? ROUTES.API_WORKSPACE_API_DETAIL(query.username, query.alias)
+              : undefined
+          }
+        >
           <Typography.Title
             level={3}
             className="!text-xl md:!text-2xl capitalize"

@@ -31,12 +31,14 @@ export const Layout = ({
   pageTitle,
   hasFooter = true,
   hasSearch = false,
+  backHref,
 }: WithChildren & {
   className?: string;
   contentClassName?: string;
   pageTitle?: string;
   hasFooter?: boolean;
   hasSearch?: ReactNode;
+  backHref?: string;
 }) => {
   const isSSR = useIsSSR();
   const { sidebarStatus } = useSidebarStatusContext();
@@ -156,6 +158,7 @@ export const Layout = ({
           className="sticky top-0 z-40 !px-4 md:!px-8"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           title={pageTitle}
+          backHref={backHref}
           extraLeft={
             hasSearch ? (
               <div className="mt-4 md:mt-0">

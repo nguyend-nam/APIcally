@@ -277,9 +277,10 @@ const ExplorePage = () => {
       .filter((a) => {
         if (query?.query && typeof query.query === "string") {
           return (
-            a.alias.includes(query.query) ||
-            a.description.includes(query.query) ||
-            a.ownerId.includes(query.query)
+            a.alias.toLowerCase().includes(query.query.toLowerCase()) ||
+            a.name.toLowerCase().includes(query.query.toLowerCase()) ||
+            a.description.toLowerCase().includes(query.query.toLowerCase()) ||
+            a.ownerId.toLowerCase().includes(query.query.toLowerCase())
           );
         }
         return true;

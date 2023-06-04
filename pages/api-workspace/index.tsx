@@ -48,7 +48,7 @@ const CodeEditorPage = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout hasSearch>
+        <Layout hasSearch pageTitle="API workspace">
           <div className="flex flex-col items-center">
             <Typography.Title
               level={5}

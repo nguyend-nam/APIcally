@@ -128,7 +128,7 @@ const APICreatePage = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout>
+        <Layout pageTitle="API workspace">
           <Card className="max-w-xl m-auto p-4" shadowSize="md">
             <Typography.Title level={4}>Create API</Typography.Title>
 

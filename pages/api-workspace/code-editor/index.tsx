@@ -108,17 +108,17 @@ const CodeEditorPageInner = () => {
         formData.append("", fileToUpload, file.fileName);
       });
 
-      const res = await client.uploadProjectFiles(alias, formData);
+      await client.uploadProjectFiles(alias, formData);
 
       await mutate();
-      if (res === "Upload files successfully") {
-        notification.success({ message: "Files uploaded successfully" });
-      }
+      // if (res === "Upload files successfully") {
+      notification.success({ message: "API source code updated successfully" });
+      // }
     } catch (error: any) {
       console.log(error);
-      // notification.error({
-      //   message: error.message || "Could not upload files",
-      // });
+      notification.error({
+        message: error.message || "Could not upload files",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +166,17 @@ const CodeEditorPageInner = () => {
       </Head>
 
       {isAuthenticated ? (
-        <Layout contentClassName="!p-0 !max-w-[100%]" hasFooter={false}>
+        <Layout
+          contentClassName="!p-0 !max-w-[100%]"
+          hasFooter={false}
+          pageTitle={`Edit ${query.username}/${query.alias}`}
+          backHref={
+            typeof query.username === "string" &&
+            typeof query.alias === "string"
+              ? ROUTES.API_WORKSPACE_API_DETAIL(query.username, query.alias)
+              : undefined
+          }
+        >
           <div className="flex bg-slate-100">
             <FileManagement
               currentFile={currentFile}
