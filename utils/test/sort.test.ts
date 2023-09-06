@@ -11,20 +11,25 @@ import {
 
 const emptyApiRepoData: apiRepoType = {
   id: "-",
-  subscribeStatus: true,
   name: "-",
   alias: "-",
-  author: "-",
-  username: "-",
+  ownerId: "-",
   description: "-",
-  tags: ["technology"],
+  category: "technology",
+  documentation: "",
+  input: "",
+  subscribeCost: 0,
+  costPerRequest: 0,
+  fileNames: [],
+  subscriber: 0,
+  stars: 0,
 };
 
 // price
 test.each([
   [
     [apiReposData[0], apiReposData[1]],
-    [apiReposData[1], apiReposData[0]],
+    [apiReposData[0], apiReposData[1]],
   ],
   [
     [emptyApiRepoData, apiReposData[1]],
@@ -41,7 +46,7 @@ test.each([
 test.each([
   [
     [apiReposData[11], apiReposData[1]],
-    [apiReposData[1], apiReposData[11]],
+    [apiReposData[11], apiReposData[1]],
   ],
   [
     [emptyApiRepoData, apiReposData[1]],
@@ -49,7 +54,7 @@ test.each([
   ],
   [
     [apiReposData[0], emptyApiRepoData],
-    [apiReposData[0], emptyApiRepoData],
+    [emptyApiRepoData, apiReposData[0]],
   ],
 ])("priceDescSorter(%s)", (before, expected) => {
   expect(before.sort(priceDescSorter)).toStrictEqual(expected);

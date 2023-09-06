@@ -18,11 +18,11 @@ export const apiReposData: apiRepoType[] = [
     category: "ai,weather,environment",
     documentation: "",
     input: "",
-    subscribeCost: 0.1,
+    subscribeCost: 0.5,
     costPerRequest: 0.1,
     fileNames: [],
     stars: 3,
-    subscriber: 1,
+    subscriber: 12,
   },
   {
     id: "2",
@@ -44,7 +44,7 @@ export const apiReposData: apiRepoType[] = [
     subscribeCost: 0.1,
     costPerRequest: 0.1,
     fileNames: [],
-    stars: 3,
+    stars: 2,
     subscriber: 1,
   },
   {
@@ -273,8 +273,8 @@ export const apiReposData: apiRepoType[] = [
     subscribeCost: 0.1,
     costPerRequest: 0.1,
     fileNames: [],
-    stars: 3,
-    subscriber: 1,
+    stars: 30,
+    subscriber: 2,
   },
 ];
 

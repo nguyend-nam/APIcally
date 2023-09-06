@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="52" failures="0" time="1.672">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-06-11T17:24:06" time="0.494" tests="18">
+    <testcase classname=" priceAscSorter([ [Object], [Object] ])" name=" priceAscSorter([ [Object], [Object] ])" time="0.002">
+    </testcase>
+    <testcase classname=" priceAscSorter([ [Object], [Object] ])" name=" priceAscSorter([ [Object], [Object] ])" time="0.001">
+    </testcase>
+    <testcase classname=" priceAscSorter([ [Object], [Object] ])" name=" priceAscSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" priceDescSorter([ [Object], [Object] ])" name=" priceDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" priceDescSorter([ [Object], [Object] ])" name=" priceDescSorter([ [Object], [Object] ])" time="0.001">
+    </testcase>
+    <testcase classname=" priceDescSorter([ [Object], [Object] ])" name=" priceDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" starsAscSorter([ [Object], [Object] ])" name=" starsAscSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" starsAscSorter([ [Object], [Object] ])" name=" starsAscSorter([ [Object], [Object] ])" time="0.001">
+    </testcase>
+    <testcase classname=" starsAscSorter([ [Object], [Object] ])" name=" starsAscSorter([ [Object], [Object] ])" time="0.002">
+    </testcase>
+    <testcase classname=" starsDescSorter([ [Object], [Object] ])" name=" starsDescSorter([ [Object], [Object] ])" time="0.001">
+    </testcase>
+    <testcase classname=" starsDescSorter([ [Object], [Object] ])" name=" starsDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" starsDescSorter([ [Object], [Object] ])" name=" starsDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" subscribersAscSorter([ [Object], [Object] ])" name=" subscribersAscSorter([ [Object], [Object] ])" time="0.001">
+    </testcase>
+    <testcase classname=" subscribersAscSorter([ [Object], [Object] ])" name=" subscribersAscSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" subscribersAscSorter([ [Object], [Object] ])" name=" subscribersAscSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" subscribersDescSorter([ [Object], [Object] ])" name=" subscribersDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" subscribersDescSorter([ [Object], [Object] ])" name=" subscribersDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+    <testcase classname=" subscribersDescSorter([ [Object], [Object] ])" name=" subscribersDescSorter([ [Object], [Object] ])" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-06-11T17:24:06" time="0.246" tests="29">
+    <testcase classname=" formatFileName(myVariable)" name=" formatFileName(myVariable)" time="0.001">
+    </testcase>
+    <testcase classname=" formatFileName(myVariable.)" name=" formatFileName(myVariable.)" time="0">
+    </testcase>
+    <testcase classname=" formatFileName(myVariable.py)" name=" formatFileName(myVariable.py)" time="0">
+    </testcase>
+    <testcase classname=" formatFileName(myVariable.test)" name=" formatFileName(myVariable.test)" time="0.001">
+    </testcase>
+    <testcase classname=" formatFileName(myVariable.test.)" name=" formatFileName(myVariable.test.)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(my Variable)" name=" checkPythonVarNameFormat(my Variable)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(4myVariable)" name=" checkPythonVarNameFormat(4myVariable)" time="0.001">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(myVariable!)" name=" checkPythonVarNameFormat(myVariable!)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(my4Variable)" name=" checkPythonVarNameFormat(my4Variable)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(myVariable4)" name=" checkPythonVarNameFormat(myVariable4)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(_myVariable)" name=" checkPythonVarNameFormat(_myVariable)" time="0">
+    </testcase>
+    <testcase classname=" checkPythonVarNameFormat(__myVariable)" name=" checkPythonVarNameFormat(__myVariable)" time="0">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid(@abc)" name=" isFileNameFormatInvalid(@abc)" time="0">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid(#$)" name=" isFileNameFormatInvalid(#$)" time="0">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid()" name=" isFileNameFormatInvalid()" time="0.001">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid(myFile)" name=" isFileNameFormatInvalid(myFile)" time="0">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid(myFile1)" name=" isFileNameFormatInvalid(myFile1)" time="0">
+    </testcase>
+    <testcase classname=" isFileNameFormatInvalid(my-file)" name=" isFileNameFormatInvalid(my-file)" time="0">
+    </testcase>
+    <testcase classname=" capitalizeFirstLetter(myFile)" name=" capitalizeFirstLetter(myFile)" time="0.001">
+    </testcase>
+    <testcase classname=" formatPathname(/api-workspace)" name=" formatPathname(/api-workspace)" time="0">
+    </testcase>
+    <testcase classname=" formatPathname(/home)" name=" formatPathname(/home)" time="0">
+    </testcase>
+    <testcase classname=" snakeCaseToNormalString(api-workspace)" name=" snakeCaseToNormalString(api-workspace)" time="0">
+    </testcase>
+    <testcase classname=" snakeCaseToNormalString(snake-case)" name=" snakeCaseToNormalString(snake-case)" time="0">
+    </testcase>
+    <testcase classname=" snakeCaseToNormalString(snake-case-string)" name=" snakeCaseToNormalString(snake-case-string)" time="0">
+    </testcase>
+    <testcase classname=" snakeCaseToNormalString(home)" name=" snakeCaseToNormalString(home)" time="0.001">
+    </testcase>
+    <testcase classname=" isAPINameFormatValid()" name=" isAPINameFormatValid()" time="0">
+    </testcase>
+    <testcase classname=" isAPINameFormatValid(api-name)" name=" isAPINameFormatValid(api-name)" time="0">
+    </testcase>
+    <testcase classname=" isAPINameFormatValid(apiName)" name=" isAPINameFormatValid(apiName)" time="0.001">
+    </testcase>
+    <testcase classname=" isAPINameFormatValid(api1)" name=" isAPINameFormatValid(api1)" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-06-11T17:24:06" time="0.253" tests="3">
+    <testcase classname=" formatCurrency(0)" name=" formatCurrency(0)" time="0.015">
+    </testcase>
+    <testcase classname=" formatCurrency(1000)" name=" formatCurrency(1000)" time="0">
+    </testcase>
+    <testcase classname=" formatCurrency(1234000)" name=" formatCurrency(1234000)" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-06-11T17:24:07" time="0.238" tests="2">
+    <testcase classname=" diffTime(0)" name=" diffTime(0)" time="0.002">
+    </testcase>
+    <testcase classname=" diffTime(1000)" name=" diffTime(1000)" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

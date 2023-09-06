@@ -44,7 +44,10 @@
     "recharts": "~2.2.0",
     "star-rating-react-ts": "^1.0.7",
     "swr": "~1.3.0",
-    "tailwindcss-text-fill": "~0.2.0"
+    "tailwindcss-text-fill": "~0.2.0",
+    "jest-junit": "~11.0.1",
+    "jest-sonar-reporter": "~2.0.0",
+    "jest-html-reporters": "~3.0.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "~5.16.5",

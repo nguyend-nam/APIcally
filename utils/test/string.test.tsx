@@ -68,7 +68,7 @@ test.each([
 
 test.each([
   ["", false],
-  ["api-name", false],
+  ["api-name", true],
 
   ["apiName", true],
   ["api1", true],

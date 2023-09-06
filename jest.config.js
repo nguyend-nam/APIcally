@@ -39,8 +39,21 @@ const customJestConfig = {
     },
   },
   preset: "ts-jest",
-  collectCoverageFrom: ["**/utils/{!(cookies|index|datetime),}.(ts|tsx)"],
+  collectCoverageFrom: ["**/utils/{!(cookies|index),}.(ts|tsx)"],
   coverageProvider: "v8",
+  reporters: [
+    "default",
+    "jest-junit",
+    [
+      "jest-html-reporters",
+      {
+        publicPath: "./output",
+        filename: "jest-html-reporters.html",
+        expand: true,
+      },
+    ],
+  ],
+  coverageDirectory: "output/coverage/jest",
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
