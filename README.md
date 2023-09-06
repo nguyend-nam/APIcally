@@ -2,6 +2,10 @@
 
 This repository contains the frontend implementation for APIcally.
 
+## Demonstration
+
+https://drive.google.com/file/d/1OWOmZV2w6lwc-IA_DEksaHaYcJx4wxSQ/view?usp=drive_link
+
 ## Quick Start
 
 ```bash
@@ -23,7 +27,7 @@ to see your project.
 
 | Environment | URL                                |
 | ----------- | ---------------------------------- |
-| staging     | https://apically-b2c2c.netlify.app |
+| develop     | https://apically-b2c2c.netlify.app |
 
 ## Resources
 
