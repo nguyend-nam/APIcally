@@ -25,9 +25,9 @@ to see your project.
 
 ## Deployment
 
-| Environment | URL                                |
-| ----------- | ---------------------------------- |
-| develop     | https://apically-b2c2c.netlify.app |
+| Environment | URL                              |
+| ----------- | -------------------------------- |
+| develop     | https://apically-web.netlify.app |
 
 ## Resources
 
